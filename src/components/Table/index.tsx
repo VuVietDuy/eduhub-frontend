@@ -1,12 +1,17 @@
 import React from 'react';
 
+interface DataItem {
+  [key: string]: string | number;
+}
+
 interface IProps {
-  dataSource: Object[];
+  dataSource: DataItem[];
   columns: {
     title: string;
     dataIndex: string;
     key: string;
-    render?: (data: any) => React.ReactNode;
+    width?: string;
+    render?: (data: DataItem) => React.ReactNode;
   }[];
 }
 
@@ -18,7 +23,12 @@ export default function Table(props: IProps) {
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             {columns.map((column, index) => (
-              <th key={column.key} scope="col" className="px-6 py-3">
+              <th
+                key={column.key || index}
+                scope="col"
+                className={`px-6 py-3`}
+                style={{width: column.width}}
+              >
                 {column.title}
               </th>
             ))}
@@ -32,7 +42,9 @@ export default function Table(props: IProps) {
             >
               {columns.map((column) => (
                 <td key={column.key} className="px-6 py-4">
-                  {/* {column.render ? column.render(dataItem[column.dataIndex]) : dataItem[column.dataIndex]} */}
+                  {column.render
+                    ? column.render(dataItem)
+                    : dataItem[column.dataIndex]}
                 </td>
               ))}
             </tr>
