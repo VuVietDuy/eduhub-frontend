@@ -12,7 +12,7 @@ import {
   MdOutlineSchool,
   MdOutlineSettings,
 } from 'react-icons/md';
-import PostListItem from '..';
+import PostListItem from './components/PostListItem';
 
 export default function Profile() {
   return (
@@ -49,7 +49,11 @@ export default function Profile() {
             </div>
           </div>
           <div className="w-full flex flex-col justify-center items-center sm:flex-row sm:justify-between mb-6">
-            <div></div>
+            <div>
+              <button className="px-4 py-1 border rounded-md shadow-md text-sm text-white">
+                Follow
+              </button>
+            </div>
             <div>
               <Link href="/profile/setting">
                 <span className="flex items-center text-white font-semibold hover:text-primary-700">
@@ -62,17 +66,17 @@ export default function Profile() {
           <div className="grid grid-cols-3 gap-6">
             <div className="col-span-3 sm:col-span-2">
               <div className="grid grid-cols-1 gap-6">
-                <Card title="ABOUT">
+                <Card title="About">
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                     <div className="flex mb-2">
                       <div className="flex items-center mr-4">
                         <MdBusiness className="text-4xl text-yellow-400" />
                       </div>
                       <div className="flex flex-col ">
-                        <span className="text-[12px] font-semibold text-gray-500">
+                        <span className="text-[12px] font-semibold text-gray-500 dark:text-gray-300">
                           Email
                         </span>
-                        <span className="text-sm font-semibold text-primary-900">
+                        <span className="text-sm font-semibold text-primary-900 dark:text-gray-200">
                           Example@gmail.com
                         </span>
                       </div>
@@ -82,10 +86,10 @@ export default function Profile() {
                         <MdOutlineCake className="text-4xl text-yellow-400" />
                       </div>
                       <div className="flex flex-col ">
-                        <span className="text-[12px] font-semibold text-gray-500">
+                        <span className="text-[12px] font-semibold text-gray-500 dark:text-gray-300">
                           Birthday
                         </span>
-                        <span className="text-sm font-semibold text-primary-900">
+                        <span className="text-sm font-semibold text-primary-800 dark:text-gray-200">
                           Oct 25, 1984
                         </span>
                       </div>
@@ -95,10 +99,10 @@ export default function Profile() {
                         <MdOutlineSchool className="text-4xl text-yellow-400" />
                       </div>
                       <div className="flex flex-col ">
-                        <span className="text-[12px] font-semibold text-gray-500">
+                        <span className="text-[12px] font-semibold text-gray-500 dark:text-gray-300">
                           Went to
                         </span>
-                        <span className="text-sm font-semibold text-primary-900">
+                        <span className="text-sm font-semibold text-primary-900 dark:text-gray-200">
                           Học viện công nghệ Bưu Chính Viễn Thông
                         </span>
                       </div>
@@ -116,7 +120,7 @@ export default function Profile() {
                     Phasellus sed odio eu lacus venenatis.
                   </Paragraph>
                 </Card>
-                <Card>
+                <Card title="Post">
                   <div>
                     <PostListItem
                       thumnailUrl="/logo.png"
@@ -130,7 +134,7 @@ export default function Profile() {
               </div>
             </div>
             <div className="col-span-3 sm:col-span-1">
-              <Card title="CONTACT">
+              <Card title="Contact">
                 <div className="flex mb-2">
                   <div className="flex items-center mr-4">
                     <MdMailOutline className="text-xl text-gray-500" />
