@@ -1,0 +1,20 @@
+{
+  "overrides": [
+    {
+      "files": "*.tsx",
+      "options": {
+        "arrowParens": "always",
+        "tabWidth": 2,
+        "singleQuote": true,
+        "trailingComma": "all",
+        "bracketSpacing": false
+      }
+    },
+    {
+      "files": "*.css",
+      "options": {
+        "tabWidth": 4
+      }
+    }
+  ]
+}
