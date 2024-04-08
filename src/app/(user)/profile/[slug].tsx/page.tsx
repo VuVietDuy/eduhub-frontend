@@ -12,7 +12,7 @@ import {
   MdOutlineSchool,
   MdOutlineSettings,
 } from 'react-icons/md';
-import PostListItem from './components/PostListItem';
+import PostListItem from '../components/PostListItem';
 
 export default function Profile() {
   return (
