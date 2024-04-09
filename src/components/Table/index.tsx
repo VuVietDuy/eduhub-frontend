@@ -34,13 +34,6 @@ export default function Table(props: IProps) {
             ))}
           </tr>
         </thead>
-        {dataSource.length === 0 ? (
-          <div>
-            <span>No data</span>
-          </div>
-        ) : (
-          <></>
-        )}
         <tbody>
           {dataSource.map((dataItem, index) => (
             <tr

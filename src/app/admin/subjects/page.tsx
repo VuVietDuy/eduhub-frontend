@@ -1,5 +1,6 @@
 'use client';
 import fetcher from '@/api/fetcher';
+import Card from '@/components/Card';
 import Table from '@/components/Table';
 import Image from 'next/image';
 import React, {useEffect, useState} from 'react';
@@ -27,6 +28,7 @@ export default function SubjectManagement() {
         console.log(err);
       });
   }, []);
+
   const columns = [
     {
       title: 'id',
@@ -64,12 +66,12 @@ export default function SubjectManagement() {
     },
   ];
   return (
-    <div>
+    <Card>
       {dataInit ? (
         <Table dataSource={dataInit} columns={columns}></Table>
       ) : (
         <></>
       )}
-    </div>
+    </Card>
   );
 }
