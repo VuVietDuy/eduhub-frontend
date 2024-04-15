@@ -1,7 +1,3 @@
-'use client';
-import Button from '@/components/Button';
-import Link from 'next/link';
-import {Fa1} from 'react-icons/fa6';
 import HomeSection3 from './components/HomeSection3';
 import HomeSection1 from './components/HomeSection1';
 import HomeSection2 from './components/HomeSection2';
@@ -44,7 +40,7 @@ export default function Home() {
 
       <section className="w-full min-h-[600px]    bg-blue-50">
         <HomeSection8 />
-        <Footer />
+        <Footer></Footer>
       </section>
     </div>
   );

@@ -1,14 +1,6 @@
 import React from 'react';
 import {BsTwitter} from 'react-icons/bs';
-import {
-  Fa1,
-  Fa2,
-  Fa3,
-  Fa4,
-  FaDribbble,
-  FaFacebook,
-  FaGithub,
-} from 'react-icons/fa6';
+import {FaDribbble, FaFacebook, FaGithub} from 'react-icons/fa6';
 
 export default function Footer() {
   return (
