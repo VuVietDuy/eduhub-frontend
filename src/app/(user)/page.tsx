@@ -38,7 +38,7 @@ export default function Home() {
         <HomeSection7 />
       </section>
 
-      <section className="w-full min-h-[600px]    bg-blue-50">
+      <section className="w-full min-h-[600px] bg-blue-50">
         <HomeSection8 />
         <Footer></Footer>
       </section>
