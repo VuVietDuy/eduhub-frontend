@@ -7,6 +7,7 @@ export interface IRoute {
   icon?: ReactNode;
   role?: number;
   titlePage?: string;
+  rootRoute: string[];
 }
 
 enum roles {
@@ -22,6 +23,7 @@ const listRoutesAdmin: IRoute[] = [
     icon: <HomeOutlined />,
     role: roles.ADMIN,
     titlePage: 'Thống kê',
+    rootRoute: ['admin', 'dashboard'],
   },
   {
     path: '/admin/teacher',
@@ -29,6 +31,7 @@ const listRoutesAdmin: IRoute[] = [
     icon: <FileOutlined />,
     role: roles.ADMIN,
     titlePage: 'Giáo viên',
+    rootRoute: ['admin', 'teacher'],
   },
   {
     path: '/admin/student',
@@ -36,6 +39,7 @@ const listRoutesAdmin: IRoute[] = [
     icon: <FileOutlined />,
     role: roles.ADMIN,
     titlePage: 'Học sinh',
+    rootRoute: ['admin', 'student'],
   },
   {
     path: '/admin/class',
@@ -43,6 +47,7 @@ const listRoutesAdmin: IRoute[] = [
     icon: <FileWordOutlined />,
     role: roles.ADMIN,
     titlePage: 'Lớp học',
+    rootRoute: ['admin', 'class'],
   },
 ];
 
@@ -53,6 +58,7 @@ const listRoutesStudent: IRoute[] = [
     icon: <FileWordOutlined />,
     role: roles.STUDENT,
     titlePage: 'Thời khoá biểu',
+    rootRoute: ['calendar'],
   },
   {
     path: '/class',
@@ -60,6 +66,7 @@ const listRoutesStudent: IRoute[] = [
     icon: <FileWordOutlined />,
     role: roles.STUDENT,
     titlePage: 'Lớp học',
+    rootRoute: ['class'],
   },
 ];
 
@@ -70,6 +77,7 @@ const listRoutesTeacher: IRoute[] = [
     icon: <HomeOutlined />,
     role: roles.TEACHER,
     titlePage: 'Thống kê',
+    rootRoute: ['teacher', 'dashboard'],
   },
   {
     path: '/teacher/class',
@@ -77,6 +85,7 @@ const listRoutesTeacher: IRoute[] = [
     icon: <FileOutlined />,
     role: roles.TEACHER,
     titlePage: 'Lớp học',
+    rootRoute: ['teacher', 'class'],
   },
   {
     path: '/teacher/quiz',
@@ -84,6 +93,7 @@ const listRoutesTeacher: IRoute[] = [
     icon: <FileOutlined />,
     role: roles.TEACHER,
     titlePage: 'Đề thi',
+    rootRoute: ['teacher', 'quiz'],
   },
 ];
 

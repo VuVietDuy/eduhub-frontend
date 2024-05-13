@@ -1,12 +1,12 @@
-import HomeSection3 from './components/HomeSection3';
-import HomeSection1 from './components/HomeSection1';
-import HomeSection2 from './components/HomeSection2';
-import HomeSection4 from './components/HomeSection4';
-import HomeSection5 from './components/HomeSection5';
-import HomeSection6 from './components/HomeSection6';
-import HomeSection7 from './components/HomeSection7';
-import HomeSection8 from './components/HomeSection8';
-import Footer from './components/Footer';
+import HomeSection3 from './(user)/components/HomeSection3';
+import HomeSection1 from './(user)/components/HomeSection1';
+import HomeSection2 from './(user)/components/HomeSection2';
+import HomeSection4 from './(user)/components/HomeSection4';
+import HomeSection5 from './(user)/components/HomeSection5';
+import HomeSection6 from './(user)/components/HomeSection6';
+import HomeSection7 from './(user)/components/HomeSection7';
+import HomeSection8 from './(user)/components/HomeSection8';
+import Footer from './(user)/components/Footer';
 
 export default function Home() {
   return (

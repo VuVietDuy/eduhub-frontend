@@ -38,12 +38,11 @@ export default function Dropdown({
         <div>
           <button
             onClick={toggleDropdown}
-            className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 "
+            className="inline-flex justify-center gap-x-1.5 rounded-md text-sm font-semibold text-gray-900 "
           >
             {children}
           </button>
         </div>
-
         <div
           className={`${
             isOpen ? '' : 'hidden'

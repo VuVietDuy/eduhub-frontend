@@ -24,6 +24,17 @@ export default function MainLayout({
   const [isExtend, setIsExtend] = useState(true);
   const [isHover, setIsHover] = useState(false);
   const pathName = usePathname();
+  const routesSegs = pathName.split('/');
+
+  function check(rootRoute: string[]): boolean {
+    for (var i = 0; i < rootRoute.length; i++) {
+      console.log('item', rootRoute[i], 'path', routesSegs[i + 1]);
+      if (rootRoute[i] !== routesSegs[i + 1]) {
+        return false;
+      }
+    }
+    return true;
+  }
 
   const openSidebar = () => {
     setIsOpen(!isOpen);
@@ -32,6 +43,7 @@ export default function MainLayout({
   const extendSidebar = (a: boolean) => {
     setIsExtend(a);
   };
+  console.log(pathName);
 
   return (
     <main className="bg-gray-50 min-h-[100vh] w-full dark:bg-gray-700">
@@ -80,14 +92,14 @@ export default function MainLayout({
             <div className="flex items-center">
               <MdArrowForwardIos className="ml-2"></MdArrowForwardIos>
               <h1 className="text-xl font-semibold ml-2">
-                {listRoutes.find((route) => route.path === pathName)?.titlePage}
+                {listRoutes.find((route) => check(route.rootRoute))?.titlePage}
               </h1>
             </div>
           </div>
           <div className={'flex items-center pr-3 lg:pr-5'}>
             <div className="flex items-center">
               <ToggleThemeButton></ToggleThemeButton>
-              <button className="p-2 text-gray-500 rounded-2xl hover:text-gray-900 hover:bg-gray-100">
+              <button className="p-2 mr-2 text-gray-500 rounded-2xl hover:text-gray-900 hover:bg-gray-100">
                 <BellFilled></BellFilled>
               </button>
               <Dropdown
@@ -148,14 +160,14 @@ export default function MainLayout({
                   <Link href={item.path} onClick={openSidebar}>
                     <div
                       className={`flex items-center py-2.5 px-4 text-dark-500 rounded-lg transition-all duration-200 ${
-                        pathName === item.path && (isExtend || isHover)
+                        check(item.rootRoute) && (isExtend || isHover)
                           ? 'bg-white shadow-lg shadow-gray-200 dark:text-white dark:bg-gray-700 dark:shadow-gray-900'
                           : 'hover:bg-gray-200 dark:text-white dark:hover:bg-gray-900 dark:hover:shadow-gray-900'
                       }`}
                     >
                       <div
                         className={`flex items-center justify-center shadow-md shadow-gray-300 text-dark-700 w-8 h-8 p-2.5 mr-1 rounded-lg ${
-                          pathName === item.path
+                          check(item.rootRoute)
                             ? 'bg-gradient-to-br from-primary-500 to-blue-500 dark:to-blue-700 text-white dark:text-white dark:bg-gray-700 dark:shadow-gray-900'
                             : 'dark:bg-gray-600 dark:shadow-gray-900 dark:text-white'
                         }`}

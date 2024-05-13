@@ -33,7 +33,7 @@ export default function Header() {
                 alt="Creative Tim Logo"
               />
               <span className="hidden md:inline-block self-center text-xl font-bold whitespace-nowrap">
-                Soft UI Flowbite PRO
+                Eduhub
               </span>
             </a>
           </div>
