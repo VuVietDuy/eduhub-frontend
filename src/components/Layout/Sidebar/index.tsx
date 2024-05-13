@@ -1,6 +1,6 @@
-"use client";
-import React, { useState } from "react";
-import { listRoutes } from "@/routes/listRoutes";
+'use client';
+import React, {useState} from 'react';
+import {listRoutesAdmin} from '@/routes/listRoutes';
 
 export default function Sidebar() {
   const [activeTab, setActiveTab] = useState(true);
@@ -11,7 +11,7 @@ export default function Sidebar() {
         <div className="flex overflow-y-auto flex-col flex-1 pt-8 pb-4">
           <div className="flex-1 bg-gray-50 px-3">
             <ul className="pb-2 pt-1">
-              {listRoutes.map((item, index) => (
+              {listRoutesAdmin.map((item, index) => (
                 <li key={index}>
                   <a href={item.path} className="menu-item">
                     <div className="menu-item-icon">{item.icon}</div>
