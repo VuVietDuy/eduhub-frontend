@@ -12,7 +12,7 @@ export default function Avatar(props: IProps) {
   return (
     <div className={`${className} inline-block relative`}>
       <img
-        className={`w-[90px] h-[90px] bg-gray-400 rounded-full`}
+        className={`w-[40px] h-[40px] bg-gray-400 rounded-full`}
         src={src || '/img/default-avatar.jpg'}
         alt=""
       />

@@ -10,12 +10,6 @@ export default function Login() {
   return (
     <div className="w-full flex flex-wrap">
       <div className="w-full md:w-1/2 flex flex-col">
-        <div className="flex justify-center md:justify-start pt-12 md:pl-12 md:-mb-24">
-          <a href="#" className="w-32">
-            <img src="/logo.png" alt="" />
-          </a>
-        </div>
-
         <div className="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
           <p className="text-center text-3xl">Welcome.</p>
           <form

@@ -38,7 +38,7 @@ export default function Table(props: IProps) {
           {dataSource.map((dataItem, index) => (
             <tr
               key={index}
-              className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+              className="bg-white border-b hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-600 dark:border-gray-700"
             >
               {columns.map((column) => (
                 <td key={column.key} className="px-6 py-4">

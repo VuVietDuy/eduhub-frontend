@@ -1,11 +1,11 @@
-import Header from '@/components/Header';
+import MainLayout from '@/components/Layout/MainLayout';
+import {listRoutesAdmin} from '@/routes/listRoutes';
 import React from 'react';
 
 export default function AdminLayout({children}: {children: React.ReactNode}) {
   return (
-    <div>
-      <Header></Header>
-      <div className="max-w-screen-xl m-auto">{children}</div>
-    </div>
+    <MainLayout listRoutes={listRoutesAdmin}>
+      <div className="m-auto">{children}</div>
+    </MainLayout>
   );
 }
