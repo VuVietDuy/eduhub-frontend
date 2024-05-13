@@ -41,7 +41,11 @@ export default function Table(props: IProps) {
               className="bg-white border-b hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-600 dark:border-gray-700"
             >
               {columns.map((column) => (
-                <td key={column.key} className="px-6 py-4">
+                <td
+                  key={column.key}
+                  className="px-6 py-4"
+                  style={{width: column.width}}
+                >
                   {column.render
                     ? column.render(dataItem)
                     : dataItem[column.dataIndex]}
