@@ -22,7 +22,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
   ];
   return (
     <div>
-      <div className="border-b border-gray-200 dark:border-gray-700">
+      <div className="border-b border-gray-200 dark:border-gray-700 fixed top-[65px]">
         <ul className="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
           {listRoute.map((item, index) => (
             <li className="me-2">
@@ -40,7 +40,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
           ))}
         </ul>
       </div>
-      <div>{children}</div>
+      <div className="mt-[79px] content">{children}</div>
     </div>
   );
 }
