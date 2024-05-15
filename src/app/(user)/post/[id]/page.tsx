@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import Link from 'next/link';
 import React from 'react';
 import './detail.scss';
@@ -52,4 +53,11 @@ export default function DetailPost() {
       </div>
     </div>
   );
+=======
+'use client';
+import React from 'react';
+
+export default function DetailPost() {
+  return <div>DetailPost</div>;
+>>>>>>> 8ff3158edf7bb428de4517a87934800ac7020824
 }

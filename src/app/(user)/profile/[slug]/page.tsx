@@ -16,9 +16,9 @@ import PostListItem from '../components/PostListItem';
 
 export default function Profile() {
   return (
-    <div className="max-w-screen-xl mx-auto">
+    <div className="">
       <div className="relative w-full">
-        <div className="absolute w-full h-72 md:h-60 bg-slate-600 top-0 z-[-1]"></div>
+        <div className="absolute w-full h-72 md:h-60 bg-slate-600 top-0"></div>
         <div className="p-4 sm:p-6">
           <div className="w-full flex flex-col justify-center items-center sm:flex-row sm:justify-between mb-6">
             <div className="flex flex-col justify-center sm:flex-row sm:items-center">
