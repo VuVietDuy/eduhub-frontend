@@ -8,7 +8,7 @@ import React, {useState} from 'react';
 
 interface IProps {
   title?: string;
-  isModalOpen?: boolean | undefined;
+  isModalOpen: boolean | undefined;
   handleSetIsModalOpen?: () => void;
   handleSaveInfo?: () => void;
   handleCancel?: () => void;
@@ -141,6 +141,7 @@ export default function TeacherModal(props: IProps) {
         open={isModalOpen}
         onOk={handleSaveInfo}
         onCancel={handleSetIsModalOpen}
+        className="md:w-[80%] sm:w-[100%] sm:relative sm:p-0"
       >
         <div>
           <h2 className="mb-3 text-xl font-semibold text-center">
