@@ -7,18 +7,26 @@ import SearchInput from '@/components/SearchInput';
 import Table from '@/components/Table';
 import {UploadOutlined} from '@ant-design/icons';
 import Image from 'next/image';
+import {useRouter} from 'next/navigation';
 import React, {useState} from 'react';
 import {MdOutlineMoreVert, MdAdd} from 'react-icons/md';
 
 export default function Class() {
   const [dataInit, setDataInit] = useState<[]>([]);
+  const router = useRouter();
 
   const itemsDropdown: MenuProps['items'] = [
     {
       key: 'viewMore',
       label: (
         <>
-          <button>Xem thêm</button>
+          <button
+            onClick={() => {
+              router.push('class/1/info');
+            }}
+          >
+            Xem thêm
+          </button>
         </>
       ),
     },

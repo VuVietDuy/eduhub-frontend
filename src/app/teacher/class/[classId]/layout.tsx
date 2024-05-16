@@ -3,7 +3,7 @@ import React from 'react';
 export default function Layout({children}: {children: React.ReactNode}) {
   return (
     <div className="m-auto">
-      <div className="border-b border-gray-200 dark:border-gray-700 fixed">
+      <div className="border-b border-gray-200 dark:border-gray-700">
         <ul className="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
           <li className="me-2">
             <a
