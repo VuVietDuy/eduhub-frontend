@@ -1,20 +1,43 @@
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 interface IProps {
   children?: React.ReactNode;
   title?: string;
   open: boolean | undefined;
   onOk?: () => void;
-  onCancel?: () => void;
+  onCancel: () => void;
   width?: string | '';
   className?: string;
 }
 
 export default function Modal(props: IProps) {
   const {children, title, open, onOk, onCancel, width, className} = props;
+  const modalRef = useRef<HTMLDivElement>(null);
+  const modalBoxRef = useRef<HTMLDivElement>(null);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      modalBoxRef.current &&
+      !modalBoxRef.current.contains(event.target as Node)
+    ) {
+      onCancel();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
   return (
-    <div className=" bg-darkOverlay overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 bottom-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%)] max-h-full">
+    <div
+      ref={modalRef}
+      className=" bg-darkOverlay overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 bottom-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%)] max-h-full"
+    >
       <div
+        ref={modalBoxRef}
         className={`${className} absolute left-[50%] translate-x-[-50%] top-[50%] translate-y-[-50%]  p-4   max-h-full ${
           width !== '' ? `${width} ` : 'w-full max-w-2xl'
         }`}

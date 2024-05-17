@@ -9,8 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@reduxjs/toolkit": "^2.2.4",
     "@ant-design/icons": "^5.3.7",
+    "@reduxjs/toolkit": "^2.2.4",
     "axios": "^1.6.7",
     "chart.js": "^4.4.2",
     "formik": "^2.4.5",
