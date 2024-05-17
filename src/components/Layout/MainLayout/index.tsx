@@ -28,6 +28,7 @@ export default function MainLayout({
 
   function check(rootRoute: string[]): boolean {
     for (var i = 0; i < rootRoute.length; i++) {
+      // console.log('item', rootRoute[i], 'path', routesSegs[i + 1]);
       if (rootRoute[i] !== routesSegs[i + 1]) {
         return false;
       }

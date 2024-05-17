@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export default function Layout({children}: {children: React.ReactNode}) {
   const pathName = usePathname();
-  const path = pathName.split('/')[4];
+  const path = pathName.split('/')[3];
   const listRoute = [
     {
       path: 'info',

@@ -1,10 +1,11 @@
 import React from 'react';
 
 interface DataItem {
-  [key: string]: string | number;
+  [key: string]: string | number | string[];
 }
 
 interface IProps {
+  className?: string;
   dataSource: DataItem[];
   columns: {
     title: string;
@@ -16,10 +17,12 @@ interface IProps {
 }
 
 export default function Table(props: IProps) {
-  const {dataSource, columns} = props;
+  const {dataSource, columns, className} = props;
   return (
     <div className="relative overflow-x-auto">
-      <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <table
+        className={` ${className} w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400`}
+      >
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             {columns.map((column, index) => (
@@ -42,9 +45,9 @@ export default function Table(props: IProps) {
             >
               {columns.map((column) => (
                 <td
+                  onClick={(e) => console.log(e.target)}
                   key={column.key}
                   className="px-6 py-4"
-                  style={{width: column.width}}
                 >
                   {column.render
                     ? column.render(dataItem)

@@ -62,6 +62,14 @@ const listRoutesAdmin: IRoute[] = [
     titlePage: 'Lớp học',
     rootRoute: ['admin', 'class'],
   },
+  {
+    path: '/admin/subjects',
+    label: 'Môn học',
+    icon: <CopyrightOutlined />,
+    role: roles.ADMIN,
+    titlePage: 'Môn học',
+    rootRoute: ['admin', 'subjects'],
+  },
 ];
 
 const listRoutesStudent: IRoute[] = [
@@ -80,6 +88,14 @@ const listRoutesStudent: IRoute[] = [
     role: roles.STUDENT,
     titlePage: 'Lớp học',
     rootRoute: ['class'],
+  },
+  {
+    path: '/transcript',
+    label: 'Bảng điểm',
+    icon: <FileWordOutlined />,
+    role: roles.STUDENT,
+    titlePage: 'Bảng điểm',
+    rootRoute: ['transcript'],
   },
 ];
 

@@ -7,6 +7,48 @@ import React, {useEffect, useState} from 'react';
 
 export default function SubjectManagement() {
   const [dataInit, setDataInit] = useState<[]>([]);
+  const data = [
+    {
+      _id: '1',
+      name: 'Toán',
+      description: '',
+    },
+    {
+      _id: '1',
+      name: 'Toán',
+      description: '',
+    },
+    {
+      _id: '1',
+      name: 'Toán',
+      description: '',
+    },
+    {
+      _id: '1',
+      name: 'Toán',
+      description: '',
+    },
+    {
+      _id: '1',
+      name: 'Toán',
+      description: '',
+    },
+    {
+      _id: '1',
+      name: 'Toán',
+      description: '',
+    },
+    {
+      _id: '1',
+      name: 'Toán',
+      description: '',
+    },
+    {
+      _id: '1',
+      name: 'Toán',
+      description: '',
+    },
+  ];
   const deleteSubject = (subjectId: string) => {
     fetcher
       .delete(`api/subjects/${subjectId}`)
@@ -66,12 +108,10 @@ export default function SubjectManagement() {
     },
   ];
   return (
-    <Card>
-      {dataInit ? (
-        <Table dataSource={dataInit} columns={columns}></Table>
-      ) : (
-        <></>
-      )}
-    </Card>
+    <div className="p-6">
+      <Card>
+        {dataInit ? <Table dataSource={data} columns={columns}></Table> : <></>}
+      </Card>
+    </div>
   );
 }

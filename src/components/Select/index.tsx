@@ -1,18 +1,34 @@
-import React from 'react';
+'use client';
+import React, {useState} from 'react';
+import {MenuProps} from '../MenuProps';
 
-export default function Select() {
+export default function Select({
+  placeholder,
+  menuItems,
+}: {
+  placeholder: string;
+  menuItems: MenuProps['items'];
+}) {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
-    <select
-      id="countries"
-      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-    >
-      <option selected>Choose a country</option>
-      <option className="inline-block py-2 h-7" value="US">
-        United States
-      </option>
-      <option value="CA">Canada</option>
-      <option value="FR">France</option>
-      <option value="DE">Germany</option>
-    </select>
+    <div className="relative">
+      <div
+        className="px-3 py-3 border rounded-md"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        {placeholder}
+      </div>
+      <div
+        className={`${
+          isOpen ? '' : 'hidden'
+        } absolute top-[42px] left-0 right-0 p-1 bg-white border rounded shadow-lg z-50`}
+      >
+        {menuItems.map((item, index) => (
+          <div className="hover:bg-gray-200 px-4 py-3 rounded" key={item.key}>
+            {item.label}
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
