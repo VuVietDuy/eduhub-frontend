@@ -1,69 +1,92 @@
 'use client';
-import Button from '@/components/Button';
+import fetcher from '@/api/fetcher';
+import {loginUser} from '@/redux/slice/user.slice';
+import {RootState, store} from '@/redux/store';
+import {Formik} from 'formik';
+import {useRouter} from 'next/navigation';
 import React from 'react';
-import {FcGoogle} from 'react-icons/fc';
+import {useDispatch, useSelector} from 'react-redux';
 
 export default function Login() {
-  const handleOnSubmit = () => {};
+  const dispatch = useDispatch();
+  const initialValues = {
+    username: '',
+    password: '',
+  };
+  const router = useRouter();
+  const handleOnSubmit = (e: any) => {
+    fetcher
+      .post('/api/auth/login', {username: e.username, password: e.password})
+      .then((res) => {
+        dispatch(loginUser(res?.data.user));
+        router.push('/class');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-  const loginWithGoogle = () => {};
   return (
-    <div className="w-full flex flex-wrap">
-      <div className="w-full md:w-1/2 flex flex-col">
-        <div className="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
-          <p className="text-center text-3xl">Welcome.</p>
-          <form
-            className="flex flex-col pt-3 md:pt-8"
-            onSubmit={handleOnSubmit}
-          >
-            <div className="flex flex-col pt-4">
-              <label className="text-lg">Email</label>
-              <input
-                type="email"
-                id="email"
-                placeholder="your@email.com"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
-              />
-            </div>
-
-            <div className="flex flex-col pt-4">
-              <label className="text-lg">Password</label>
-              <input
-                type="password"
-                id="password"
-                placeholder="Password"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
-              />
-            </div>
-
-            <Button type="primary" className="mt-8">
-              Log In
-            </Button>
-          </form>
-          <div className="text-center pt-12 pb-12">
-            <p>
-              Don't have an account?{' '}
-              <a href="register.html" className="underline font-semibold">
-                Register here.
-              </a>
+    <div className="h-screen flex justify-center items-center">
+      <div className="relative m-auto w-full max-w-md bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:rounded-xl sm:px-10">
+        <div className="w-full">
+          <div className="text-center">
+            <h1 className="text-3xl font-semibold text-gray-900">Đăng nhập</h1>
+            <p className="mt-2 text-gray-500">
+              Đăng nhập để truy cập vào tài khoản của bạn
             </p>
           </div>
-          <div className="flex justify-center items-center gap-5">
-            <button
-              onClick={loginWithGoogle}
-              className="flex items-center justify-center gap-3 px-4 py-2 rounded-md bg-cardOverlay cursor-pointer hover:shadow-md duration-100 ease-in-out transition-all border"
-            >
-              <FcGoogle className="text-xl" /> Sign up with Google
-            </button>
+          <div className="mt-5">
+            <Formik initialValues={initialValues} onSubmit={handleOnSubmit}>
+              {({values, handleChange, handleSubmit}) => (
+                <form onSubmit={handleSubmit}>
+                  <div className="relative mt-6">
+                    <input
+                      type="text"
+                      value={values.username}
+                      onChange={handleChange}
+                      name="username"
+                      id="username"
+                      placeholder="Tên người dùng"
+                      className="peer mt-1 w-full border-b-2 border-gray-300 px-0 py-1 placeholder:text-transparent focus:border-gray-500 focus:outline-none"
+                    />
+                    <label
+                      htmlFor="username"
+                      className="pointer-events-none absolute top-0 left-0 origin-left -translate-y-1/2 transform text-sm text-gray-800 opacity-75 transition-all duration-100 ease-in-out peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-focus:top-0 peer-focus:pl-0 peer-focus:text-sm peer-focus:text-gray-800"
+                    >
+                      Tên người dùng
+                    </label>
+                  </div>
+                  <div className="relative mt-6">
+                    <input
+                      type="password"
+                      name="password"
+                      id="password"
+                      value={values.password}
+                      onChange={handleChange}
+                      placeholder="Mật khẩu"
+                      className="peer peer mt-1 w-full border-b-2 border-gray-300 px-0 py-1 placeholder:text-transparent focus:border-gray-500 focus:outline-none"
+                    />
+                    <label
+                      htmlFor="password"
+                      className="pointer-events-none absolute top-0 left-0 origin-left -translate-y-1/2 transform text-sm text-gray-800 opacity-75 transition-all duration-100 ease-in-out peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-focus:top-0 peer-focus:pl-0 peer-focus:text-sm peer-focus:text-gray-800"
+                    >
+                      Mật khẩu
+                    </label>
+                  </div>
+                  <div className="my-6">
+                    <button
+                      type="submit"
+                      className="w-full rounded-md bg-blue-700 px-3 py-3 text-white focus:bg-blue-600 focus:outline-none"
+                    >
+                      Đăng nhập
+                    </button>
+                  </div>
+                </form>
+              )}
+            </Formik>
           </div>
         </div>
-      </div>
-
-      <div className="w-1/2 shadow-2xl">
-        <img
-          className="object-cover w-full h-screen hidden md:block"
-          src="https://source.unsplash.com/IXUM4cJynP0"
-        />
       </div>
     </div>
   );
