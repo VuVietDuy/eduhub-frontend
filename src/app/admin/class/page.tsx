@@ -6,7 +6,6 @@ import {MenuProps} from '@/components/MenuProps';
 import SearchInput from '@/components/SearchInput';
 import Table from '@/components/Table';
 import {UploadOutlined} from '@ant-design/icons';
-import Image from 'next/image';
 import {useRouter} from 'next/navigation';
 import React, {useState} from 'react';
 import {MdOutlineMoreVert, MdAdd} from 'react-icons/md';
@@ -22,7 +21,7 @@ export default function Class() {
         <>
           <button
             onClick={() => {
-              router.push('class/1/info');
+              router.push('/admin/class/1/info');
             }}
           >
             Xem thêm
