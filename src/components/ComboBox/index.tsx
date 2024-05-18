@@ -16,7 +16,7 @@ export default function ComboBox({
   label?: string;
   className?: string;
   width?: string;
-  selectedOption?: string;
+  selectedOption: string;
 }) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const comboBoxRef = useRef<HTMLDivElement>(null);
@@ -58,11 +58,6 @@ export default function ComboBox({
             {selectedOption}
             <FaAngleDown />
           </div>
-          {/* <button
-            className="inline-flex justify-center gap-x-1.5 rounded-md text-sm font-semibold text-gray-900 "
-          >
-            {children}
-          </button> */}
         </div>
         <div
           className={`${

@@ -7,11 +7,13 @@ interface IProps {
   onOk?: () => void;
   onCancel: () => void;
   width?: string | '';
+  height?: string | '';
   className?: string;
 }
 
 export default function Modal(props: IProps) {
-  const {children, title, open, onOk, onCancel, width, className} = props;
+  const {children, title, open, onOk, onCancel, width, height, className} =
+    props;
   const modalRef = useRef<HTMLDivElement>(null);
   const modalBoxRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -38,9 +40,9 @@ export default function Modal(props: IProps) {
     >
       <div
         ref={modalBoxRef}
-        className={`${className} absolute left-[50%] translate-x-[-50%] top-[50%] translate-y-[-50%]  p-4   max-h-full ${
+        className={`${className} absolute left-[50%] translate-x-[-50%]  top-[50%] translate-y-[-50%]  p-4   max-h-full ${
           width !== '' ? `${width} ` : 'w-full max-w-2xl'
-        }`}
+        } ${height !== '' ? `${height} ` : ''}`}
       >
         <div className="relative bg-white rounded-sm shadow dark:bg-gray-700">
           <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
@@ -56,7 +58,11 @@ export default function Modal(props: IProps) {
               </span>
             </button>
           </div>
-          <div className="p-4 md:p-5 space-y-4">{children}</div>
+          <div
+            className={`p-4 md:p-5 space-y-4 max-h-[90vh] h-[500px] overflow-y-scroll`}
+          >
+            {children}
+          </div>
           <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
             <button
               onClick={onCancel}
