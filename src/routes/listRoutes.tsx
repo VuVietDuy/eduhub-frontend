@@ -1,4 +1,13 @@
-import {FileOutlined, FileWordOutlined, HomeOutlined} from '@ant-design/icons';
+import {
+  CalendarOutlined,
+  ContactsOutlined,
+  CopyrightOutlined,
+  FileOutlined,
+  FileWordOutlined,
+  HomeOutlined,
+  LineChartOutlined,
+  TeamOutlined,
+} from '@ant-design/icons';
 import {ReactNode} from 'react';
 
 export interface IRoute {
@@ -8,6 +17,10 @@ export interface IRoute {
   role?: number;
   titlePage?: string;
   rootRoute: string[];
+  menuChilds?: {
+    path: string;
+    label: ReactNode;
+  };
 }
 
 enum roles {
@@ -20,7 +33,7 @@ const listRoutesAdmin: IRoute[] = [
   {
     path: '/admin/dashboard',
     label: 'Thống kê',
-    icon: <HomeOutlined />,
+    icon: <LineChartOutlined />,
     role: roles.ADMIN,
     titlePage: 'Thống kê',
     rootRoute: ['admin', 'dashboard'],
@@ -28,7 +41,7 @@ const listRoutesAdmin: IRoute[] = [
   {
     path: '/admin/teacher',
     label: 'Giáo viên',
-    icon: <FileOutlined />,
+    icon: <TeamOutlined />,
     role: roles.ADMIN,
     titlePage: 'Giáo viên',
     rootRoute: ['admin', 'teacher'],
@@ -36,7 +49,7 @@ const listRoutesAdmin: IRoute[] = [
   {
     path: '/admin/student',
     label: 'Học sinh',
-    icon: <FileOutlined />,
+    icon: <ContactsOutlined />,
     role: roles.ADMIN,
     titlePage: 'Học sinh',
     rootRoute: ['admin', 'student'],
@@ -44,10 +57,18 @@ const listRoutesAdmin: IRoute[] = [
   {
     path: '/admin/class',
     label: 'Lớp học',
-    icon: <FileWordOutlined />,
+    icon: <CopyrightOutlined />,
     role: roles.ADMIN,
     titlePage: 'Lớp học',
     rootRoute: ['admin', 'class'],
+  },
+  {
+    path: '/admin/subjects',
+    label: 'Môn học',
+    icon: <CopyrightOutlined />,
+    role: roles.ADMIN,
+    titlePage: 'Môn học',
+    rootRoute: ['admin', 'subjects'],
   },
 ];
 
@@ -55,7 +76,7 @@ const listRoutesStudent: IRoute[] = [
   {
     path: '/calendar',
     label: 'Thời khoá biểu',
-    icon: <FileWordOutlined />,
+    icon: <CalendarOutlined />,
     role: roles.STUDENT,
     titlePage: 'Thời khoá biểu',
     rootRoute: ['calendar'],
@@ -67,6 +88,14 @@ const listRoutesStudent: IRoute[] = [
     role: roles.STUDENT,
     titlePage: 'Lớp học',
     rootRoute: ['class'],
+  },
+  {
+    path: '/transcript',
+    label: 'Bảng điểm',
+    icon: <FileWordOutlined />,
+    role: roles.STUDENT,
+    titlePage: 'Bảng điểm',
+    rootRoute: ['transcript'],
   },
 ];
 
@@ -80,9 +109,17 @@ const listRoutesTeacher: IRoute[] = [
     rootRoute: ['teacher', 'dashboard'],
   },
   {
+    path: '/teacher/calendar',
+    label: 'Lịch dạy',
+    icon: <CalendarOutlined />,
+    role: roles.TEACHER,
+    titlePage: 'Lịch dạy',
+    rootRoute: ['teacher', 'calendar'],
+  },
+  {
     path: '/teacher/class',
     label: 'Lớp học',
-    icon: <FileOutlined />,
+    icon: <CopyrightOutlined />,
     role: roles.TEACHER,
     titlePage: 'Lớp học',
     rootRoute: ['teacher', 'class'],

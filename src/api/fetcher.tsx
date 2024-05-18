@@ -19,7 +19,4 @@ fetcher.interceptors.response.use(
   },
 );
 
-// fetcher.defaults.headers.common['Authorization'] =
-//   'Bear ' + window.localStorage.getItem('accessToken');
-
 export default fetcher;

@@ -1,0 +1,79 @@
+.add {
+  display: flex;
+  gap: 20px;
+  width: 64rem;
+  margin: auto;
+  .content {
+    flex: 5;
+    display: flex;
+    flex-direction: column;
+    input {
+      padding: 10px;
+      border: 1px solid lightgray;
+      margin-bottom: 20px;
+    }
+    .editorContainer {
+      height: 300px;
+      overflow: scroll;
+      border: 1px solid lightgray;
+      .editor {
+        height: 100%;
+        border: none;
+      }
+    }
+  }
+  .menu {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    .item {
+      border: 1px solid lightgray;
+      padding: 10px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      h1 {
+        font-size: 20px;
+      }
+      label {
+        text-decoration: underline;
+      }
+      .buttons {
+        display: flex;
+        justify-content: space-between;
+        :first-child {
+          cursor: pointer;
+          color: teal;
+          background-color: white;
+          border: 1px solid teal;
+          padding: 3px 5px;
+          border-radius: 4px;
+        }
+        :last-child {
+          cursor: pointer;
+          color: white;
+          background-color: teal;
+          border: 1px solid white;
+          padding: 3px 5px;
+          border-radius: 4px;
+        }
+      }
+    }
+    .item1 {
+      padding: 10px;
+      border: 1px solid lightgray;
+      .file {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+      .cat {
+        display: flex;
+        align-items: center;
+        color: teal;
+        gap: 4px;
+      }
+    }
+  }
+}

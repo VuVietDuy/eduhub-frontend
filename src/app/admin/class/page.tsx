@@ -6,19 +6,26 @@ import {MenuProps} from '@/components/MenuProps';
 import SearchInput from '@/components/SearchInput';
 import Table from '@/components/Table';
 import {UploadOutlined} from '@ant-design/icons';
-import Image from 'next/image';
+import {useRouter} from 'next/navigation';
 import React, {useState} from 'react';
 import {MdOutlineMoreVert, MdAdd} from 'react-icons/md';
 
 export default function Class() {
   const [dataInit, setDataInit] = useState<[]>([]);
+  const router = useRouter();
 
   const itemsDropdown: MenuProps['items'] = [
     {
       key: 'viewMore',
       label: (
         <>
-          <button>Xem thêm</button>
+          <button
+            onClick={() => {
+              router.push('/admin/class/1/info');
+            }}
+          >
+            Xem thêm
+          </button>
         </>
       ),
     },
@@ -42,34 +49,24 @@ export default function Class() {
 
   const columns = [
     {
-      title: 'Mã giáo viên',
-      dataIndex: 'teacherID',
-      key: 'teacherID',
-      // width: '10px',
+      title: 'Mã lớp',
+      dataIndex: 'classID',
+      key: 'classID',
     },
     {
-      title: 'Thẻ',
-      dataIndex: 'teacherCard',
-      key: 'teacherCard',
-      render: (data: any) => (
-        <Image src={data.teacherCard} width={50} height={50} alt=""></Image>
-      ),
+      title: 'Lớp',
+      dataIndex: 'class',
+      key: 'class',
     },
     {
-      title: 'Họ',
-      dataIndex: 'lastName',
-      key: 'lastName',
+      title: 'Khoá',
+      dataIndex: 'course',
+      key: 'course',
     },
     {
-      title: 'Ngày sinh',
-      dataIndex: 'dateOfBirth',
-      key: 'firstName',
-    },
-    {
-      title: 'Giới tính',
-      dataIndex: 'gender',
-      key: 'gender',
-      render: (data: any) => <span>{data ? 'Nam' : 'Nữ'}</span>,
+      title: 'Giáo viên chủ nhiệm',
+      dataIndex: 'formTeacher',
+      key: 'formTeacher',
     },
     {
       title: 'Thao tác',
@@ -86,28 +83,34 @@ export default function Class() {
   ];
   const data = [
     {
-      teacherID: 'B21DCPT089',
-      teacherCard: '/img/teacherCard.jpg',
-      firstName: 'Duy',
-      lastName: 'Vũ Viết Duy',
-      dateOfBirth: '10/10/2003',
-      gender: 1,
+      classID: 'B21DCPT089',
+      class: 'A1',
+      course: 'K55',
+      formTeacher: 'Vũ Viết Duy',
     },
     {
-      teacherID: 'B21DCPT089',
-      teacherCard: '/img/teacherCard.jpg',
-      firstName: 'Duy',
-      lastName: 'Vũ Viết Duy',
-      dateOfBirth: '10/10/2003',
-      gender: 1,
+      classID: 'B21DCPT089',
+      class: 'A1',
+      course: 'K55',
+      formTeacher: 'Vũ Viết Duy',
     },
     {
-      teacherID: 'B21DCPT089',
-      teacherCard: '/img/teacherCard.jpg',
-      firstName: 'Duy',
-      lastName: 'Vũ Viết Duy',
-      dateOfBirth: '10/10/2003',
-      gender: 1,
+      classID: 'B21DCPT089',
+      class: 'A1',
+      course: 'K55',
+      formTeacher: 'Vũ Viết Duy',
+    },
+    {
+      classID: 'B21DCPT089',
+      class: 'A1',
+      course: 'K55',
+      formTeacher: 'Vũ Viết Duy',
+    },
+    {
+      classID: 'B21DCPT089',
+      class: 'A1',
+      course: 'K55',
+      formTeacher: 'Vũ Viết Duy',
     },
   ];
   return (

@@ -23,10 +23,14 @@
   },
   "include": [
     "next-env.d.ts",
+
     "**/*.ts",
+
     "**/*.tsx",
+
     ".next/types/**/*.ts",
     "src/app/(user)/profile/[slug]",
+    "src/app/(user)/post/[id]",
     "src/app/(user)/post/[id]"
   ],
   "exclude": ["node_modules"]
