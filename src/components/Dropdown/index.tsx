@@ -50,7 +50,7 @@ export default function Dropdown({
         >
           {menu.map((item) => (
             <div
-              className=" px-4 py-2 rounded hover:bg-gray-200"
+              className=" px-4 py-2 rounded hover:bg-gray-200 cursor-pointer"
               key={item.key}
             >
               {item.label}

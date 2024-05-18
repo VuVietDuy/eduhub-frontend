@@ -5,7 +5,7 @@ import React from 'react';
 const Post = () => {
   return (
     <div className="m-6">
-      <div className="bg-white shadow-lg shadow-gray-200 rounded-2xl p-4 dark:text-white dark:bg-gray-800 dark:shadow-gray-900 grid grid-cols-3 gap-4">
+      <div className=" md:grid md:grid-cols-3 md:gap-4 grid gap-3">
         <div className="flex items-center bg-white shadow-lg shadow-gray-200 rounded-2xl p-4 dark:text-white dark:bg-gray-800 dark:shadow-gray-900">
           <div className="inline-flex flex-shrink-0 justify-center items-center w-12 h-12 text-white bg-gradient-to-br from-primary-500 to-blue-500 rounded-lg shadow-md shadow-gray-300 dark:shadow-gray-900">
             <ProjectOutlined />

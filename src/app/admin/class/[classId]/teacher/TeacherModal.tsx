@@ -9,7 +9,7 @@ import React, {useState} from 'react';
 interface IProps {
   title?: string;
   isModalOpen: boolean | undefined;
-  handleSetIsModalOpen?: () => void;
+  handleSetIsModalOpen: () => void;
   handleSaveInfo?: () => void;
   handleCancel?: () => void;
   selectedTeacher?: object;
@@ -129,19 +129,15 @@ export default function TeacherModal(props: IProps) {
       },
     },
   ];
-  {
-    console.log('check selected', selectedTeacher);
-  }
 
   return (
     <div>
       <Modal
-        width="w-[75%]"
         title={title}
         open={isModalOpen}
         onOk={handleSaveInfo}
         onCancel={handleSetIsModalOpen}
-        className="md:w-[80%] sm:w-[100%] sm:relative sm:p-0"
+        className="md:w-[80%] sm:w-[100%] w-full p-0"
       >
         <div>
           <h2 className="mb-3 text-xl font-semibold text-center">
