@@ -18,8 +18,15 @@ export default function Login() {
     fetcher
       .post('/api/auth/login', {username: e.username, password: e.password})
       .then((res) => {
-        dispatch(loginUser(res?.data.user));
-        router.push('/class');
+        console.log(res.data.user);
+        const a = res?.data.user;
+        const b = {
+          firstName: a.firstName,
+          lastName: a.lastName,
+          dateOfBirth: a.dateOfBirth,
+        };
+        dispatch(loginUser(b));
+        // router.push('/class');
       })
       .catch((err) => {
         console.log(err);
