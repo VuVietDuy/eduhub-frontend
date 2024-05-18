@@ -3,6 +3,7 @@ import storage from "redux-persist/lib/storage";
 import { persistReducer } from "redux-persist";
 import { combineReducers } from "@reduxjs/toolkit";
 import UserReducer from "./slice/user.slice";
+import TokenReducer from "./slice/token.slice";
 
 const persistConfig = {
   key: "root",
@@ -12,6 +13,7 @@ const persistConfig = {
 
 const reducer = combineReducers({
   user: UserReducer,
+  token: TokenReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);

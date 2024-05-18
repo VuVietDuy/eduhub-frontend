@@ -1,3 +1,4 @@
+import {CloseOutlined} from '@ant-design/icons';
 import React, {useEffect, useRef, useState} from 'react';
 
 interface IProps {
@@ -7,11 +8,13 @@ interface IProps {
   onOk?: () => void;
   onCancel: () => void;
   width?: string | '';
+  height?: string | '';
   className?: string;
 }
 
 export default function Modal(props: IProps) {
-  const {children, title, open, onOk, onCancel, width, className} = props;
+  const {children, title, open, onOk, onCancel, width, height, className} =
+    props;
   const modalRef = useRef<HTMLDivElement>(null);
   const modalBoxRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -38,7 +41,7 @@ export default function Modal(props: IProps) {
           <div
             className={`${className} absolute left-[50%] translate-x-[-50%] top-[50%] translate-y-[-50%] p-4 max-h-full ${
               width !== '' ? `${width} ` : 'w-full h-full'
-            }`}
+            } ${height !== '' ? `${height} ` : ''}`}
           >
             <div className="relative bg-white rounded-sm shadow dark:bg-gray-700">
               <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
@@ -46,9 +49,11 @@ export default function Modal(props: IProps) {
                   {title}
                 </h3>
                 <button
+                  onClick={onCancel}
                   type="button"
                   className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                 >
+                  <CloseOutlined />
                   <span className="sr-only text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
                     Close modal
                   </span>

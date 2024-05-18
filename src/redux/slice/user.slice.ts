@@ -5,14 +5,14 @@ const initialState: User = {
   firstName: "",
   lastName: "",
   dateOfBirth: "",
+  avatar: "",
 };
 
-const UserSlice = createSlice({
+const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    loginUser: (action: PayloadAction<User>) => {
-      console.log("actioc payload >>> ", action.payload);
+    loginUser: (_, action: PayloadAction<User>) => {
       return action.payload;
     },
     logoutUser: () => {
@@ -22,6 +22,6 @@ const UserSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { loginUser, logoutUser } = UserSlice.actions;
+export const { loginUser, logoutUser } = userSlice.actions;
 
-export default UserSlice.reducer;
+export default userSlice.reducer;
