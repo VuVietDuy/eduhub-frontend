@@ -43,7 +43,7 @@ export default function MainLayout({
   const extendSidebar = (a: boolean) => {
     setIsExtend(a);
   };
-  console.log(pathName);
+  // console.log(pathName);
 
   return (
     <main className="bg-gray-50 min-h-[100vh] w-full dark:bg-gray-700">
@@ -195,7 +195,7 @@ export default function MainLayout({
           onClick={openSidebar}
         ></div>
         <div
-          className={`content h-full w-full overflow-y-auto ${
+          className={`content h-full w-full overflow-y-auto  ${
             isExtend || isHover ? 'lg:ml-64' : 'lg:ml-20'
           }`}
         >

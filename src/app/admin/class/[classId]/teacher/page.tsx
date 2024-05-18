@@ -28,29 +28,15 @@ export default function page() {
     else if (option === 'edit') setTitle('Chỉnh sửa phân công');
     else setTitle('Chỉnh sửa phân công');
   };
-
   const handleSaveInfo = () => {};
   const handleCancel = () => {};
   const itemsDropdown: MenuProps['items'] = [
-    {
-      key: 'viewMore',
-      label: (
-        <>
-          <button
-            className="flex flex-nowrap"
-            onClick={() => handleClickOption('viewMore')}
-          >
-            Xem giáo viên
-          </button>
-        </>
-      ),
-    },
     {
       key: 'add',
       label: (
         <>
           <button
-            className='flex flex-nowrap"'
+            className="flex flex-nowrap"
             onClick={() => handleClickOption('add')}
           >
             Phân công giáo viên

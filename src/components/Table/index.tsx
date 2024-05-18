@@ -21,7 +21,7 @@ export default function Table(props: IProps) {
   return (
     <div className="relative overflow-x-auto">
       <table
-        className={` ${className} w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400`}
+        className={` ${className} w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-200`}
       >
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
