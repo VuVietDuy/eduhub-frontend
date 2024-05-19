@@ -18,7 +18,7 @@ export default function Button(props: IProps) {
         type || 'blue'
       }-700 hover:bg-${type || 'blue'}-800 focus:ring-4 focus:ring-${
         type || 'blue'
-      }-300 font-medium rounded-[4px] text-sm px-5 py-2.5 dark:bg-${
+      }-300 font-medium rounded-[4px] text-sm px-3 py-2 dark:bg-${
         type || 'blue'
       }-600 dark:hover:bg-${
         type || 'blue'

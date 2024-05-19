@@ -49,7 +49,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
             ))}
           </ul>
         </div>
-        <div className="mt-[64px] content">{children}</div>
+        <div className="mt-[48px] content">{children}</div>
       </Card>
     </div>
   );

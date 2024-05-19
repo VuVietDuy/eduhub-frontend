@@ -9,31 +9,7 @@ import React, {ChangeEvent, useState} from 'react';
 import {FaUpload} from 'react-icons/fa6';
 import {MdDelete} from 'react-icons/md';
 
-// const questionLevel = ['Dễ (0 - 5đ)', 'Trung bình (6 - 8đ)', 'Khó (9 - 10đ)'];
-
-const questionTypeMenu = [
-  {
-    id: 1,
-    name: 'Một đáp án',
-  },
-  {
-    id: 2,
-    name: 'Nhiều đáp án',
-  },
-  {
-    id: 3,
-    name: 'Đúng/sai',
-  },
-  {
-    id: 4,
-    name: 'Tự luận',
-  },
-];
-
-interface IAnswer {
-  id: number;
-  content: string;
-}
+const questionLevel = ['Dễ (0 - 5đ)', 'Trung bình (6 - 8đ)', 'Khó (9 - 10đ)'];
 export default function QuestionModal({
   isModalOpen,
   setIsModalOpen,
@@ -41,73 +17,28 @@ export default function QuestionModal({
   isModalOpen: boolean;
   setIsModalOpen: () => void;
 }) {
-  const [questionType, setQuestionType] = useState<number>(1);
-  const [answerQuantity, setAnswerQuantity] = useState<number>(4);
-  const [answerContent, setAnswerContent] = useState<any>({});
-  const [correctAnswers, setCorrectAnswers] = useState<any>({
-    id: 0,
-    content: '',
-  });
-
-  const answer = Array(answerQuantity)
-    .fill(null)
-    .map((_, index) => {
-      if (questionType === 1) {
-        return (
-          <div
-            className="flex items-center gap-4 w-[80%] justify-between mb-4"
-            key={index}
+  const [selectedLevel, setSelectedLevel] = useState<string>('Chọn mức độ');
+  const questienLevelMenu: MenuProps['items'] = questionLevel.map(
+    (item: any, index) => {
+      return {
+        key: `${item}`,
+        label: (
+          <button
+            className={`px-4 py-2  w-full text-sm text-start hover:bg-slate-100 hover:dark:bg-slate-500 dark:text-gray-50  bg-white shadow-lg shadow-gray-200 dark:bg-gray-700 dark:shadow-gray-900 ${
+              index === questionLevel.length - 1 ? 'rounded-b-sm' : ''
+            }`}
+            onClick={() => setSelectedLevel(`${item}`)}
           >
-            <input
-              type="radio"
-              checked={correctAnswers.id === index}
-              name="list-radio"
-              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500"
-              onChange={() => {
-                setCorrectAnswers({
-                  id: index,
-                  content: answerContent,
-                });
-              }}
-            />
-            <textarea
-              className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Nhập nội dung câu trả lời"
-              value={answerContent}
-              onChange={() => {
-                setAnswerContent(handleSetAnswer);
-              }}
-            >
-              {answerContent}
-            </textarea>
-          </div>
-        );
-      }
-    });
-  // const [selectedLevel, setSelectedLevel] = useState<string>('Chọn mức độ');
-  // const questienLevelMenu: MenuProps['items'] = questionLevel.map(
-  //   (item: any, index) => {
-  //     return {
-  //       key: `${item}`,
-  //       label: (
-  //         <button
-  //           className={`px-4 py-2  w-full text-sm text-start hover:bg-slate-100 hover:dark:bg-slate-500 dark:text-gray-50  bg-white shadow-lg shadow-gray-200 dark:bg-gray-700 dark:shadow-gray-900 ${
-  //             index === questionLevel.length - 1 ? 'rounded-b-sm' : ''
-  //           }`}
-  //           onClick={() => setSelectedLevel(`${item}`)}
-  //         >
-  //           {item}
-  //         </button>
-  //       ),
-  //     };
-  //   },
-  // );
-
+            {item}
+          </button>
+        ),
+      };
+    },
+  );
   //Image upload
   const [imgUploaded, setImgUploaded] = useState<ArrayBuffer | null | string>(
     null,
   );
-  //Audio upload
   const [audioUploaded, setAudioUploaded] = useState<
     ArrayBuffer | null | string
   >(null);
@@ -139,36 +70,79 @@ export default function QuestionModal({
         open={isModalOpen}
         onCancel={setIsModalOpen}
       >
-        <form>
+        <div>
           <b className="">Loại câu hỏi</b>
           <ul className="mt-2 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-            {questionTypeMenu.map((item, index) => (
-              <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                <div className="flex items-center ps-3">
-                  <input
-                    id={item.name}
-                    type="radio"
-                    checked={questionType === item.id}
-                    name="list-radio"
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500"
-                    onChange={() => {
-                      setQuestionType(item.id);
-                      if (item.id === 1 || item.id === 2) {
-                        setAnswerQuantity(4);
-                      }
-                    }}
-                  />
-                  <label
-                    htmlFor="many-answer"
-                    className="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    {item.name}
-                  </label>
-                </div>
-              </li>
-            ))}
+            <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+              <div className="flex items-center ps-3">
+                <input
+                  id="one-answer"
+                  type="radio"
+                  value=""
+                  name="list-radio"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500"
+                />
+                <label
+                  htmlFor="one-answer"
+                  className="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                >
+                  Một đáp án
+                </label>
+              </div>
+            </li>
+            <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+              <div className="flex items-center ps-3">
+                <input
+                  id="many-answer"
+                  type="radio"
+                  value=""
+                  name="list-radio"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500"
+                />
+                <label
+                  htmlFor="many-answer"
+                  className="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                >
+                  Nhiều đáp án
+                </label>
+              </div>
+            </li>
+            <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+              <div className="flex items-center ps-3">
+                <input
+                  id="true-false"
+                  type="radio"
+                  value=""
+                  name="list-radio"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500"
+                />
+                <label
+                  htmlFor="true-false"
+                  className="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                >
+                  Đúng sai
+                </label>
+              </div>
+            </li>
+            <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+              <div className="flex items-center ps-3">
+                <input
+                  id="essay"
+                  type="radio"
+                  value=""
+                  name="list-radio"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500"
+                />
+                <label
+                  htmlFor="essay"
+                  className="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                >
+                  Tự luận
+                </label>
+              </div>
+            </li>
           </ul>
-        </form>
+        </div>
 
         <div className="col-span-1 ">
           <p className="mb-2 font-bold" style={{marginBottom: '16px'}}>
@@ -179,7 +153,7 @@ export default function QuestionModal({
         </div>
         <div
           className="grid grid-cols-2 gap-4 mt-14"
-          style={{marginTop: '24px'}}
+          style={{marginTop: '80px'}}
         >
           <div className="col-span-1">
             <div className="mt-2  w-full border border-dotted border-gray-300 dark:border-gray-600 h-[160px] rounded-[4px]">
@@ -261,13 +235,7 @@ export default function QuestionModal({
           </div>
         </div>
 
-        <div className="mt-5">
-          <p className="mb-2 font-bold" style={{marginBottom: '16px'}}>
-            Đáp án
-          </p>
-          <div>{questionType === 1 && <div>{answer}</div>}</div>
-        </div>
-        {/* <div className="mt-4">
+        <div className="mt-4">
           <b className="">Mức độ</b>
           <div className="mt-2">
             <ComboBox
@@ -276,7 +244,7 @@ export default function QuestionModal({
               width={'w-full'}
             ></ComboBox>
           </div>
-        </div> */}
+        </div>
       </Modal>
     </>
   );
