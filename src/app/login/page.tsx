@@ -1,7 +1,10 @@
 'use client';
 import fetcher from '@/api/fetcher';
+import {setToken} from '@/redux/slice/token.slice';
 import {loginUser} from '@/redux/slice/user.slice';
 import {RootState, store} from '@/redux/store';
+import {IToken} from '@/redux/types/token.type';
+import {User} from '@/redux/types/user.type';
 import {Formik} from 'formik';
 import {useRouter} from 'next/navigation';
 import React, {useEffect} from 'react';
@@ -18,6 +21,11 @@ export default function Login() {
     fetcher
       .post('/api/auth/login', {username: e.username, password: e.password})
       .then((res) => {
+        console.log(res.data);
+        const handledData: User = res?.data.data.user;
+        const token: IToken = {accessToken: res?.data.data.accessToken};
+        dispatch(loginUser(handledData));
+        dispatch(setToken(token));
         router.push('/class');
       })
       .catch((err) => {
@@ -25,15 +33,6 @@ export default function Login() {
       });
   };
 
-  useEffect(() => {
-    const newUser = {
-      firstName: 'Duy',
-      lastName: 'Vu Viet',
-      dateOfBirth: '31/07/2003',
-    };
-
-    dispatch(loginUser(newUser));
-  }, []);
   return (
     <div className="h-screen flex justify-center items-center">
       <div className="relative m-auto w-full max-w-md bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:rounded-xl sm:px-10">

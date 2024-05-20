@@ -15,6 +15,8 @@ import Image from 'next/image';
 import Avatar from '@/components/Avatar';
 import ToggleThemeButton from '@/components/ToggleThemeButton';
 import Dropdown from '@/components/Dropdown';
+import {useSelector} from 'react-redux';
+import {RootState} from '@/redux/store';
 
 export default function MainLayout({
   children,
@@ -25,6 +27,7 @@ export default function MainLayout({
   const [isHover, setIsHover] = useState(false);
   const pathName = usePathname();
   const routesSegs = pathName.split('/');
+  const user = useSelector((state: RootState) => state.user);
 
   function check(rootRoute: string[]): boolean {
     for (var i = 0; i < rootRoute.length; i++) {
@@ -106,7 +109,11 @@ export default function MainLayout({
                 menu={[
                   {
                     key: 1,
-                    label: <Link href={'/profile'}>Trang cá nhân</Link>,
+                    label: (
+                      <Link
+                        href={'/profile'}
+                      >{`${user?.lastName} ${user?.firstName}`}</Link>
+                    ),
                   },
                   {
                     key: 2,

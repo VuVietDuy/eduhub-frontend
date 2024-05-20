@@ -1,15 +1,13 @@
 'use client';
-import ComboBox from '@/components/ComboBox';
-import {MenuProps} from '@/components/MenuProps';
 import Modal from '@/components/Modal';
 import TextEditor from '@/components/TextEditor';
 import TextEditor2 from '@/components/TextEditor2';
 import Image from 'next/image';
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import {FaUpload} from 'react-icons/fa6';
+import {FiMinusCircle, FiPlusCircle} from 'react-icons/fi';
 import {MdDelete} from 'react-icons/md';
-
-// const questionLevel = ['Dễ (0 - 5đ)', 'Trung bình (6 - 8đ)', 'Khó (9 - 10đ)'];
+import Answer from './Answer';
 
 const questionTypeMenu = [
   {
@@ -38,70 +36,83 @@ export default function QuestionModal({
   isModalOpen,
   setIsModalOpen,
 }: {
-  isModalOpen: boolean;
+  isModalOpen: any;
   setIsModalOpen: () => void;
 }) {
   const [questionType, setQuestionType] = useState<number>(1);
-  const [answerQuantity, setAnswerQuantity] = useState<number>(4);
-  const [answerContent, setAnswerContent] = useState<any>({});
+  const [questionContent, setQuestionContent] = useState<string>('');
+  const [explainContent, setExplainContent] = useState<string>('');
+  // const [answerQuantity, setAnswerQuantity] = useState<number>(4);
   const [correctAnswers, setCorrectAnswers] = useState<any>({
     id: 0,
-    content: '',
   });
+  const [answerList, setAnswerList] = useState<any>([]);
+  const [answerContent, setAnswerContent] = useState<any>(null);
 
-  const answer = Array(answerQuantity)
-    .fill(null)
-    .map((_, index) => {
-      if (questionType === 1) {
-        return (
-          <div
-            className="flex items-center gap-4 w-[80%] justify-between mb-4"
-            key={index}
-          >
-            <input
-              type="radio"
-              checked={correctAnswers.id === index}
-              name="list-radio"
-              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500"
-              onChange={() => {
-                setCorrectAnswers({
-                  id: index,
-                  content: answerContent,
-                });
-              }}
-            />
-            <textarea
-              className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Nhập nội dung câu trả lời"
-              value={answerContent}
-              onChange={() => {
-                setAnswerContent(handleSetAnswer);
-              }}
-            >
-              {answerContent}
-            </textarea>
-          </div>
-        );
-      }
+  const handleDeleteAnswer = (index: number) => {
+    const realIndex = index + 1;
+    console.log('check index', index);
+    console.log('check item', answerList[index]);
+    console.log('check answerList', answerList);
+    const newAnswerList = answerList.filter(
+      (item: any, index: any) => item !== realIndex,
+    );
+    console.log('check new:', answerList);
+    setAnswerList(newAnswerList);
+    // setAnswerQuantity((prevState) => prevState - 1);
+    console.log(typeof answerContent);
+    const newAnswerContent = Object.keys(answerContent).reduce(
+      (newObj: any, key: any) => {
+        let stringIndex = realIndex.toString();
+        console.log('check newObj[key] ', newObj[key]);
+        console.log('check answerContent[key]', answerContent[key]);
+        if (key === stringIndex) {
+          newObj[key] = answerContent[key];
+        }
+      },
+      {},
+    );
+    setAnswerContent(newAnswerContent);
+  };
+
+  const handleAddAnswer = () => {
+    // setAnswerQuantity((prevState) => prevState + 1);
+  };
+
+  useEffect(() => {
+    // for (var i = 0; i < 4; i++) {
+    const newState = answerList;
+    console.log('first', newState);
+    // newState.push(
+    //   <Answer
+    //     // key={i}
+    //     answerContent={answerContent}
+    //     setAnswerContent={setAnswerContent}
+    //     setCorrectAnswers={setCorrectAnswers}
+    //     correctAnswers={correctAnswers}
+    //     // index={i}
+    //     // answerOrder={i + 1}
+    //     handleDeleteAnswer={handleDeleteAnswer}
+    //   />,
+    // );
+    setAnswerList((prevState: any) => {
+      console.log('second', prevState);
+      return [
+        ...prevState,
+        <Answer
+          // key={i}
+          answerContent={answerContent}
+          setAnswerContent={setAnswerContent}
+          setCorrectAnswers={setCorrectAnswers}
+          correctAnswers={correctAnswers}
+          // index={i}
+          // answerOrder={i + 1}
+          handleDeleteAnswer={handleDeleteAnswer}
+        />,
+      ];
     });
-  // const [selectedLevel, setSelectedLevel] = useState<string>('Chọn mức độ');
-  // const questienLevelMenu: MenuProps['items'] = questionLevel.map(
-  //   (item: any, index) => {
-  //     return {
-  //       key: `${item}`,
-  //       label: (
-  //         <button
-  //           className={`px-4 py-2  w-full text-sm text-start hover:bg-slate-100 hover:dark:bg-slate-500 dark:text-gray-50  bg-white shadow-lg shadow-gray-200 dark:bg-gray-700 dark:shadow-gray-900 ${
-  //             index === questionLevel.length - 1 ? 'rounded-b-sm' : ''
-  //           }`}
-  //           onClick={() => setSelectedLevel(`${item}`)}
-  //         >
-  //           {item}
-  //         </button>
-  //       ),
-  //     };
-  //   },
-  // );
+    // }
+  }, []);
 
   //Image upload
   const [imgUploaded, setImgUploaded] = useState<ArrayBuffer | null | string>(
@@ -111,7 +122,6 @@ export default function QuestionModal({
   const [audioUploaded, setAudioUploaded] = useState<
     ArrayBuffer | null | string
   >(null);
-
   const handleInputFileChange = (
     e: ChangeEvent<HTMLInputElement>,
     type: string,
@@ -130,16 +140,20 @@ export default function QuestionModal({
     }
   };
 
+  // console.log('check cac đáp án: ', answerContent);
+  // console.log('check đáp án đúng: ', correctAnswers);
+  console.log('check list:', answerList);
+  ``;
   return (
     <>
       <Modal
         title="TRÌNH SOẠN THẢO CÂU HỎI"
         width="w-[70%]"
         height="h-[calc(100vh-40px)]]"
-        open={isModalOpen}
+        open={isModalOpen.isOpen}
         onCancel={setIsModalOpen}
       >
-        <form>
+        <form className="px-3">
           <b className="">Loại câu hỏi</b>
           <ul className="mt-2 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
             {questionTypeMenu.map((item, index) => (
@@ -150,11 +164,11 @@ export default function QuestionModal({
                     type="radio"
                     checked={questionType === item.id}
                     name="list-radio"
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500"
+                    className="w-6 h-6 text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500"
                     onChange={() => {
                       setQuestionType(item.id);
                       if (item.id === 1 || item.id === 2) {
-                        setAnswerQuantity(4);
+                        // setAnswerQuantity(4);
                       }
                     }}
                   />
@@ -170,15 +184,22 @@ export default function QuestionModal({
           </ul>
         </form>
 
-        <div className="col-span-1 ">
-          <p className="mb-2 font-bold" style={{marginBottom: '16px'}}>
+        <div className="col-span-1 px-3">
+          <p className="mb-2 font-bold" style={{marginBottom: '10px'}}>
             Nội dung câu hỏi
           </p>
+          {/* <TextEditor3 /> */}
           {/* <TextEditor placeholder="Nhập nội dung câu hỏi" /> */}
-          <TextEditor2 placeholder="Nhập nội dung câu hỏi" />
+          <TextEditor2
+            value={questionContent}
+            setValue={setQuestionContent}
+            questionOrder={1}
+            initialValue={`Câu 1: `}
+            // onSubmit=
+          />
         </div>
         <div
-          className="grid grid-cols-2 gap-4 mt-14"
+          className="grid grid-cols-2 gap-4 mt-14 px-3"
           style={{marginTop: '24px'}}
         >
           <div className="col-span-1">
@@ -261,22 +282,46 @@ export default function QuestionModal({
           </div>
         </div>
 
-        <div className="mt-5">
-          <p className="mb-2 font-bold" style={{marginBottom: '16px'}}>
-            Đáp án
+        <div className="mt-8" style={{marginTop: '24px'}}>
+          <p className="mb-2 px-3 font-bold" style={{marginBottom: '10px'}}>
+            Tích chọn đáp án đúng
           </p>
-          <div>{questionType === 1 && <div>{answer}</div>}</div>
-        </div>
-        {/* <div className="mt-4">
-          <b className="">Mức độ</b>
-          <div className="mt-2">
-            <ComboBox
-              menu={questienLevelMenu}
-              selectedOption={selectedLevel}
-              width={'w-full'}
-            ></ComboBox>
+          <div>
+            {questionType === 1 && (
+              <div>
+                {answerList}
+                {/* {answerList.map((item: any, index: any) => {
+                  return (
+                    <Answer
+                      key={index}
+                      answerContent={answerContent}
+                      setAnswerContent={setAnswerContent}
+                      setCorrectAnswers={setCorrectAnswers}
+                      correctAnswers={correctAnswers}
+                      index={index}
+                      answerOrder={item}
+                      handleDeleteAnswer={handleDeleteAnswer}
+                    />
+                  );
+                })} */}
+              </div>
+            )}
           </div>
-        </div> */}
+          <button
+            className="px-3 flex items-center gap-2 text-blue-500"
+            onClick={handleAddAnswer}
+          >
+            <FiPlusCircle className="text-3xl" />
+
+            <span className="font-semibold">Thêm câu trả lời</span>
+          </button>
+        </div>
+        <div className="mt-8" style={{marginTop: '24px'}}>
+          <p className="mb-2 px-3 font-bold" style={{marginBottom: '10px'}}>
+            Giải thích đáp án
+          </p>
+          <TextEditor2 value={explainContent} setValue={setExplainContent} />
+        </div>
       </Modal>
     </>
   );

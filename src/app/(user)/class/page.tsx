@@ -5,8 +5,6 @@ import React from 'react';
 import {useSelector} from 'react-redux';
 
 export default function Class() {
-  const user = useSelector((state: RootState) => state.user);
-  console.log(user);
   return (
     <div className="flex flex-wrap gap-6 p-6 m-auto">
       <ClassCard
