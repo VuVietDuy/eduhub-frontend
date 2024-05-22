@@ -10,7 +10,7 @@ const Post = () => {
           <div className="inline-flex flex-shrink-0 justify-center items-center w-12 h-12 text-white bg-gradient-to-br from-primary-500 to-blue-500 rounded-lg shadow-md shadow-gray-300 dark:shadow-gray-900">
             <ProjectOutlined />
           </div>
-          <div className=" ml-3 flex">
+          <div className=" ml-3 flex font-bold text-xl">
             <p className="mr-12">34</p>
             <p>Học sinh</p>
           </div>
@@ -20,7 +20,7 @@ const Post = () => {
             <div className="inline-flex flex-shrink-0 justify-center items-center w-12 h-12 text-white bg-gradient-to-br from-primary-500 to-blue-500 rounded-lg shadow-md shadow-gray-300 dark:shadow-gray-900">
               <LayoutOutlined />
             </div>
-            <div className=" ml-3 flex items-center ">
+            <div className=" ml-3 flex items-center font-bold text-xl">
               <p className="mr-12">9.3</p>
               <p>Trung bình điểm</p>
             </div>
@@ -31,7 +31,7 @@ const Post = () => {
             <div className="inline-flex flex-shrink-0 justify-center items-center w-12 h-12 text-white bg-gradient-to-br from-primary-500 to-blue-500 rounded-lg shadow-md shadow-gray-300 dark:shadow-gray-900">
               <LayoutOutlined />
             </div>
-            <div className=" ml-3 flex items-center ">
+            <div className=" ml-3 flex items-center font-bold text-xl">
               <p className="mr-12">90</p>
               <p>Điểm thi đua</p>
             </div>

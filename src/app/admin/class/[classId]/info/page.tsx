@@ -14,9 +14,8 @@ export default function Info() {
 
   return (
     <div className="">
+      <Post></Post>
       <Card className="m-6 ">
-        <Post></Post>
-
         <ModalDetail></ModalDetail>
       </Card>
     </div>
