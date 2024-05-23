@@ -27,7 +27,8 @@ export default function StartQuiz() {
     return () => {
       clearInterval(timeInterval);
     };
-  });
+  }, []);
+
   return (
     <div>
       <header className="fixed top-0 px-3 py-2 flex justify-between w-full bg-gray-50 h-16 items-center">

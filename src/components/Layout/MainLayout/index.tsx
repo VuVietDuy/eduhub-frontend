@@ -198,7 +198,7 @@ export default function MainLayout({
           onClick={openSidebar}
         ></div>
         <div
-          className={`content h-full w-full overflow-y-auto  ${
+          className={` content h-full w-full overflow-y-auto  ${
             isExtend || isHover ? 'lg:ml-64' : 'lg:ml-20'
           }`}
         >

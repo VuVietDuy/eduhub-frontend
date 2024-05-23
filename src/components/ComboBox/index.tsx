@@ -62,7 +62,7 @@ export default function ComboBox({
         <div
           className={`${
             isOpen ? '' : 'hidden'
-          }  ${width} absolute right-0 z-10 mt-2 min-w-32 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none  max-h-[144px] overflow-y-scroll`}
+          }  ${width} absolute right-0 z-10 mt-2 min-w-32 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none  max-h-[112px] overflow-y-scroll`}
         >
           {menu.map((item) => (
             <div

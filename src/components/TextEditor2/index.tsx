@@ -1,34 +1,73 @@
-import {ChangeEvent, useRef} from 'react';
-import {Editor} from '@tinymce/tinymce-react';
-import './style.css';
+'use client';
 
-export default function TextEditor2() {
+import {ChangeEvent, useEffect, useRef, useState} from 'react';
+import {Editor} from '@tinymce/tinymce-react';
+import './textEditor2.css';
+import {IAnswer} from '@/redux/types/question.type';
+
+export default function TextEditor2({
+  value,
+  setValue,
+  initialValue,
+  answerOrder,
+  category,
+}: // onChange,
+{
+  questionOrder?: number;
+  value: string;
+  setValue: any;
+  answerOrder?: number;
+  initialValue?: string;
+  category: string;
+  // onChange?: any;
+}) {
   const editorRef = useRef<any>(null);
-  const log = () => {
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent());
-    }
-  };
   return (
     <>
       <Editor
         apiKey="weacsv6jeqrnamnnglfamvqcz1a9n5eq49fbnibo6miw956t"
         onInit={(_evt, editor) => (editorRef.current = editor)}
-        initialValue="Nhập nội dung câu hỏi"
+        initialValue={initialValue}
+        value={value}
+        onEditorChange={
+          (newValue, editor) => {
+            if (category === 'answer') {
+              const index = answerOrder;
+              setValue((prevState: any) => {
+                let newState = prevState;
+                console.log('check newState', newState);
+
+                // newState?.map((item: any) => {
+                //   if (item.id === index) {
+                //     item.content = newValue;
+                //   }
+                // });
+                return newState;
+              });
+              console.log('check value: ', value);
+            } else {
+              setValue(newValue);
+              console.log('hello');
+              console.log('check value: ', value);
+            }
+          }
+          // }
+          // onChange
+        }
         init={{
-          height: 200,
+          encoding: 'utf-8',
+          width: '100%',
+          height: 150,
           menubar: false,
           plugins: [
-            'advlist',
+            // 'advlist',
             'autolink',
             'lists',
-            'link',
-            'image',
             'charmap',
             'preview',
             'anchor',
             'searchreplace',
-            'visualblocks',
+            // 'visualblocks',
             'code',
             'fullscreen',
             // 'insertdatetime',
@@ -36,58 +75,23 @@ export default function TextEditor2() {
             'table',
             // 'code',
             'help',
-            'wordcount',
+            // 'wordcount',
           ],
           toolbar:
             // 'undo redo | blocks | ' +
-            'fontfamily fontsize |' +
-            'bold italic forecolor underline strikethrough | alignleft aligncenter ' +
-            'lineheight alignright alignjustify | bullist numlist |table link image charmap' +
-            'removeformat | help | ',
+            'blocks fontfamily fontsize |' +
+            'bold italic forecolor underline charmap | alignleft aligncenter ' +
+            ' alignright alignjustify | lineheight | bullist numlist |table  ' +
+            '||' +
+            'removeformat fullscreen preview help',
           content_style:
-            'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-          image_advtab: true,
-          file_picker_types: 'file image media',
-          file_picker_callback: (callback, value, meta) => {
-            const input = document.createElement('input');
-            // Provide file and text for the link dialog
-            input.setAttribute('type', 'file');
-            input.setAttribute('accept', 'image/*');
-            input.addEventListener('change', (e: any) => {
-              const file = e.target.files?.[0];
-
-              const reader = new FileReader();
-              reader.addEventListener('load', () => {
-                /*
-          Note: Now we need to register the blob in TinyMCEs image blob
-          registry. In the next release this part hopefully won't be
-          necessary, as we are looking to handle it internally.
-        */
-                const id = 'blobid' + new Date().getTime();
-                // const blobCache = tinymce.activeEditor.editorUpload.blobCache;
-                // const base64 = reader?.result?.split(',')[1];
-                // const blobInfo = blobCache.create(id, file, base64);
-                // blobCache.add(blobInfo);
-
-                /* call the callback and populate the Title field with the file name */
-                // callback(blobInfo.blobUri(), {title: file.name});
-              });
-              reader.readAsDataURL(file);
-            });
-
-            // Provide image and alt text for the image dialog
-            // if (meta.filetype == 'image') {
-            //   callback('myimage.jpg', {alt: 'My alt text'});
-            // }
-
-            // // Provide alternative source and posted for the media dialog
-            // if (meta.filetype == 'media') {
-            //   callback('movie.mp4', {source2: 'alt.ogg', poster: 'image.jpg'});
-            // }
-          },
+            'body { font-family:Times New Roman ,Arial,sans-serif; font-size:16px }',
         }}
       />
-      {/* <button onClick={log}>Log editor content</button> */}
+
+      <div className="">
+        <div className="" dangerouslySetInnerHTML={{__html: value}} />
+      </div>
     </>
   );
 }

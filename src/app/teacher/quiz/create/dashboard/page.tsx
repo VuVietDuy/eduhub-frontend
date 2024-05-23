@@ -8,51 +8,71 @@ import {
 } from '@ant-design/icons';
 import Chart, {ChartType} from 'chart.js/auto';
 import Card from '@/components/Card';
-
-export default function Dashboard(): JSX.Element {
+export default function page() {
   const canvasEl = useRef<any>();
   const [chartLabels, setChartLabels] = useState<any>([
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-    '10',
-    '11',
-    '12',
-    '13',
-    '14',
-    '15',
-    '16',
-    '17',
-    '18',
-    '19',
-    '20',
-    '21',
-    '22',
-    '23',
-    '24',
-    '25',
-    '26',
-    '27',
-    '28',
-    '29',
-    '30',
+    '0.0',
+    '0.2',
+    '0.4',
+    '0.6',
+    '0.8',
+    '1.0',
+    '1.2',
+    '1.4',
+    '1.6',
+    '1.8',
+    '2.0',
+    '2.2',
+    '2.4',
+    '2.6',
+    '2.8',
+    '3.0',
+    '3.2',
+    '3.4',
+    '3.6',
+    '3.8',
+    '4.0',
+    '4.2',
+    '4.4',
+    '4.6',
+    '4.8',
+    '5.0',
+    '5.2',
+    '5.4',
+    '5.6',
+    '5.8',
+    '6.0',
+    '6.2',
+    '6.4',
+    '6.6',
+    '6.8',
+    '7.0',
+    '7.2',
+    '7.4',
+    '7.6',
+    '7.8',
+    '8.0',
+    '8.2',
+    '8.4',
+    '8.6',
+    '8.8',
+    '9.0',
+    '9.2',
+    '9.4',
+    '9.6',
+    '9.8',
+    '10.0',
   ]);
   const [dataChart, setDataChart] = useState<any>();
   const chartType: ChartType = 'bar';
 
   let bookingCounter = [
-    1, 2, 2, 5, 4, 7, 5, 4, 4, 6, 4, 7, 6, 6, 4, 3, 8, 2, 3, 4, 3, 6, 3, 2, 4,
+    0, 0, 0, 0, 0, 0, 0, 0, 4, 6, 4, 7, 6, 6, 4, 3, 8, 2, 3, 4, 3, 1, 3, 2, 4,
     5, 3, 5, 3, 4,
   ];
 
   let bookingSalesInMonth = [
-    1, 2, 2, 5, 4, 7, 5, 4, 5, 5, 6, 6, 6, 7, 4, 4, 6, 2, 4, 3, 3, 2, 6, 2, 4,
+    1, 2, 2, 5, 4, 7, 5, 4, 5, 5, 6, 6, 6, 7, 4, 4, 6, 2, 4, 3, 3, 2, 1, 2, 4,
     4, 4, 6, 3, 3,
   ];
 
@@ -86,24 +106,13 @@ export default function Dashboard(): JSX.Element {
       datasets: [
         {
           backgroundColor: gradient1,
-          label: 'Lường bài làm: lượt',
+          label: 'Số lượng học sinh',
           data: bookingCounter,
           fill: true,
           borderWidth: 2,
           borderColor: colors.purple.default,
           lineTension: 0.2,
           pointBackgroundColor: colors.purple.default,
-          pointRadius: 3,
-        },
-        {
-          backgroundColor: gradient2,
-          label: 'Lượng truy cập: lượt',
-          data: bookingSalesInMonth,
-          fill: true,
-          borderWidth: 2,
-          borderColor: colors.indigo.default,
-          lineTension: 0.2,
-          pointBackgroundColor: colors.indigo.default,
           pointRadius: 3,
         },
       ],
@@ -130,9 +139,11 @@ export default function Dashboard(): JSX.Element {
   }, []);
 
   return (
-    <div className="m-6">
-      <div className="grid grid-cols-1 gap-6 mb-6 w-full xl:grid-cols-2 2xl:grid-cols-4">
-        <div className="bg-white shadow-lg shadow-gray-200 rounded-[8px] p-4 dark:text-white dark:bg-gray-800 dark:shadow-gray-900">
+    <div className={`min-h-[380px] overflow-x-hidden`}>
+      {/* Topbar  */}
+      <div className="mt-3 grid grid-cols-1 gap-6 mb-6 w-full xl:grid-cols-2 2xl:grid-cols-4">
+        {/* Card  */}
+        <div className="bg-white shadow-lg border border-gray-300 dark:border-gray-600 shadow-gray-200 rounded-2xl p-4 dark:text-white dark:bg-gray-800 ">
           <div className="flex items-center">
             <div className="inline-flex flex-shrink-0 justify-center items-center w-12 h-12 text-white bg-gradient-to-br from-primary-500 to-blue-500 rounded-lg shadow-md shadow-gray-300 dark:shadow-gray-900">
               <ProjectOutlined />
@@ -142,72 +153,67 @@ export default function Dashboard(): JSX.Element {
                 600
               </span>
               <h3 className="text-base font-normal text-gray-500">
-                Số lượng học sinh
+                Lượt làm bài
               </h3>
-            </div>
-            <div className="flex flex-1 justify-end items-center ml-5 w-0 text-base font-bold text-green-500">
-              <ProjectOutlined />
             </div>
           </div>
         </div>
-        <div className="bg-white shadow-lg shadow-gray-200 rounded-[8px] p-4 dark:text-white dark:bg-gray-800 dark:shadow-gray-900">
+        {/* Card  */}
+
+        <div className="bg-white shadow-lg border border-gray-300 dark:border-gray-600 shadow-gray-200 rounded-2xl p-4 dark:text-white dark:bg-gray-800">
           <div className="flex items-center">
             <div className="inline-flex flex-shrink-0 justify-center items-center w-12 h-12 text-white bg-gradient-to-br from-primary-500 to-blue-500 rounded-lg shadow-md shadow-gray-300 dark:shadow-gray-900">
               <LayoutOutlined />
             </div>
             <div className="flex-shrink-0 ml-3">
               <span className="text-2xl font-bold leading-none text-gray-900 dark:text-gray-100">
-                50
+                70
               </span>
               <h3 className="text-base font-normal text-gray-500">
-                Số lượng giáo viên
+                Học sinh làm bài
               </h3>
-            </div>
-            <div className="flex flex-1 justify-end items-center ml-5 w-0 text-base font-bold text-green-500">
-              <LayoutOutlined />
             </div>
           </div>
         </div>
-        <div className="bg-white shadow-lg shadow-gray-200 rounded-[8px] p-4 dark:text-white dark:bg-gray-800 dark:shadow-gray-900">
+
+        <div className="bg-white shadow-lg border border-gray-300 dark:border-gray-600 shadow-gray-200 rounded-2xl p-4 dark:text-white dark:bg-gray-800">
           <div className="flex items-center">
             <div className="inline-flex flex-shrink-0 justify-center items-center w-12 h-12 text-white bg-gradient-to-br from-primary-500 to-blue-500 rounded-lg shadow-md shadow-gray-300 dark:shadow-gray-900">
               <GlobalOutlined />
             </div>
             <div className="flex-shrink-0 ml-3">
               <span className="text-2xl font-bold leading-none text-gray-900 dark:text-gray-100">
-                62
+                70
               </span>
               <h3 className="text-base font-normal text-gray-500">
-                Lượng đang truy cập
+                Học sinh làm bài
               </h3>
-            </div>
-            <div className="flex flex-1 justify-end items-center ml-5 w-0 text-base font-bold text-green-500">
-              +2%
             </div>
           </div>
         </div>
-        <div className="bg-white shadow-lg shadow-gray-200 rounded-[8px] p-4 dark:text-white dark:bg-gray-800 dark:shadow-gray-900">
+
+        <div className="bg-white shadow-lg border border-gray-300 dark:border-gray-600 shadow-gray-200 rounded-2xl p-4 dark:text-white dark:bg-gray-800 ">
           <div className="flex items-center">
             <div className="inline-flex flex-shrink-0 justify-center items-center w-12 h-12 text-white bg-gradient-to-br from-primary-500 to-blue-500 rounded-lg shadow-md shadow-gray-300 dark:shadow-gray-900">
-              <BarChartOutlined />
+              <ProjectOutlined />
             </div>
             <div className="flex-shrink-0 ml-3">
               <span className="text-2xl font-bold leading-none text-gray-900 dark:text-gray-100">
-                1,430
+                7.2
               </span>
               <h3 className="text-base font-normal text-gray-500">
-                Tổng lượng truy cập tháng này
+                Điểm trung bình
               </h3>
-            </div>
-            <div className="flex flex-1 justify-end items-center ml-5 w-0 text-base font-bold text-green-500">
-              +5.34%
             </div>
           </div>
         </div>
       </div>
-      <Card title="Lượng truy cập">
+
+      <Card title="Phổ điểm">
         <canvas id="myChart" ref={canvasEl} height={80} />
       </Card>
     </div>
   );
 }
+
+// ('use client');

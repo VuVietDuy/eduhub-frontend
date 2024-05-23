@@ -2,7 +2,7 @@ import React from 'react';
 
 interface IProps {
   content: string;
-  onRemove?: () => void;
+  onRemove?: any;
 }
 export default function Chips(props: IProps) {
   const {content, onRemove} = props;
