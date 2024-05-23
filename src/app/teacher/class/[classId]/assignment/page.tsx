@@ -129,7 +129,7 @@ export default function page() {
           </div>
         }
         onCancel={() => setIsOpen(false)}
-        open={true}
+        open={isOpen}
         footer={[]}
       >
         <AssignAssignment></AssignAssignment>

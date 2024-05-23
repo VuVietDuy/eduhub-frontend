@@ -101,14 +101,6 @@ const listRoutesStudent: IRoute[] = [
 
 const listRoutesTeacher: IRoute[] = [
   {
-    path: '/teacher/dashboard',
-    label: 'Thống kê',
-    icon: <HomeOutlined />,
-    role: roles.TEACHER,
-    titlePage: 'Thống kê',
-    rootRoute: ['teacher', 'dashboard'],
-  },
-  {
     path: '/teacher/calendar',
     label: 'Lịch dạy',
     icon: <CalendarOutlined />,

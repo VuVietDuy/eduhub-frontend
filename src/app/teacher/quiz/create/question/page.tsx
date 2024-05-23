@@ -23,6 +23,9 @@ export default function page() {
     type: '',
     title: '',
   });
+
+  const [isOpenPartTest, setIsOpenPartTest] = useState<boolean>(true);
+
   const [questionPart, setQuestionPart] = useState<any>([
     {
       id: 1,
@@ -45,49 +48,49 @@ export default function page() {
   );
   console.log(questionList);
   return (
-    <div className={`min-h-[380px] `}>
+    <div className={`max-h-[80vh] `}>
       <div className={`grid grid-cols-3 gap-6 md:mt-3`}>
-        <div className="md:col-span-1 col-span-3 h-fit md:h-[430px]  md:border-r border-gray-300 md:pr-6  pr-0 ">
-          <div className="flex justify-between items-center">
-            <span className="text-gray-700 dark:text-gray-300 text-md flex gap-2 items-center font-bold ">
-              <AiOutlineMenuUnfold className="text-lg" />
-              Phần thi
-            </span>
-            <div className={`flex  gap-3`}>
-              <Button
-                type="green"
-                onClick={() =>
-                  setIsModalOpen({
-                    isOpen: true,
-                    type: 'questionPart',
-                    title: 'THÊM MỚI PHẦN THI',
-                  })
-                }
-              >
-                <MdAdd className="mr-1 inline-block" />
-                Thêm mới
-              </Button>
+        {isOpenPartTest ? (
+          <div className="md:col-span-1 col-span-3 h-fit md:max-h-[80vh] md:border-r border-gray-300 md:pr-6 pr-0 ">
+            <div className="flex justify-between items-center">
+              <span className="text-gray-700 dark:text-gray-300 text-md flex gap-2 items-center font-bold ">
+                Phần thi
+              </span>
+              <div className={`flex  gap-3`}>
+                <Button
+                  type="green"
+                  onClick={() =>
+                    setIsModalOpen({
+                      isOpen: true,
+                      type: 'questionPart',
+                      title: 'THÊM MỚI PHẦN THI',
+                    })
+                  }
+                >
+                  <MdAdd className="mr-1 inline-block" />
+                  Thêm mới
+                </Button>
+              </div>
             </div>
-          </div>
 
-          <div className="mt-4 ">
-            {questionPart.length > 0 &&
-              questionPart.map((item: any, index: any) => {
-                return (
-                  <div
-                    className={` flex items-center justify-between p-3 cursor-pointer ${
-                      selectedQuestionPart.title === item.title &&
-                      'bg-gray-200 dark:bg-gray-600'
-                    } `}
-                    key={index}
-                    onClick={() => setSelectedQuestionPart(item)}
-                  >
-                    <div className="flex gap-2 items-center">
-                      <FaBook className="" />
-                      {item.title}
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      {/* <button
+            <div className="mt-4 ">
+              {questionPart.length > 0 &&
+                questionPart.map((item: any, index: any) => {
+                  return (
+                    <div
+                      className={` flex items-center justify-between p-3 cursor-pointer ${
+                        selectedQuestionPart.title === item.title &&
+                        'bg-gray-200 dark:bg-gray-600'
+                      } `}
+                      key={index}
+                      onClick={() => setSelectedQuestionPart(item)}
+                    >
+                      <div className="flex gap-2 items-center">
+                        <FaBook className="" />
+                        {item.title}
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        {/* <button
                         onClick={() =>
                           setIsModalOpen({
                             isOpen: true,
@@ -98,32 +101,42 @@ export default function page() {
                       >
                         <FaEdit className="mr-2 text-lg text-blue-500" />
                       </button> */}
-                      <div className={``}>
-                        <button
-                          onClick={() =>
-                            setIsModalOpen({
-                              isOpen: true,
-                              type: 'questionPart',
-                              title: 'CHỈNH SỬA PHẦN THI',
-                            })
-                          }
-                        >
-                          <FaEdit className="mr-2 text-lg text-blue-500" />
+                        <div className={``}>
+                          <button
+                            onClick={() =>
+                              setIsModalOpen({
+                                isOpen: true,
+                                type: 'questionPart',
+                                title: 'CHỈNH SỬA PHẦN THI',
+                              })
+                            }
+                          >
+                            <FaEdit className="mr-2 text-lg text-blue-500" />
+                          </button>
+                        </div>
+                        <button>
+                          <FaTrashAlt className="text-lg text-red-500" />
                         </button>
                       </div>
-                      <button>
-                        <FaTrashAlt className="text-lg text-red-500" />
-                      </button>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+            </div>
           </div>
-        </div>
-        <div className="md:col-span-2 col-span-3 md:h-[430px]  overflow-y-auto ">
+        ) : (
+          <></>
+        )}
+        <div
+          className={`${
+            isOpenPartTest ? 'md:col-span-2' : ''
+          } col-span-3 md:h-[430px]  overflow-y-auto`}
+        >
           <div className="flex justify-between items-start">
             <div className=" flex gap-2 items-center font-bold leading-10 text-gray-700 dark:text-gray-300 text-md">
-              <BsFillQuestionOctagonFill className="text-lg" />
+              <AiOutlineMenuUnfold
+                onClick={() => setIsOpenPartTest(!isOpenPartTest)}
+                className="text-lg"
+              />
               Danh sách câu hỏi
             </div>
             <div className={`flex  gap-3`}>

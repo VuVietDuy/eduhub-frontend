@@ -49,7 +49,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
             ))}
           </ul>
         </div>
-        <div className="mt-[64px] h-[530px] content overflow-auto md:h-[450px]">
+        <div className="mt-[64px] h-[80vh] content overflow-auto md:h-[80vh]">
           {children}
         </div>
       </Card>
