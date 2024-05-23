@@ -1,11 +1,25 @@
 'use client';
 import React, {useState} from 'react';
+import Dropdown from '../Dropdown';
+import {MenuProps} from '../MenuProps';
+import Button from '../Button';
+import {MdOutlineMoreVert} from 'react-icons/md';
 
-export default function Accordion({className}: {className?: string}) {
+interface IProps {
+  title?: React.ReactNode;
+  description?: string;
+  className?: string;
+  itemMenus: MenuProps['items'];
+  publishedAt: string;
+  children: React.ReactNode;
+}
+
+export default function Accordion(props: IProps) {
+  const {title, className, itemMenus, publishedAt, children} = props;
   const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
-    <div className={`${className} ${isOpen ? ' border-b-0 shadow-lg' : ''}`}>
-      <h2 className="">
+    <div className={`${className} ${isOpen ? ' border-b-0' : ''}`}>
+      <div className="flex relative group">
         <button
           type="button"
           className={`${
@@ -13,31 +27,26 @@ export default function Accordion({className}: {className?: string}) {
           } flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-gray-200 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3 duration-300 transition-all ease-in-out`}
           onClick={() => setIsOpen(!isOpen)}
         >
-          <span>What is Flowbite?</span>
+          <span>{title}</span>
+          <span className="font-thin text-sm text-gray-500 mr-16">
+            Đã đăng vào {publishedAt}
+          </span>
         </button>
-      </h2>
+        <div className="absolute right-6 top-1/2 transform -translate-y-1/2 z-10 hidden group-hover:block">
+          <Dropdown menu={itemMenus}>
+            <Button className="bg-gray-200 hover:bg-gray-300" type="gray">
+              <MdOutlineMoreVert className="text-gray-900" />
+            </Button>
+          </Dropdown>
+        </div>
+      </div>
       <div
         className={`${
           isOpen ? '' : 'hidden'
         } duration-300 transition-all ease-in-out`}
       >
         <div className="p-5 border rounded-b-lg border-gray-200 dark:border-gray-700 dark:bg-gray-900">
-          <p className="mb-2 text-gray-500 dark:text-gray-400">
-            Flowbite is an open-source library of interactive components built
-            on top of Tailwind CSS including buttons, dropdowns, modals,
-            navbars, and more.
-          </p>
-          <p className="text-gray-500 dark:text-gray-400">
-            Check out this guide to learn how to{' '}
-            <a
-              href="/docs/getting-started/introduction/"
-              className="text-blue-600 dark:text-blue-500 hover:underline"
-            >
-              get started
-            </a>{' '}
-            and start developing websites even faster with components on top of
-            Tailwind CSS.
-          </p>
+          {children}
         </div>
       </div>
     </div>

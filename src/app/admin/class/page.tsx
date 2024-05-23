@@ -5,6 +5,7 @@ import Dropdown from '@/components/Dropdown';
 import {MenuProps} from '@/components/MenuProps';
 import SearchInput from '@/components/SearchInput';
 import Table from '@/components/Table';
+import TableFooter from '@/components/TableFooter';
 import {UploadOutlined} from '@ant-design/icons';
 import {useRouter} from 'next/navigation';
 import React, {useState} from 'react';
@@ -52,6 +53,9 @@ export default function Class() {
       title: 'Mã lớp',
       dataIndex: 'classID',
       key: 'classID',
+      render: (data: any) => (
+        <span className="font-semibold">{data.classID}</span>
+      ),
     },
     {
       title: 'Lớp',
@@ -83,34 +87,64 @@ export default function Class() {
   ];
   const data = [
     {
-      classID: 'B21DCPT089',
-      class: 'A1',
+      classID: 'A01K55',
+      class: 'A01',
       course: 'K55',
       formTeacher: 'Vũ Viết Duy',
     },
     {
-      classID: 'B21DCPT089',
-      class: 'A1',
+      classID: 'A02K55',
+      class: 'A02',
       course: 'K55',
-      formTeacher: 'Vũ Viết Duy',
+      formTeacher: 'Nguyễn Văn Duy',
     },
     {
-      classID: 'B21DCPT089',
-      class: 'A1',
+      classID: 'A03K55',
+      class: 'A03',
       course: 'K55',
-      formTeacher: 'Vũ Viết Duy',
+      formTeacher: 'Trần Xuân Lâm',
     },
     {
-      classID: 'B21DCPT089',
-      class: 'A1',
+      classID: 'A04K55',
+      class: 'A04',
       course: 'K55',
-      formTeacher: 'Vũ Viết Duy',
+      formTeacher: 'Hoàng Hữu Tiến Dũng',
     },
     {
-      classID: 'B21DCPT089',
-      class: 'A1',
+      classID: 'A05K55',
+      class: 'A05',
       course: 'K55',
-      formTeacher: 'Vũ Viết Duy',
+      formTeacher: 'Trần Văn Lâm',
+    },
+    {
+      classID: 'A06K55',
+      class: 'A06',
+      course: 'K55',
+      formTeacher: 'Vũ Thị Minh Ngọc',
+    },
+    {
+      classID: 'A07K55',
+      class: 'A07',
+      course: 'K55',
+      formTeacher: 'Trần Thanh Tâm',
+    },
+    {
+      classID: 'A08K55',
+      class: 'A08',
+      course: 'K55',
+      formTeacher: 'Vũ Văn Toản',
+    },
+    {
+      classID: 'A09K55',
+      class: 'A09',
+      course: 'K55',
+      formTeacher: 'Võ Yên Nhi',
+    },
+    {
+      classID: 'A10K55',
+      class: 'A10',
+      course: 'K55',
+      formTeacher: 'Trần Quang Thắng',
     },
   ];
   return (
@@ -136,6 +170,7 @@ export default function Class() {
       </Card>
       <Card>
         <Table dataSource={data} columns={columns}></Table>
+        <TableFooter total={16}></TableFooter>
       </Card>
     </div>
   );

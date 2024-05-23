@@ -33,7 +33,7 @@ export default function Dropdown({
   }, []);
 
   return (
-    <div ref={dropdownRef}>
+    <div ref={dropdownRef} className="z-50">
       <div className="relative inline-block text-left">
         <div>
           <button
@@ -46,7 +46,7 @@ export default function Dropdown({
         <div
           className={`${
             isOpen ? '' : 'hidden'
-          } absolute right-0 p-1 z-10 mt-2 min-w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
+          } absolute right-0 p-1 z-10 mt-2 min-w-44 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
         >
           {menu.map((item) => (
             <div

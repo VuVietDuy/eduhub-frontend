@@ -1,14 +1,13 @@
 'use client';
-import fetcher from '@/api/fetcher';
+import {fetcher} from '@/api/fetcher';
 import {setToken} from '@/redux/slice/token.slice';
 import {loginUser} from '@/redux/slice/user.slice';
-import {RootState, store} from '@/redux/store';
 import {IToken} from '@/redux/types/token.type';
 import {User} from '@/redux/types/user.type';
 import {Formik} from 'formik';
 import {useRouter} from 'next/navigation';
-import React, {useEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import React from 'react';
+import {useDispatch} from 'react-redux';
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -18,10 +17,11 @@ export default function Login() {
   };
   const router = useRouter();
   const handleOnSubmit = (e: any) => {
+    console.log(e);
     fetcher
       .post('/api/auth/login', {username: e.username, password: e.password})
       .then((res) => {
-        console.log(res.data);
+        console.log(res);
         const handledData: User = res?.data.data.user;
         const token: IToken = {accessToken: res?.data.data.accessToken};
         dispatch(loginUser(handledData));
@@ -29,7 +29,7 @@ export default function Login() {
         router.push('/class');
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.message);
       });
   };
 

@@ -2,14 +2,16 @@
 import React, {useState} from 'react';
 import {usePathname} from 'next/navigation';
 import {
+  AppstoreAddOutlined,
   BellFilled,
   CloseOutlined,
   MenuOutlined,
   SearchOutlined,
+  SettingFilled,
+  TranslationOutlined,
 } from '@ant-design/icons';
 import {IRoute} from '@/routes/listRoutes';
 import Link from 'next/link';
-import Footer from '@/components/Layout/Footer';
 import {MdArrowForwardIos} from 'react-icons/md';
 import Image from 'next/image';
 import Avatar from '@/components/Avatar';
@@ -31,7 +33,6 @@ export default function MainLayout({
 
   function check(rootRoute: string[]): boolean {
     for (var i = 0; i < rootRoute.length; i++) {
-      // console.log('item', rootRoute[i], 'path', routesSegs[i + 1]);
       if (rootRoute[i] !== routesSegs[i + 1]) {
         return false;
       }
@@ -46,7 +47,6 @@ export default function MainLayout({
   const extendSidebar = (a: boolean) => {
     setIsExtend(a);
   };
-  // console.log(pathName);
 
   return (
     <main className="bg-gray-50 min-h-[100vh] w-full dark:bg-gray-700">
@@ -141,27 +141,6 @@ export default function MainLayout({
             }
           >
             <ul>
-              <li>
-                <form action="#" method="GET" className="lg:hidden">
-                  <label htmlFor="mobile-search" className="sr-only">
-                    Search
-                  </label>
-                  <div className="relative">
-                    <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                      <SearchOutlined
-                        className={'w-5 h-5 text-gray-500'}
-                      ></SearchOutlined>
-                    </div>
-                    <input
-                      type="text"
-                      name="email"
-                      id="mobile-search"
-                      className="bg-gray-50 border border-gray-300 text-dark-500 text-sm font-light rounded-lg focus:ring-2 focus:ring-fuchsia-50 focus:border-fuchsia-300 block w-full pl-10 p-2.5 mb-2"
-                      placeholder="Search"
-                    />
-                  </div>
-                </form>
-              </li>
               {listRoutes.map((item, index) => (
                 <li className="" key={index}>
                   <Link href={item.path} onClick={openSidebar}>
@@ -194,6 +173,23 @@ export default function MainLayout({
               ))}
             </ul>
           </div>
+          <div
+            className={`${
+              isExtend || isHover ? '' : 'hidden'
+            } absolute bottom-0 left-0 right-0`}
+          >
+            <div className="px-6 py-6 flex justify-center gap-6 ">
+              <Link href={'/'} className="">
+                <AppstoreAddOutlined className="text-xl text-gray-400"></AppstoreAddOutlined>
+              </Link>
+              <Link href={'/'} className="">
+                <SettingFilled className="text-xl text-gray-400"></SettingFilled>
+              </Link>
+              <Link href={'/'} className="">
+                <TranslationOutlined className="text-xl text-gray-400"></TranslationOutlined>
+              </Link>
+            </div>
+          </div>
         </aside>
         <div
           className={`fixed inset-0 z-10 bg-gray-900 opacity-50 lg:hidden ${
@@ -207,7 +203,7 @@ export default function MainLayout({
           }`}
         >
           {children}
-          <Footer></Footer>
+          {/* <Footer></Footer> */}
         </div>
       </div>
     </main>

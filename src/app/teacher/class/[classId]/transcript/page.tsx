@@ -1,12 +1,8 @@
 import Avatar from '@/components/Avatar';
-import Button from '@/components/Button';
 import Card from '@/components/Card';
-import Filter from '@/components/Icons/Filter';
 import Soft from '@/components/Icons/Soft';
-import Select from '@/components/Select';
 import {
   CaretDownOutlined,
-  ExportOutlined,
   FilterOutlined,
   UploadOutlined,
 } from '@ant-design/icons';

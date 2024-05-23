@@ -14,7 +14,7 @@ export default function SearchInput() {
         <input
           data-autofocus="true"
           className="flex-auto border border-gray-300 rounded appearance-none bg-transparent pl-12 text-slate-900 outline-none placeholder:text-slate-400 focus:flex-none sm:text-sm dark:text-white pr-4"
-          placeholder="Find something..."
+          placeholder="Tìm kiếm..."
           type="search"
           value=""
         />

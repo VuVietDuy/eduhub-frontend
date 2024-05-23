@@ -1,13 +1,14 @@
-import {setToken} from '@/redux/slice/token.slice';
+import {deleteToken, setToken} from '@/redux/slice/token.slice';
+import {logoutUser} from '@/redux/slice/user.slice';
 import {store} from '@/redux/store';
-import axios, {AxiosRequestConfig} from 'axios';
+import axios from 'axios';
 
 const config = {
   BASE_URL: 'http://localhost:8000/',
-  TIME_OUT: 3000,
+  TIME_OUT: 30000,
 };
 
-const fetcher = axios.create({
+export const fetcher = axios.create({
   withCredentials: true,
   baseURL: config.BASE_URL,
   timeout: config.TIME_OUT,
@@ -23,7 +24,6 @@ fetcher.interceptors.request.use(
     return request;
   },
   function (error) {
-    // Xử lý lỗi
     return Promise.reject(error);
   },
 );
@@ -61,19 +61,24 @@ fetcher.interceptors.response.use(
             .then((res) => {
               const token = {accessToken: res.data.accessToken};
               store.dispatch(setToken(token));
+
               fetcher.defaults.headers.common[
                 'Authorization'
               ] = `Bearer ${token.accessToken}`;
               originalRequest.headers[
                 'Authorization'
               ] = `Bearer ${token.accessToken}`;
+
               processQueue(null, token.accessToken);
               resolve(fetcher(originalRequest));
             })
             .catch((err) => {
               processQueue(err, null);
-              store.dispatch({type: 'LOGOUT'});
-              // Router.push('/login');
+
+              store.dispatch(logoutUser());
+              store.dispatch(deleteToken());
+
+              window.location.href = '/login';
               reject(err);
             })
             .finally(() => {
@@ -97,5 +102,3 @@ fetcher.interceptors.response.use(
     return Promise.reject(error);
   },
 );
-
-export default fetcher;

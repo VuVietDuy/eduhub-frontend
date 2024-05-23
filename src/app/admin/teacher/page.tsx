@@ -5,6 +5,7 @@ import Dropdown from '@/components/Dropdown';
 import {MenuProps} from '@/components/MenuProps';
 import SearchInput from '@/components/SearchInput';
 import Table from '@/components/Table';
+import TableFooter from '@/components/TableFooter';
 import {UploadOutlined} from '@ant-design/icons';
 import Image from 'next/image';
 import React, {useState} from 'react';
@@ -61,6 +62,11 @@ export default function Teacher() {
       key: 'lastName',
     },
     {
+      title: 'Tên',
+      dataIndex: 'firstName',
+      key: 'firstName',
+    },
+    {
       title: 'Ngày sinh',
       dataIndex: 'dateOfBirth',
       key: 'firstName',
@@ -86,27 +92,43 @@ export default function Teacher() {
   ];
   const data = [
     {
-      teacherID: 'B21DCPT089',
+      teacherID: 'GV001',
       teacherCard: '/img/teacherCard.jpg',
       firstName: 'Duy',
       lastName: 'Vũ Viết Duy',
-      dateOfBirth: '10/10/2003',
+      dateOfBirth: '10/10/1999',
       gender: 1,
     },
     {
-      teacherID: 'B21DCPT089',
+      teacherID: 'GV002',
       teacherCard: '/img/teacherCard.jpg',
-      firstName: 'Duy',
-      lastName: 'Vũ Viết Duy',
-      dateOfBirth: '10/10/2003',
+      firstName: 'Dũng',
+      lastName: 'Nguyễn Tuấn',
+      dateOfBirth: '10/10/1991',
       gender: 1,
     },
     {
-      teacherID: 'B21DCPT089',
+      teacherID: 'GV003',
+      teacherCard: '/img/teacherCard.jpg',
+      firstName: 'Linh',
+      lastName: 'Trần Tuấn',
+      dateOfBirth: '10/10/1997',
+      gender: 1,
+    },
+    {
+      teacherID: 'GV004',
+      teacherCard: '/img/teacherCard.jpg',
+      firstName: 'Lâm',
+      lastName: 'Trần Xuân',
+      dateOfBirth: '10/10/1993',
+      gender: 1,
+    },
+    {
+      teacherID: 'GV005',
       teacherCard: '/img/teacherCard.jpg',
       firstName: 'Duy',
-      lastName: 'Vũ Viết Duy',
-      dateOfBirth: '10/10/2003',
+      lastName: 'Nguyễn Văn',
+      dateOfBirth: '10/10/2000',
       gender: 1,
     },
   ];
@@ -133,6 +155,7 @@ export default function Teacher() {
       </Card>
       <Card>
         <Table dataSource={data} columns={columns}></Table>
+        <TableFooter></TableFooter>
       </Card>
     </div>
   );

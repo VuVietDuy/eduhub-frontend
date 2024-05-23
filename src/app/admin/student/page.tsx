@@ -5,6 +5,7 @@ import Dropdown from '@/components/Dropdown';
 import {MenuProps} from '@/components/MenuProps';
 import SearchInput from '@/components/SearchInput';
 import Table from '@/components/Table';
+import TableFooter from '@/components/TableFooter';
 import {UploadOutlined} from '@ant-design/icons';
 import Image from 'next/image';
 import React, {useState} from 'react';
@@ -61,6 +62,11 @@ export default function Student() {
       key: 'lastName',
     },
     {
+      title: 'Tên',
+      dataIndex: 'firstName',
+      key: 'firstName',
+    },
+    {
       title: 'Ngày sinh',
       dataIndex: 'dateOfBirth',
       key: 'firstName',
@@ -69,7 +75,7 @@ export default function Student() {
       title: 'Giới tính',
       dataIndex: 'gender',
       key: 'gender',
-      render: (data: any) => <span>{data ? 'Nam' : 'Nữ'}</span>,
+      render: (data: any) => <span>{data.gender ? 'Nam' : 'Nữ'}</span>,
     },
     {
       title: 'Thao tác',
@@ -88,7 +94,31 @@ export default function Student() {
   ];
   const data = [
     {
-      studentID: 'B21DCPT089',
+      studentID: 'A1K55001',
+      studentCard: '/img/studentCard.jpg',
+      firstName: 'Duy',
+      lastName: 'Trần Văn',
+      dateOfBirth: '10/10/2003',
+      gender: 1,
+    },
+    {
+      studentID: 'A1K55002',
+      studentCard: '/img/studentCard.jpg',
+      firstName: 'Hoàng',
+      lastName: 'Nguyễn Văn',
+      dateOfBirth: '10/10/2003',
+      gender: 1,
+    },
+    {
+      studentID: 'A1K55003',
+      studentCard: '/img/studentCard.jpg',
+      firstName: 'Dung',
+      lastName: 'Nguyễn Thị',
+      dateOfBirth: '10/10/2003',
+      gender: 0,
+    },
+    {
+      studentID: 'A1K55004',
       studentCard: '/img/studentCard.jpg',
       firstName: 'Duy',
       lastName: 'Vũ Viết Duy',
@@ -96,15 +126,7 @@ export default function Student() {
       gender: 1,
     },
     {
-      studentID: 'B21DCPT089',
-      studentCard: '/img/studentCard.jpg',
-      firstName: 'Duy',
-      lastName: 'Vũ Viết Duy',
-      dateOfBirth: '10/10/2003',
-      gender: 1,
-    },
-    {
-      studentID: 'B21DCPT089',
+      studentID: 'A1K55005',
       studentCard: '/img/studentCard.jpg',
       firstName: 'Duy',
       lastName: 'Vũ Viết Duy',
@@ -135,6 +157,7 @@ export default function Student() {
       </Card>
       <Card>
         <Table dataSource={data} columns={columns}></Table>
+        <TableFooter total={600}></TableFooter>
       </Card>
     </div>
   );

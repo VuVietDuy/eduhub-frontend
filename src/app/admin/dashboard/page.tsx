@@ -44,15 +44,15 @@ export default function Dashboard(): JSX.Element {
     '30',
   ]);
   const [dataChart, setDataChart] = useState<any>();
-  const chartType: ChartType = 'line';
+  const chartType: ChartType = 'bar';
 
   let bookingCounter = [
-    1, 2, 2, 5, 4, 7, 5, 4, 4, 6, 4, 7, 6, 6, 4, 3, 8, 2, 3, 4, 3, 1, 3, 2, 4,
+    1, 2, 2, 5, 4, 7, 5, 4, 4, 6, 4, 7, 6, 6, 4, 3, 8, 2, 3, 4, 3, 6, 3, 2, 4,
     5, 3, 5, 3, 4,
   ];
 
   let bookingSalesInMonth = [
-    1, 2, 2, 5, 4, 7, 5, 4, 5, 5, 6, 6, 6, 7, 4, 4, 6, 2, 4, 3, 3, 2, 1, 2, 4,
+    1, 2, 2, 5, 4, 7, 5, 4, 5, 5, 6, 6, 6, 7, 4, 4, 6, 2, 4, 3, 3, 2, 6, 2, 4,
     4, 4, 6, 3, 3,
   ];
 
@@ -86,7 +86,7 @@ export default function Dashboard(): JSX.Element {
       datasets: [
         {
           backgroundColor: gradient1,
-          label: 'Number of registration: day',
+          label: 'Lường bài làm: lượt',
           data: bookingCounter,
           fill: true,
           borderWidth: 2,
@@ -97,7 +97,7 @@ export default function Dashboard(): JSX.Element {
         },
         {
           backgroundColor: gradient2,
-          label: 'Revenue in day: Triệu vnđ',
+          label: 'Lượng truy cập: lượt',
           data: bookingSalesInMonth,
           fill: true,
           borderWidth: 2,
@@ -132,7 +132,7 @@ export default function Dashboard(): JSX.Element {
   return (
     <div className="m-6">
       <div className="grid grid-cols-1 gap-6 mb-6 w-full xl:grid-cols-2 2xl:grid-cols-4">
-        <div className="bg-white shadow-lg shadow-gray-200 rounded-2xl p-4 dark:text-white dark:bg-gray-800 dark:shadow-gray-900">
+        <div className="bg-white shadow-lg shadow-gray-200 rounded-[8px] p-4 dark:text-white dark:bg-gray-800 dark:shadow-gray-900">
           <div className="flex items-center">
             <div className="inline-flex flex-shrink-0 justify-center items-center w-12 h-12 text-white bg-gradient-to-br from-primary-500 to-blue-500 rounded-lg shadow-md shadow-gray-300 dark:shadow-gray-900">
               <ProjectOutlined />
@@ -141,59 +141,59 @@ export default function Dashboard(): JSX.Element {
               <span className="text-2xl font-bold leading-none text-gray-900 dark:text-gray-100">
                 600
               </span>
-              <h3 className="text-base font-normal text-gray-500">Số lượng</h3>
+              <h3 className="text-base font-normal text-gray-500">
+                Số lượng học sinh
+              </h3>
             </div>
             <div className="flex flex-1 justify-end items-center ml-5 w-0 text-base font-bold text-green-500">
-              +16%
               <ProjectOutlined />
             </div>
           </div>
         </div>
-        <div className="bg-white shadow-lg shadow-gray-200 rounded-2xl p-4 dark:text-white dark:bg-gray-800 dark:shadow-gray-900">
+        <div className="bg-white shadow-lg shadow-gray-200 rounded-[8px] p-4 dark:text-white dark:bg-gray-800 dark:shadow-gray-900">
           <div className="flex items-center">
             <div className="inline-flex flex-shrink-0 justify-center items-center w-12 h-12 text-white bg-gradient-to-br from-primary-500 to-blue-500 rounded-lg shadow-md shadow-gray-300 dark:shadow-gray-900">
               <LayoutOutlined />
             </div>
             <div className="flex-shrink-0 ml-3">
               <span className="text-2xl font-bold leading-none text-gray-900 dark:text-gray-100">
-                2,300
+                50
               </span>
               <h3 className="text-base font-normal text-gray-500">
-                Trung bình điểm
+                Số lượng giáo viên
               </h3>
             </div>
             <div className="flex flex-1 justify-end items-center ml-5 w-0 text-base font-bold text-green-500">
-              +3%
               <LayoutOutlined />
             </div>
           </div>
         </div>
-        <div className="bg-white shadow-lg shadow-gray-200 rounded-2xl p-4 dark:text-white dark:bg-gray-800 dark:shadow-gray-900">
+        <div className="bg-white shadow-lg shadow-gray-200 rounded-[8px] p-4 dark:text-white dark:bg-gray-800 dark:shadow-gray-900">
           <div className="flex items-center">
             <div className="inline-flex flex-shrink-0 justify-center items-center w-12 h-12 text-white bg-gradient-to-br from-primary-500 to-blue-500 rounded-lg shadow-md shadow-gray-300 dark:shadow-gray-900">
               <GlobalOutlined />
             </div>
             <div className="flex-shrink-0 ml-3">
               <span className="text-2xl font-bold leading-none text-gray-900 dark:text-gray-100">
-                +3,462
+                62
               </span>
               <h3 className="text-base font-normal text-gray-500">
-                Lượng truy cập
+                Lượng đang truy cập
               </h3>
             </div>
-            <div className="flex flex-1 justify-end items-center ml-5 w-0 text-base font-bold text-red-500">
+            <div className="flex flex-1 justify-end items-center ml-5 w-0 text-base font-bold text-green-500">
               +2%
             </div>
           </div>
         </div>
-        <div className="bg-white shadow-lg shadow-gray-200 rounded-2xl p-4 dark:text-white dark:bg-gray-800 dark:shadow-gray-900">
+        <div className="bg-white shadow-lg shadow-gray-200 rounded-[8px] p-4 dark:text-white dark:bg-gray-800 dark:shadow-gray-900">
           <div className="flex items-center">
             <div className="inline-flex flex-shrink-0 justify-center items-center w-12 h-12 text-white bg-gradient-to-br from-primary-500 to-blue-500 rounded-lg shadow-md shadow-gray-300 dark:shadow-gray-900">
               <BarChartOutlined />
             </div>
             <div className="flex-shrink-0 ml-3">
               <span className="text-2xl font-bold leading-none text-gray-900 dark:text-gray-100">
-                430
+                1,430
               </span>
               <h3 className="text-base font-normal text-gray-500">
                 Tổng lượng truy cập tháng này

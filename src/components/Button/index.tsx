@@ -14,7 +14,7 @@ export default function Button(props: IProps) {
   const {icon, className, htmlType, type, size, onClick, children} = props;
   return (
     <button
-      className={`${className} flex items-center text-white bg-${
+      className={`${className} flex justify-center items-center gap-2 text-white bg-${
         type || 'blue'
       }-700 hover:bg-${type || 'blue'}-800 focus:ring-4 focus:ring-${
         type || 'blue'

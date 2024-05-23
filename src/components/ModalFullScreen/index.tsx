@@ -3,7 +3,7 @@ import React from 'react';
 
 interface IProps {
   children?: React.ReactNode;
-  title?: string;
+  title?: React.ReactNode;
   open: boolean | undefined;
   onOk?: () => void;
   onCancel?: () => void;

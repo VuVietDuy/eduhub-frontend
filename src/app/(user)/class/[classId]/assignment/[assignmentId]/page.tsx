@@ -1,41 +1,79 @@
 import Button from '@/components/Button';
 import Card from '@/components/Card';
 import Comment from '@/components/Comment';
+import Image from 'next/image';
 import React from 'react';
 
 export default function Asignment() {
+  const value = `
+  <h4>Hi all</h4> 
+    <ul>
+      <li>Các bạn đến thi theo lịch trên qldt</li>
+      <li>Phòng máy dự kiến trong khu vực phòng</li>
+      <li>Vì submit trên hệ thống code ptit, thời gian làm bài có thể tăng lên 90p.</li>
+      <li>Các bạn chỉ thi phần bài tập, không thi phần lí thuyết vấn đáp, đề bài tập bốc ngẫu nhiên trong NHCHT</li>
+      <li style="line-height: 1.1;">File submit có thể là file word/pdf đều được, nhưng phải nén thành file .zip hoặc .rar</li>
+      <li style="line-height: 1.1;">Trao đổi nói chuyện với các bạn khác&nbsp;</li>
+      <li style="line-height: 1.1;">Nhìn màn hình các bạn khác&nbsp;</li>
+      <li style="line-height: 1.1;">Vào các thư mục chia sẻ trong máy tính&nbsp;</li>
+      <li style="line-height: 1.1;">cắm USB vào máy.&nbsp;</li>
+      <li style="line-height: 1.1;">Vào trình duyệt trên máy&nbsp;</li>
+      <li style="line-height: 1.1;">Chia sẻ bài làm hay nhận chia sẻ từ người khác.</li>
+  </ul>
+  `;
+
+  const quiz = {
+    title: 'Kiểm tra học kỳ I',
+    img: '/pattern_react.jpg',
+    tag: ['Hàm số', 'Tích phân', 'Đạo hàm'],
+  };
   return (
     <div className="p-6 grid grid-cols-12 gap-6">
       <Card className="col-span-12 md:col-span-8">
-        <h2>Kiểm tra 15 phút</h2>
-        <div>
-          <span>Manh Hung Nguyen •</span>
-          <span> 8 thg 5 (Đã chỉnh sửa 13 thg 5)</span>
+        <h2 className="text-3xl font-semibold text-transparent bg-clip-text bg-gradient-to-r to-blue-400 from-blue-900">
+          Kiểm tra 15 phút
+        </h2>
+        <div className="flex items-center">
+          <span className="text-sm text-gray-500">
+            {' '}
+            8 thg 5 (Đã chỉnh sửa 13 thg 5)
+          </span>
         </div>
         <div>Đến hạn 15:59 11 thg 5</div>
-        <hr />
-        <p>
-          Báo cáo tổng hợp BTL phần cá nhân của từng người, chỉ trình bày diễn
-          giải và kết quả của các mục sau (đánh số đúng thứ tự như danh mục
-          này): - Trang bìa yêu cầu như các buổi đã nộp. - Tên file yêu cầu như
-          các buổi đã nộp. 1. Biểu đồ UC chi tiết + mô tả các UC của modul 2.
-          Kịch bản chuẩn 3. Biểu đồ thực thể pha phân tích của modul 4. Biểu đồ
-          lớp đầy đủ pha phân tích của modul 5. Biểu đồ tuần tự pha phân tích
-          của modul 6. Biểu đồ thiết kế lớp thực thể của modul 7. Biểu đồ thiết
-          kế CSDL của modul 8. TK giao diện và biểu đồ lớp thiết kế chi tiết đầy
-          đủ của modul 9. Biểu đồ tuần tự pha thiết kế của modul 10. Test plan
-          và test case chuẩn cho test hộp đen của modul
-        </p>
+        <hr className="border-blue-500 my-4" />
+        <div className="markdown">
+          <div dangerouslySetInnerHTML={{__html: value}}></div>
+        </div>
       </Card>
       <div className="col-span-12 md:col-span-4">
         <Card>
-          <h3>Bài kiểm tra</h3>
-          <Button>Làm bài</Button>
+          <h3 className="text-xl text-transparent bg-clip-text bg-gradient-to-r to-blue-400 from-blue-900">
+            Bài kiểm tra
+          </h3>
+          <div className="h-20 w-full border rounded-lg overflow-hidden flex justify-between pr-6 mt-6 mb-6">
+            <div className=" flex items-center justify-center">
+              <div className="overflow-hidden h-28 object-cover flex items-center justify-center">
+                <Image src={quiz.img} width={128} height={78} alt=""></Image>
+              </div>
+              <div className="ml-4 ">
+                <h3 className="font-semibold text-xl">{quiz.title}</h3>
+                {quiz.tag.map((itm, idx) => (
+                  <span className="badge-blue">{itm}</span>
+                ))}
+              </div>
+            </div>
+            <div className="flex items-center">
+              <button
+                type="button"
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              ></button>
+            </div>
+          </div>
+          <Button className="w-full">Làm bài</Button>
         </Card>
       </div>
       <div className="col-span-12 md:col-span-8">
-        <Comment></Comment>
-        <article className="p-6 text-base bg-white rounded-lg dark:bg-gray-900">
+        <article className="p-6 text-base bg-white border rounded-lg dark:bg-gray-900 mb-6">
           <footer className="flex justify-between items-center mb-2">
             <div className="flex items-center">
               <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold">
@@ -44,7 +82,7 @@ export default function Asignment() {
                   src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
                   alt="Michael Gough"
                 />
-                Michael Gough
+                Trần Xuân Lâm
               </p>
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 <time title="February 8th, 2022">Feb. 8, 2022</time>
@@ -102,36 +140,9 @@ export default function Asignment() {
               </ul>
             </div>
           </footer>
-          <p className="text-gray-500 dark:text-gray-400">
-            Very straight-to-point article. Really worth time reading. Thank
-            you! But tools are just the instruments for the UX designers. The
-            knowledge of the design tools are as important as the creation of
-            the design strategy.
-          </p>
-          <div className="flex items-center mt-4 space-x-4">
-            <button
-              type="button"
-              className="flex items-center text-sm text-gray-500 hover:underline dark:text-gray-400 font-medium"
-            >
-              <svg
-                className="mr-1.5 w-3.5 h-3.5"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 20 18"
-              >
-                <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M5 5h5M5 8h2m6-3h2m-5 3h6m2-7H2a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h3v5l5-5h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1Z"
-                />
-              </svg>
-              Reply
-            </button>
-          </div>
+          <p className="text-gray-500 dark:text-gray-400">Đề thi rất hay ạ</p>
         </article>
+        <Comment></Comment>
       </div>
     </div>
   );
