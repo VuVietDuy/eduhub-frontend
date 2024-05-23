@@ -51,10 +51,12 @@ export default function HomeSection2() {
                 </svg>
               </div>
               <h2 className="font-semibold text-xl text-white theme-dar">
-                Sử mệnh mang lại hiệu quả ôn thi, học tập tốt nhất dành cho các bạn học sinh, sinh viên
+                Sử mệnh mang lại hiệu quả ôn thi, học tập tốt nhất dành cho các
+                bạn học sinh, sinh viên
               </h2>
-              <p className=" text-white text-lg mt-3">
-                Cộng đồng sinh viên, học sinh trên khắp cả nước cùng tham gia học tập
+              <p className=" text-white text-lg text-center mt-3">
+                Cộng đồng sinh viên, học sinh trên khắp cả nước cùng tham gia
+                học tập
               </p>
             </div>
           </div>

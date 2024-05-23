@@ -3,22 +3,25 @@
 import {ChangeEvent, useEffect, useRef, useState} from 'react';
 import {Editor} from '@tinymce/tinymce-react';
 import './textEditor2.css';
+import {IAnswer} from '@/redux/types/question.type';
 
 export default function TextEditor2({
-  questionOrder,
   value,
   setValue,
   initialValue,
   answerOrder,
-}: {
+  category,
+}: // onChange,
+{
   questionOrder?: number;
-  value: any;
+  value: string;
   setValue: any;
   answerOrder?: number;
   initialValue?: string;
+  category: string;
+  // onChange?: any;
 }) {
   const editorRef = useRef<any>(null);
-
   return (
     <>
       <Editor
@@ -26,19 +29,31 @@ export default function TextEditor2({
         onInit={(_evt, editor) => (editorRef.current = editor)}
         initialValue={initialValue}
         value={value}
-        onEditorChange={(newValue, editor) => {
-          if (questionOrder) {
-            setValue(newValue);
-          } else {
-            if (answerOrder) {
-              const order = answerOrder;
-              setValue((value: any) => ({
-                ...value,
-                [order]: {order: order, value: newValue},
-              }));
+        onEditorChange={
+          (newValue, editor) => {
+            if (category === 'answer') {
+              const index = answerOrder;
+              setValue((prevState: any) => {
+                let newState = prevState;
+                console.log('check newState', newState);
+
+                // newState?.map((item: any) => {
+                //   if (item.id === index) {
+                //     item.content = newValue;
+                //   }
+                // });
+                return newState;
+              });
+              console.log('check value: ', value);
+            } else {
+              setValue(newValue);
+              console.log('hello');
+              console.log('check value: ', value);
             }
           }
-        }}
+          // }
+          // onChange
+        }
         init={{
           encoding: 'utf-8',
           width: '100%',
@@ -64,7 +79,7 @@ export default function TextEditor2({
           ],
           toolbar:
             // 'undo redo | blocks | ' +
-            'fontfamily fontsize |' +
+            'blocks fontfamily fontsize |' +
             'bold italic forecolor underline charmap | alignleft aligncenter ' +
             ' alignright alignjustify | lineheight | bullist numlist |table  ' +
             '||' +
@@ -74,9 +89,9 @@ export default function TextEditor2({
         }}
       />
 
-      {/* <div className="preview">
+      <div className="">
         <div className="" dangerouslySetInnerHTML={{__html: value}} />
-      </div> */}
+      </div>
     </>
   );
 }

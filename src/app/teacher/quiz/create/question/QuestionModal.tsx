@@ -8,6 +8,7 @@ import {FaUpload} from 'react-icons/fa6';
 import {FiMinusCircle, FiPlusCircle} from 'react-icons/fi';
 import {MdDelete} from 'react-icons/md';
 import Answer from './Answer';
+import {IAnswer} from '../../../../../redux/types/question.type';
 
 const questionTypeMenu = [
   {
@@ -24,14 +25,10 @@ const questionTypeMenu = [
   },
   {
     id: 4,
-    name: 'Tự luận',
+    name: 'Câu tự luận ngắn',
   },
 ];
 
-interface IAnswer {
-  id: number;
-  content: string;
-}
 export default function QuestionModal({
   isModalOpen,
   setIsModalOpen,
@@ -42,77 +39,56 @@ export default function QuestionModal({
   const [questionType, setQuestionType] = useState<number>(1);
   const [questionContent, setQuestionContent] = useState<string>('');
   const [explainContent, setExplainContent] = useState<string>('');
-  // const [answerQuantity, setAnswerQuantity] = useState<number>(4);
-  const [correctAnswers, setCorrectAnswers] = useState<any>({
-    id: 0,
-  });
-  const [answerList, setAnswerList] = useState<any>([]);
-  const [answerContent, setAnswerContent] = useState<any>(null);
+  const [paraAnswer, setParaAnswer] = useState<string>('');
+  const [answerList, setAnswerList] = useState<IAnswer[]>([
+    {
+      id: 0,
+      content: '',
+      isCorrect: false,
+    },
+    {
+      id: 1,
+      content: '',
+      isCorrect: false,
+    },
+    {
+      id: 2,
+      content: '',
+      isCorrect: false,
+    },
+    {
+      id: 3,
+      content: '',
+      isCorrect: false,
+    },
+  ]);
+  // const [answerContent, setAnswerContent] = useState<any>(null);
 
   const handleDeleteAnswer = (index: number) => {
-    const realIndex = index + 1;
     console.log('check index', index);
     console.log('check item', answerList[index]);
     console.log('check answerList', answerList);
+
     const newAnswerList = answerList.filter(
-      (item: any, index: any) => item !== realIndex,
+      (item: IAnswer) => item.id !== index,
     );
-    console.log('check new:', answerList);
+    console.log('check new:', newAnswerList);
+
     setAnswerList(newAnswerList);
-    // setAnswerQuantity((prevState) => prevState - 1);
-    console.log(typeof answerContent);
-    const newAnswerContent = Object.keys(answerContent).reduce(
-      (newObj: any, key: any) => {
-        let stringIndex = realIndex.toString();
-        console.log('check newObj[key] ', newObj[key]);
-        console.log('check answerContent[key]', answerContent[key]);
-        if (key === stringIndex) {
-          newObj[key] = answerContent[key];
-        }
-      },
-      {},
-    );
-    setAnswerContent(newAnswerContent);
   };
 
   const handleAddAnswer = () => {
     // setAnswerQuantity((prevState) => prevState + 1);
-  };
-
-  useEffect(() => {
-    // for (var i = 0; i < 4; i++) {
-    const newState = answerList;
-    console.log('first', newState);
-    // newState.push(
-    //   <Answer
-    //     // key={i}
-    //     answerContent={answerContent}
-    //     setAnswerContent={setAnswerContent}
-    //     setCorrectAnswers={setCorrectAnswers}
-    //     correctAnswers={correctAnswers}
-    //     // index={i}
-    //     // answerOrder={i + 1}
-    //     handleDeleteAnswer={handleDeleteAnswer}
-    //   />,
-    // );
-    setAnswerList((prevState: any) => {
-      console.log('second', prevState);
-      return [
-        ...prevState,
-        <Answer
-          // key={i}
-          answerContent={answerContent}
-          setAnswerContent={setAnswerContent}
-          setCorrectAnswers={setCorrectAnswers}
-          correctAnswers={correctAnswers}
-          // index={i}
-          // answerOrder={i + 1}
-          handleDeleteAnswer={handleDeleteAnswer}
-        />,
-      ];
+    setAnswerList((prevState: IAnswer[]) => {
+      const newAnswerList = [...prevState];
+      newAnswerList.push({
+        id: newAnswerList.length,
+        content: '',
+        isCorrect: false,
+      });
+      return newAnswerList;
     });
-    // }
-  }, []);
+  };
 
   //Image upload
   const [imgUploaded, setImgUploaded] = useState<ArrayBuffer | null | string>(
@@ -141,19 +117,18 @@ export default function QuestionModal({
   };
 
   // console.log('check cac đáp án: ', answerContent);
-  // console.log('check đáp án đúng: ', correctAnswers);
+  console.log('check câu hỏi: ', questionContent);
   console.log('check list:', answerList);
-  ``;
   return (
     <>
       <Modal
         title="TRÌNH SOẠN THẢO CÂU HỎI"
-        width="w-[70%]"
+        width="md:w-[85%] lg:w-[70%] w-[95%]"
         height="h-[calc(100vh-40px)]]"
         open={isModalOpen.isOpen}
         onCancel={setIsModalOpen}
       >
-        <form className="px-3">
+        <form className="md:px-3">
           <b className="">Loại câu hỏi</b>
           <ul className="mt-2 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
             {questionTypeMenu.map((item, index) => (
@@ -184,13 +159,14 @@ export default function QuestionModal({
           </ul>
         </form>
 
-        <div className="col-span-1 px-3">
+        <div className="col-span-1 md:px-3">
           <p className="mb-2 font-bold" style={{marginBottom: '10px'}}>
             Nội dung câu hỏi
           </p>
           {/* <TextEditor3 /> */}
           {/* <TextEditor placeholder="Nhập nội dung câu hỏi" /> */}
           <TextEditor2
+            category="question"
             value={questionContent}
             setValue={setQuestionContent}
             questionOrder={1}
@@ -198,8 +174,10 @@ export default function QuestionModal({
             // onSubmit=
           />
         </div>
+
+        {/* File upload */}
         <div
-          className="grid grid-cols-2 gap-4 mt-14 px-3"
+          className="grid grid-cols-2 gap-4 mt-14 md:px-3"
           style={{marginTop: '24px'}}
         >
           <div className="col-span-1">
@@ -226,7 +204,9 @@ export default function QuestionModal({
                     <div className="flex flex-col items-center justify-center h-full">
                       <div className="flex flex-col justify-center items-center">
                         <FaUpload className="text-4xl text-gray-600 dark:text-gray-200 " />
-                        <p className="text-lg mt-3">Nhấn để thêm ảnh</p>
+                        <p className="text-lg mt-3 align-middle text-center">
+                          Nhấn để thêm ảnh
+                        </p>
                       </div>
                     </div>
                     <input
@@ -264,7 +244,9 @@ export default function QuestionModal({
                     <div className="flex flex-col items-center justify-center h-full">
                       <div className="flex flex-col justify-center items-center">
                         <FaUpload className="text-4xl text-gray-600 dark:text-gray-200 " />
-                        <p className="text-lg mt-3">Nhấn để thêm audio</p>
+                        <p className="text-lg mt-3 text-center">
+                          Nhấn để thêm audio
+                        </p>
                       </div>
                     </div>
                     <input
@@ -282,45 +264,146 @@ export default function QuestionModal({
           </div>
         </div>
 
+        {/* Answer section  */}
         <div className="mt-8" style={{marginTop: '24px'}}>
-          <p className="mb-2 px-3 font-bold" style={{marginBottom: '10px'}}>
-            Tích chọn đáp án đúng
-          </p>
+          {questionType === 1 || questionType === 2 || questionType === 3 ? (
+            <p
+              className="mb-1 md:px-3 font-bold"
+              style={{marginBottom: '10px'}}
+            >
+              Tích chọn đáp án đúng
+            </p>
+          ) : (
+            <p
+              className="mb-1 md:px-3 font-bold"
+              style={{marginBottom: '10px'}}
+            >
+              Nhập câu trả lời
+            </p>
+          )}
           <div>
             {questionType === 1 && (
               <div>
-                {answerList}
-                {/* {answerList.map((item: any, index: any) => {
+                {/* {answerList} */}
+                {answerList?.map((item: IAnswer, index: number) => {
                   return (
                     <Answer
+                      type={1}
                       key={index}
-                      answerContent={answerContent}
-                      setAnswerContent={setAnswerContent}
-                      setCorrectAnswers={setCorrectAnswers}
-                      correctAnswers={correctAnswers}
+                      answer={item}
+                      setAnswerList={setAnswerList}
                       index={index}
-                      answerOrder={item}
                       handleDeleteAnswer={handleDeleteAnswer}
                     />
                   );
-                })} */}
+                })}
+              </div>
+            )}
+            {questionType === 2 && (
+              <div>
+                {/* {answerList} */}
+                {answerList?.map((item: IAnswer, index: number) => {
+                  return (
+                    <Answer
+                      type={2}
+                      key={index}
+                      answer={item}
+                      setAnswerList={setAnswerList}
+                      index={index}
+                      handleDeleteAnswer={handleDeleteAnswer}
+                    />
+                  );
+                })}
+              </div>
+            )}
+            {questionType === 3 && (
+              <div className="md:px-3  flex items-center gap-8">
+                <div className=" flex items-center gap-3">
+                  <input
+                    type="radio"
+                    id="isCorrect"
+                    // checked={answer.isCorrect}
+                    name=""
+                    className="w-6 h-6  text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500"
+                    onChange={() => {
+                      // console.log('check radio: ', index);
+                      // setAnswerList((prevState: IAnswer[]) => {
+                      //   let newState = prevState;
+                      //   newState.map((item: IAnswer) => {
+                      //     if (item.id === index) {
+                      //       item.isCorrect = true;
+                      //     }
+                      //   });
+                      //   return newState;
+                      // });
+                    }}
+                  />
+                  <label
+                    htmlFor="isCorrect"
+                    className="block col-span-1  text-sm font-medium text-gray-600 dark:text-gray-300 "
+                  >
+                    Đúng
+                  </label>
+                </div>
+                <div className=" flex items-center gap-3">
+                  <input
+                    type="radio"
+                    id="isIncorrect"
+                    // checked={answer.isCorrect}
+                    name=""
+                    className="w-6 h-6 text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500"
+                    onChange={() => {
+                      // console.log('check radio: ', index);
+                      // setAnswerList((prevState: IAnswer[]) => {
+                      //   let newState = prevState;
+                      //   newState.map((item: IAnswer) => {
+                      //     if (item.id === index) {
+                      //       item.isCorrect = true;
+                      //     }
+                      //   });
+                      //   return newState;
+                      // });
+                    }}
+                  />
+                  <label
+                    htmlFor="isIncorrect"
+                    className="block col-span-1 text-sm font-medium text-gray-600 dark:text-gray-300 "
+                  >
+                    Sai
+                  </label>
+                </div>
+              </div>
+            )}
+            {questionType === 4 && (
+              <div className="md:px-3  ">
+                <TextEditor2
+                  category="essayAnswer"
+                  value={paraAnswer}
+                  setValue={setParaAnswer}
+                />
               </div>
             )}
           </div>
-          <button
-            className="px-3 flex items-center gap-2 text-blue-500"
-            onClick={handleAddAnswer}
-          >
-            <FiPlusCircle className="text-3xl" />
+          {(questionType === 1 || questionType === 2) && (
+            <button
+              className="px-3 flex items-center gap-2 text-blue-500"
+              onClick={handleAddAnswer}
+            >
+              <FiPlusCircle className="text-3xl" />
 
-            <span className="font-semibold">Thêm câu trả lời</span>
-          </button>
+              <span className="font-semibold">Thêm câu trả lời</span>
+            </button>
+          )}
         </div>
-        <div className="mt-8" style={{marginTop: '24px'}}>
-          <p className="mb-2 px-3 font-bold" style={{marginBottom: '10px'}}>
+        <div className="mt-8 md:px-3" style={{marginTop: '24px'}}>
+          <p className="mb-2  font-bold" style={{marginBottom: '10px'}}>
             Giải thích đáp án
           </p>
-          <TextEditor2 value={explainContent} setValue={setExplainContent} />
+          <TextEditor2
+            category="explaination"
+            value={explainContent}
+            setValue={setExplainContent}
+          />
         </div>
       </Modal>
     </>

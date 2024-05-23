@@ -12,6 +12,8 @@ import {BsFillQuestionOctagonFill} from 'react-icons/bs';
 import {IoIosCheckmarkCircle} from 'react-icons/io';
 import {RiCloseCircleFill} from 'react-icons/ri';
 import QuestionPartModal from './QuestionPartModal';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../../../../redux/store';
 
 const questionLevel = ['Dễ (0 - 5đ)', 'Trung bình (6 - 8đ)', 'Khó (9 - 10đ)'];
 
@@ -37,12 +39,17 @@ export default function page() {
   const [selectedQuestionPart, setSelectedQuestionPart] = useState<any>(
     questionPart[0],
   );
+
+  const questionList = useSelector(
+    (state: RootState) => state.question.questionList,
+  );
+  console.log(questionList);
   return (
     <div className={`min-h-[380px] `}>
-      <div className={`grid grid-cols-3 gap-6 `}>
-        <div className="col-span-1 min-h-[380px]  border-r border-gray-300 pr-6 ">
+      <div className={`grid grid-cols-3 gap-6 md:mt-3`}>
+        <div className="md:col-span-1 col-span-3 h-fit md:h-[430px]  md:border-r border-gray-300 md:pr-6  pr-0 ">
           <div className="flex justify-between items-center">
-            <span className="text-gray-700 text-md flex gap-2 items-center font-bold">
+            <span className="text-gray-700 dark:text-gray-300 text-md flex gap-2 items-center font-bold ">
               <AiOutlineMenuUnfold className="text-lg" />
               Phần thi
             </span>
@@ -69,7 +76,8 @@ export default function page() {
                 return (
                   <div
                     className={` flex items-center justify-between p-3 cursor-pointer ${
-                      selectedQuestionPart.title === item.title && 'bg-gray-200'
+                      selectedQuestionPart.title === item.title &&
+                      'bg-gray-200 dark:bg-gray-600'
                     } `}
                     key={index}
                     onClick={() => setSelectedQuestionPart(item)}
@@ -112,9 +120,9 @@ export default function page() {
               })}
           </div>
         </div>
-        <div className="col-span-2 min-h-[380px]  max-h-[380px] overflow-y-auto ">
+        <div className="md:col-span-2 col-span-3 md:h-[430px]  overflow-y-auto ">
           <div className="flex justify-between items-start">
-            <div className=" flex gap-2 items-center font-bold leading-10 text-gray-700 text-md">
+            <div className=" flex gap-2 items-center font-bold leading-10 text-gray-700 dark:text-gray-300 text-md">
               <BsFillQuestionOctagonFill className="text-lg" />
               Danh sách câu hỏi
             </div>
@@ -135,15 +143,15 @@ export default function page() {
             </div>
           </div>
 
-          {listQuestion.length > 0 && (
+          {questionList.length > 0 && (
             <div className="mt-4 flex flex-wrap gap-2">
-              {listQuestion.map((item, index) => {
+              {questionList.map((item, index) => {
                 return (
                   <button
                     className=" px-6 py-1 rounded-lg text-white bg-blue-600"
                     key={index}
                   >
-                    {item}
+                    {item.order}
                   </button>
                 );
               })}
@@ -156,7 +164,16 @@ export default function page() {
                 <p className="font-bold">Câu 1 (1 đáp án)</p>
               </div>
               <div>
-                <button>
+                <button
+                  onClick={() => {
+                    console.log('ditme');
+                    setIsModalOpen({
+                      isOpen: true,
+                      type: 'question',
+                      title: 'CHỈNH SỬA CÂU HỎI',
+                    });
+                  }}
+                >
                   <FaEdit className="mr-3 text-xl text-blue-500" />
                 </button>
                 <button>
@@ -183,23 +200,30 @@ export default function page() {
               </p>
             </div>
             <div className=" grid md:grid-cols-2 grid-flow-row gap-4 px-3 ">
-              <div className="md:col-span-1 mb-2 flex items-center">
-                <IoIosCheckmarkCircle className="text-xl mr-2 text-green-500" />
-                <p>Lorem ipsum, dolor sit amet consectetu.</p>
+              <div className="md:col-span-1 mb-2 flex items-center flex-nowrap">
+                <div>
+                  <IoIosCheckmarkCircle className="block text-xl mr-2 text-green-500" />
+                </div>
+                <p className="inline-block">
+                  Lorem ipsum, dolor sit amet consectetu. Lorem ipsum dolor sit
+                  amet consectetur, adipisicing elit.
+                </p>
               </div>
-              <div className="md:col-span-1 mb-2 flex items-center">
-                <RiCloseCircleFill className="text-xl mr-2 text-red-500" />
+              <div className="md:col-span-1 mb-2 flex items-center flex-nowrap">
+                <RiCloseCircleFill className="block text-xl mr-2 text-red-500" />
 
-                <p>Lorem ipsum dolor sit am</p>
+                <p className="inline-block">Lorem ipsum dolor sit am</p>
               </div>
-              <div className="md:col-span-1 mb-2 flex items-center">
-                <RiCloseCircleFill className="text-xl mr-2 text-red-500" />
+              <div className="md:col-span-1 mb-2 flex items-center flex-nowrap">
+                <RiCloseCircleFill className="block text-xl mr-2 text-red-500" />
 
-                <p>Lorem ipsum dolor sit am</p>
+                <p className="inline-block">Lorem ipsum dolor sit am</p>
               </div>
-              <div className="md:col-span-1 mb-2 flex items-center">
-                <RiCloseCircleFill className="text-xl mr-2 text-red-500" />
-                <p>Lorem ipsum dolor sit amet cont. !</p>
+              <div className="md:col-span-1 mb-2 flex items-center flex-nowrap">
+                <RiCloseCircleFill className="block text-xl mr-2 text-red-500" />
+                <p className="inline-block">
+                  Lorem ipsum dolor sit amet cont. !
+                </p>
               </div>
             </div>
           </div>
@@ -220,6 +244,20 @@ export default function page() {
       {isModalOpen.isOpen &&
         isModalOpen.type === 'question' &&
         isModalOpen.title === 'THÊM MỚI CÂU HỎI' && (
+          <QuestionModal
+            isModalOpen={isModalOpen}
+            setIsModalOpen={() =>
+              setIsModalOpen({
+                isOpen: false,
+                type: '',
+                title: '',
+              })
+            }
+          />
+        )}
+      {isModalOpen.isOpen &&
+        isModalOpen.type === 'question' &&
+        isModalOpen.title === 'CHỈNH SỬA CÂU HỎI' && (
           <QuestionModal
             isModalOpen={isModalOpen}
             setIsModalOpen={() =>
