@@ -9,8 +9,8 @@ interface IProps {
   title?: React.ReactNode;
   description?: string;
   className?: string;
-  itemMenus: MenuProps['items'];
-  publishedAt: string;
+  itemMenus?: MenuProps['items'];
+  publishedAt?: string;
   children: React.ReactNode;
 }
 
