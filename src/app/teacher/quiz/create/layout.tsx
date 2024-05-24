@@ -23,15 +23,15 @@ export default function Layout({children}: {children: React.ReactNode}) {
     },
   ];
   return (
-    <div className="pt-5">
+    <div className="pt-5 overflow-y-hidden">
       {/* <Breadcrumb
         className="px-6"
         previousLink="/teacher/quiz"
         previousPage="Đề thi"
         currentPage="Tạo mới đề thi"
       /> */}
-      <Card className="mx-0 md:my-0  md:m-6 pb-4 px-6 pt-0 md:w-[calc(100%-52px)] xl:md:w-[calc(100%-52px)] h-[620px] md:h-[530px]  lg:h-[530px] overflow-hidden">
-        <div className="border-b border-gray-200 dark:border-gray-700 fixed  top-[82px] lg:top-[90px]">
+      <Card className="mx-0 md:my-0  md:mx-5 pb-4  pt-0  md:w-[calc(100%-40px)] h-[calc(100vh-100px)] md:max-h-[calc(100vh-106px)] overflow-hidden px-0 shadow-sm">
+        <div className="border-b border-gray-200 dark:border-gray-700 fixed  top-[82px] lg:top-[84px]">
           <ul className=" flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
             {listRoute.map((item, index) => (
               <li className="me-2">
@@ -49,7 +49,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
             ))}
           </ul>
         </div>
-        <div className="mt-[64px] h-[80vh] content overflow-auto md:h-[80vh]">
+        <div className="mt-[64px]  content overflow-hidden h-[calc(100vh-162px)] md:h-[calc(100vh-162px)]  ">
           {children}
         </div>
       </Card>

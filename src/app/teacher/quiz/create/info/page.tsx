@@ -31,8 +31,7 @@ export default function page() {
   const [selectedSubject, setSelectedSubject] =
     useState<string>('Chọn môn học');
   const [selectedGrade, setSelectedGrade] = useState<string>('Chọn khối học');
-  const [selectedStatus, setSelectedStatus] =
-    useState<string>('Chọn trạng thái');
+  const [selectedStatus, setSelectedStatus] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>('');
   const [keywords, setKeywords] = useState<any>([]);
   const subjectMenu: MenuProps['items'] = subject.map((item: any, index) => {
@@ -97,10 +96,10 @@ export default function page() {
   };
   // console.log(`${listChips?.current?.offsetWidth}px`);
   return (
-    <div className="md:h-[450px]  overflow-y-scroll h-[530px]">
+    <div className="md:max-h-100%  overflow-y-scroll h-[calc(100vh-180px)] px-4">
       {/* Info form  */}
       <fieldset className=" border-1 rounded-4 md:mt-2 px-3 md:pt-2 md:pb-4 md:px-8 mb-5  border border-gray-300 h-fit overflow-y-hidden">
-        <legend className="text-md text-gray-600 dark:text-gray-300">
+        <legend className="text-lg text-gray-600 dark:text-gray-300">
           Thông tin chung{' '}
         </legend>
         <div className="grid grid-col-1 md:grid-cols-3 mt-5 md:gap-10 gap-3">
@@ -259,11 +258,11 @@ export default function page() {
       </fieldset>
 
       {/* Config form  */}
-      <fieldset className=" border-1 rounded-4 py-2 px-3 md:px-8 mb-5  border border-gray-300 overfloy-y-hidden">
-        <legend className="text-md text-gray-600 dark:text-gray-300">
+      <fieldset className=" border-1 rounded-4 pb-2 pt-4 px-3 md:px-8 mb-5  border border-gray-300 overfloy-y-hidden">
+        <legend className="text-lg text-gray-600 dark:text-gray-300">
           Cài đặt đề thi{' '}
         </legend>
-        <div className="grid gap-4 md:gap-4 md:grid-cols-1  mb-5 ">
+        <div className="grid gap-4 md:gap-3 md:grid-cols-1  mb-5 ">
           <div className="col-span-1 grid items-center md:grid-cols-4 grid-cols-1">
             <label
               htmlFor="test-title"
@@ -279,38 +278,80 @@ export default function page() {
               required
             />
           </div>
-          <div className="col-span-1 grid md:grid-cols-2 grid-cols-1 gap-4 ">
-            <div className="col-span-1 grid items-center md:grid-cols-2 md:gap-2">
-              <label
-                htmlFor="test-title"
-                className="col-span-1 block mb-2 md:mb-0 text-sm font-medium text-gray-600 dark:text-gray-300 "
-              >
-                Cho phép đảo câu hỏi (theo phần thi)
-              </label>
-              <label className="inline-flex items-center cursor-pointer col-span-1">
-                <input type="checkbox" value="" className="sr-only peer" />
-                <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none  rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-                  Tắt
-                </span>
-              </label>
-            </div>
-            <div className="col-span-1 grid items-center md:grid-cols-2 lg:gap-5">
-              <label
-                htmlFor="test-title"
-                className="col-span-1 lg:justify-self-end block mb-2 md:mb-0 text-sm font-medium text-gray-600  dark:text-gray-300"
-              >
-                Cho phép đảo đáp án
-              </label>
-              <label className="inline-flex items-center cursor-pointer col-span-1">
-                <input type="checkbox" value="" className="sr-only peer" />
-                <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none  rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-                  Tắt
-                </span>
-              </label>
+
+          <div className="col-span-1 grid md:grid-cols-4 md:mt-3   gap-4">
+            <label
+              htmlFor="test-title"
+              className="block col-span-1 md:mb-2 md:mr-4 text-sm font-medium text-gray-600 dark:text-gray-300"
+            >
+              Cho phép đảo câu hỏi
+            </label>
+            <div className="col-span-3">
+              <div className="flex gap-8  ">
+                <div className="flex  items-center gap-4">
+                  <input
+                    type="radio"
+                    // checked={answer.isCorrect}
+                    name="list-radio"
+                    className="w-5 h-5  text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500"
+                    onChange={() => {}}
+                  />
+                  <label htmlFor="" className="text-sm">
+                    Có
+                  </label>
+                </div>
+                <div className="flex  items-center gap-2">
+                  <input
+                    type="radio"
+                    // checked={answer.isCorrect}
+                    name="list-radio"
+                    className="w-5 h-5  text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500 "
+                    onChange={() => {}}
+                  />
+                  <label htmlFor="" className="text-sm">
+                    Không
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
+          <div className="col-span-1 grid md:grid-cols-4 md:mt-3   gap-4">
+            <label
+              htmlFor="test-title"
+              className="block col-span-1 md:mb-2 md:mr-4 text-sm font-medium text-gray-600 dark:text-gray-300"
+            >
+              Cho phép đảo đáp án
+            </label>
+            <div className="col-span-3">
+              <div className="flex gap-8  ">
+                <div className="flex  items-center gap-4">
+                  <input
+                    type="radio"
+                    // checked={answer.isCorrect}
+                    name="list-radio"
+                    className="w-5 h-5  text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500"
+                    onChange={() => {}}
+                  />
+                  <label htmlFor="" className="text-sm">
+                    Có
+                  </label>
+                </div>
+                <div className="flex  items-center gap-2">
+                  <input
+                    type="radio"
+                    // checked={answer.isCorrect}
+                    name="list-radio"
+                    className="w-5 h-5  text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500 "
+                    onChange={() => {}}
+                  />
+                  <label htmlFor="" className="text-sm">
+                    Không
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="col-span-1 grid md:grid-cols-4 md:mt-3   gap-4">
             <label
               htmlFor="test-title"
@@ -323,10 +364,12 @@ export default function page() {
                 <div className="flex  items-center gap-4">
                   <input
                     type="radio"
-                    // checked={answer.isCorrect}
+                    checked={selectedStatus}
                     name="list-radio"
                     className="w-5 h-5  text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500"
-                    onChange={() => {}}
+                    onChange={() => {
+                      setSelectedStatus(true);
+                    }}
                   />
                   <label htmlFor="" className="text-sm">
                     Chưa giao
@@ -347,8 +390,7 @@ export default function page() {
               </div>
             </div>
           </div>
-
-          <div className="col-span-1 grid md:grid-cols-4 md:mt-3   gap-2">
+          <div className="col-span-1 grid md:grid-cols-4 md:mt-3   gap-4">
             <label
               htmlFor="test-title"
               className="block col-span-1 md:mb-2 md:mr-4 text-sm font-medium text-gray-600 dark:text-gray-300"

@@ -2,14 +2,15 @@ import React from 'react';
 
 interface IProps {
   total?: number;
+  className?: string;
 }
 
 export default function TableFooter(props: IProps) {
-  const {total} = props;
+  const {total, className} = props;
   return (
     <nav
-      className="flex flex-col items-start justify-between p-4 space-y-3 md:flex-row md:items-center md:space-y-0"
-      aria-label="Table navigation"
+      className={`${className} flex flex-col items-start justify-between  p-4 space-y-3 md:flex-row md:items-center md:space-y-0"
+      aria-label="Table navigation`}
     >
       <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
         Showing{' '}

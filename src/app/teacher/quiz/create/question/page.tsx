@@ -48,10 +48,10 @@ export default function page() {
   );
   console.log(questionList);
   return (
-    <div className={`max-h-[80vh] `}>
-      <div className={`grid grid-cols-3 gap-6 md:mt-3`}>
+    <div className={`max-h-[calc(100vh-46px)] `}>
+      <div className={`grid grid-cols-3 gap-4 `}>
         {isOpenPartTest ? (
-          <div className="md:col-span-1 col-span-3 h-fit md:max-h-[80vh] md:border-r border-gray-300 md:pr-6 pr-0 ">
+          <div className="md:col-span-1 col-span-3 h-fit px-3 md:h-[calc(100vh-175px)] md:max-h-[80vh] md:border-r border-gray-300 md:pl-3 md:pr-6  ">
             <div className="flex justify-between items-center">
               <span className="text-gray-700 dark:text-gray-300 text-md flex gap-2 items-center font-bold ">
                 Phần thi
@@ -90,30 +90,17 @@ export default function page() {
                         {item.title}
                       </div>
                       <div className="flex gap-2 items-center">
-                        {/* <button
-                        onClick={() =>
-                          setIsModalOpen({
-                            isOpen: true,
-                            type: 'questionPart',
-                            title: 'CHỈNH SỬA PHẦN THI',
-                          })
-                        }
-                      >
-                        <FaEdit className="mr-2 text-lg text-blue-500" />
-                      </button> */}
-                        <div className={``}>
-                          <button
-                            onClick={() =>
-                              setIsModalOpen({
-                                isOpen: true,
-                                type: 'questionPart',
-                                title: 'CHỈNH SỬA PHẦN THI',
-                              })
-                            }
-                          >
-                            <FaEdit className="mr-2 text-lg text-blue-500" />
-                          </button>
-                        </div>
+                        <button
+                          onClick={() =>
+                            setIsModalOpen({
+                              isOpen: true,
+                              type: 'questionPart',
+                              title: 'CHỈNH SỬA PHẦN THI',
+                            })
+                          }
+                        >
+                          <FaEdit className="mr-1 text-xl text-blue-500" />
+                        </button>
                         <button>
                           <FaTrashAlt className="text-lg text-red-500" />
                         </button>
@@ -129,15 +116,15 @@ export default function page() {
         <div
           className={`${
             isOpenPartTest ? 'md:col-span-2' : ''
-          } col-span-3 md:h-[430px]  overflow-y-auto`}
+          } col-span-3 max-h-[calc(100vh-175px)] px-3  overflow-y-auto`}
         >
           <div className="flex justify-between items-start">
-            <div className=" flex gap-2 items-center font-bold leading-10 text-gray-700 dark:text-gray-300 text-md">
+            <div className=" flex gap-2 items-center font-bold  leading-10 text-gray-700 dark:text-gray-300 text-md">
               <AiOutlineMenuUnfold
                 onClick={() => setIsOpenPartTest(!isOpenPartTest)}
-                className="text-lg"
+                className="text-xl cursor-pointer"
               />
-              Danh sách câu hỏi
+              Phần thi 1
             </div>
             <div className={`flex  gap-3`}>
               <Button
@@ -157,7 +144,7 @@ export default function page() {
           </div>
 
           {questionList.length > 0 && (
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className="mt-2 flex flex-wrap gap-2">
               {questionList.map((item, index) => {
                 return (
                   <button
@@ -171,12 +158,12 @@ export default function page() {
             </div>
           )}
 
-          <div className="flex flex-col mt-8 border border-gray-300 rounded-lg min-h-8 p-6">
+          <div className="flex flex-col mt-4 border border-gray-300 rounded-lg  px-6 py-4">
             <div className="flex justify-between items-center">
               <div>
                 <p className="font-bold">Câu 1 (1 đáp án)</p>
               </div>
-              <div>
+              <div className="flex items-center">
                 <button
                   onClick={() => {
                     console.log('ditme');
@@ -187,10 +174,10 @@ export default function page() {
                     });
                   }}
                 >
-                  <FaEdit className="mr-3 text-xl text-blue-500" />
+                  <FaEdit className="mr-2 text-xl text-blue-500" />
                 </button>
                 <button>
-                  <FaTrashAlt className="text-xl text-red-500" />
+                  <FaTrashAlt className="text-lg text-red-500" />
                 </button>
               </div>
             </div>
@@ -209,15 +196,19 @@ export default function page() {
                 eos aliquam accusamus! Lorem ipsum dolor sit amet consectetur
                 adipisicing elit. Deleniti vitae similique earum facere delectus
                 vel quae, placeat perspiciatis ut porro nihil unde fugit debitis
-                sunt? Temporibus libero magni exercitationem ea.
+                sunt? Temporibus libero magni exercitationem ea. Lorem ipsum
+                dolor sit amet consectetur adipisicing elit. Nostrum harum
+                dolore iste corporis earum itaque obcaecati magnam fugiat sed.
+                Iure, aspernatur perferendis quo nisi asperiores assumenda
+                veniam voluptate necessitatibus harum!
               </p>
             </div>
-            <div className=" grid md:grid-cols-2 grid-flow-row gap-4 px-3 ">
+            <div className=" grid md:grid-cols-2 grid-flow-row gap-y-4 gap-x-8  ">
               <div className="md:col-span-1 mb-2 flex items-center flex-nowrap">
                 <div>
                   <IoIosCheckmarkCircle className="block text-xl mr-2 text-green-500" />
                 </div>
-                <p className="inline-block">
+                <p className="inline-block leading-tight text-justify">
                   Lorem ipsum, dolor sit amet consectetu. Lorem ipsum dolor sit
                   amet consectetur, adipisicing elit.
                 </p>
@@ -225,16 +216,20 @@ export default function page() {
               <div className="md:col-span-1 mb-2 flex items-center flex-nowrap">
                 <RiCloseCircleFill className="block text-xl mr-2 text-red-500" />
 
-                <p className="inline-block">Lorem ipsum dolor sit am</p>
+                <p className="inline-block leading-tight text-justify">
+                  Lorem ipsum dolor sit am
+                </p>
               </div>
               <div className="md:col-span-1 mb-2 flex items-center flex-nowrap">
                 <RiCloseCircleFill className="block text-xl mr-2 text-red-500" />
 
-                <p className="inline-block">Lorem ipsum dolor sit am</p>
+                <p className="inline-block leading-tight text-justify">
+                  Lorem ipsum dolor sit am
+                </p>
               </div>
               <div className="md:col-span-1 mb-2 flex items-center flex-nowrap">
                 <RiCloseCircleFill className="block text-xl mr-2 text-red-500" />
-                <p className="inline-block">
+                <p className="inline-block leading-tight text-justify">
                   Lorem ipsum dolor sit amet cont. !
                 </p>
               </div>
