@@ -8,12 +8,12 @@ import Table from '@/components/Table';
 import TableFooter from '@/components/TableFooter';
 import {UploadOutlined} from '@ant-design/icons';
 import Image from 'next/image';
+import Link from 'next/link';
 import React, {useState} from 'react';
 import {MdOutlineMoreVert, MdAdd} from 'react-icons/md';
 
 export default function Student() {
   const [dataInit, setDataInit] = useState<[]>([]);
-
   const itemsDropdown: MenuProps['items'] = [
     {
       key: 'viewMore',
@@ -149,8 +149,13 @@ export default function Student() {
               Import
             </Button>
             <Button className="ml-2" type="green">
-              <MdAdd className="mr-1" />
-              Thêm mới
+              <Link
+                href="/admin/student/create"
+                className="flex gap-1 items-center"
+              >
+                <MdAdd className="mr-1" />
+                Thêm mới
+              </Link>
             </Button>
           </div>
         </div>
