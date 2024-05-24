@@ -1,8 +1,6 @@
 import type {Metadata} from 'next';
 import '@/style/globals.css';
 import {Providers} from '../components/Providers';
-import {Provider} from 'react-redux';
-import {store} from '@/redux/store';
 
 export const metadata: Metadata = {
   title: 'EduHub',
@@ -13,7 +11,7 @@ export const metadata: Metadata = {
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body className="bg-gray-100">
         <Providers>{children}</Providers>
       </body>
     </html>
