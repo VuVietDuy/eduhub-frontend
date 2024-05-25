@@ -24,9 +24,9 @@ export default function SubjectManagement() {
   useEffect(() => {
     fetcher
       .get('api/subjects')
-      .then((data) => {
-        console.log('asfasd >>> ', data.data.data);
-        setDataInit(data.data.data);
+      .then((res) => {
+        console.log('asfasd >>> ', res.data.data);
+        setDataInit(res.data.data);
       })
       .catch((err) => {
         console.log(err.message);
