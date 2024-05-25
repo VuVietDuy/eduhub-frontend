@@ -10,11 +10,23 @@ interface IProps {
   width?: string | '';
   height?: string | '';
   className?: string;
+  okButton?: string;
+  cancelButton?: string;
 }
 
 export default function Modal(props: IProps) {
-  const {children, title, open, onOk, onCancel, width, height, className} =
-    props;
+  const {
+    children,
+    title,
+    open,
+    onOk,
+    onCancel,
+    width,
+    height,
+    cancelButton,
+    okButton,
+    className,
+  } = props;
   const modalRef = useRef<HTMLDivElement>(null);
   const modalBoxRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);

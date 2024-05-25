@@ -1,10 +1,14 @@
+'use client';
 import Button from '@/components/Button';
 import Card from '@/components/Card';
 import Comment from '@/components/Comment';
+import Modal from '@/components/Modal';
 import Image from 'next/image';
-import React from 'react';
+import React, {useState} from 'react';
+import TestPreviewModal from './TestPreviewModal';
 
 export default function Asignment() {
+  const [isOpenTestModal, setIsOpenTestModal] = useState(false);
   const value = `
   <h4>Hi all</h4> 
     <ul>
@@ -26,6 +30,10 @@ export default function Asignment() {
     title: 'Kiểm tra học kỳ I',
     img: '/pattern_react.jpg',
     tag: ['Hàm số', 'Tích phân', 'Đạo hàm'],
+  };
+
+  const handleCancelTestModal = () => {
+    setIsOpenTestModal(false);
   };
   return (
     <div className="p-6 grid grid-cols-12 gap-6">
@@ -69,7 +77,9 @@ export default function Asignment() {
               ></button>
             </div>
           </div>
-          <Button className="w-full">Làm bài</Button>
+          <Button onClick={() => setIsOpenTestModal(true)} className="w-full">
+            Làm bài
+          </Button>
         </Card>
       </div>
       <div className="col-span-12 md:col-span-8">
@@ -144,6 +154,10 @@ export default function Asignment() {
         </article>
         <Comment></Comment>
       </div>
+      <TestPreviewModal
+        isOpenTestModal={isOpenTestModal}
+        handleCancelTestModal={handleCancelTestModal}
+      />
     </div>
   );
 }

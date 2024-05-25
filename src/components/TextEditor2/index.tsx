@@ -90,7 +90,7 @@ export default function TextEditor2({
       />
 
       <div className="">
-        <div className="" dangerouslySetInnerHTML={{__html: value}} />
+        <div className="markdown" dangerouslySetInnerHTML={{__html: value}} />
       </div>
     </>
   );

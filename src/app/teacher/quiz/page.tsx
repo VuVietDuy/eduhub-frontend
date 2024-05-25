@@ -6,11 +6,13 @@ import Dropdown from '@/components/Dropdown';
 import {MenuProps} from '@/components/MenuProps';
 import SearchInput from '@/components/SearchInput';
 import Table from '@/components/Table';
+import TableFooter from '@/components/TableFooter';
 import {UploadOutlined} from '@ant-design/icons';
 import Image from 'next/image';
 import Link from 'next/link';
 import {useRouter} from 'next/navigation';
 import React, {useState} from 'react';
+import {FaEdit, FaTrashAlt} from 'react-icons/fa';
 import {MdOutlineMoreVert, MdAdd} from 'react-icons/md';
 
 export default function TeacherQuizHome() {
@@ -19,16 +21,20 @@ export default function TeacherQuizHome() {
   const router = useRouter();
   const itemsDropdown: MenuProps['items'] = [
     {
-      key: 'show',
-      label: <button>Xem chi tiết</button>,
-    },
-    {
       key: 'edit',
-      label: <button>Chỉnh sửa</button>,
+      label: (
+        <button>
+          <FaEdit className="mr-3 text-xl text-blue-500" />
+        </button>
+      ),
     },
     {
       key: 'delete',
-      label: <button>Xoá</button>,
+      label: (
+        <button>
+          <FaTrashAlt className="text-xl text-red-500" />
+        </button>
+      ),
     },
   ];
   const comboBoxMenu: MenuProps['items'] = [
@@ -120,11 +126,14 @@ export default function TeacherQuizHome() {
       key: 'action',
       render: (data: any) => (
         <>
-          <Dropdown menu={itemsDropdown}>
-            <Button type="white">
-              <MdOutlineMoreVert className="text-gray-900" />
-            </Button>
-          </Dropdown>
+          <div className="flex items-center flex-nowrap">
+            <button>
+              <FaEdit className="mr-3 text-2xl text-blue-500" />
+            </button>
+            <button>
+              <FaTrashAlt className="text-xl text-red-500" />
+            </button>
+          </div>
         </>
       ),
     },
@@ -135,47 +144,47 @@ export default function TeacherQuizHome() {
       testName: 'Đề cuối học kỳ 1 Toán 12 năm 2024',
       testImg: '/img/studentCard.jpg',
       countSubmit: '30',
-      status: 'Công khai',
+      status: 'Chưa giao',
       timeUpdate: '10/10/2003 14:03',
     },
     {
-      testId: '001',
+      testId: '002',
       testName: 'Đề cuối học kỳ 1 Toán 12 năm 2024',
       testImg: '/img/studentCard.jpg',
       countSubmit: '30',
-      status: 'Công khai',
+      status: 'Chưa giao',
       timeUpdate: '10/10/2003 14:03',
     },
     {
-      testId: '001',
+      testId: '003',
       testName: 'Đề cuối học kỳ 1 Toán 12 năm 2024',
       testImg: '/img/studentCard.jpg',
       countSubmit: '30',
-      status: 'Công khai',
+      status: 'Chưa giao',
       timeUpdate: '10/10/2003 14:03',
     },
     {
-      testId: '001',
+      testId: '004',
       testName: 'Đề cuối học kỳ 1 Toán 12 năm 2024',
       testImg: '/img/studentCard.jpg',
       countSubmit: '30',
-      status: 'Công khai',
+      status: 'Chưa giao',
       timeUpdate: '10/10/2003 14:03',
     },
     {
-      testId: '001',
+      testId: '005',
       testName: 'Đề cuối học kỳ 1 Toán 12 năm 2024',
       testImg: '/img/studentCard.jpg',
       countSubmit: '30',
-      status: 'Công khai',
+      status: 'Chưa giao',
       timeUpdate: '10/10/2003 14:03',
     },
   ];
 
   const handleSelectGrade = () => {};
   return (
-    <div className="m-6">
-      <Card className="mb-6">
+    <div className="my-4 mx-6">
+      <Card className="mb-4 px-3 py-3">
         <div className="flex  justify-between">
           <div className="w-80 flex flex-1">
             <form action="" className="mr-6">
@@ -192,9 +201,7 @@ export default function TeacherQuizHome() {
               <UploadOutlined className="mr-1" />
               Import
             </Button>
-            <Button className="ml-2" type="green">
-              Tạo đề từ ngân hàng đề
-            </Button>
+
             <Button
               className="ml-2"
               type="green"
@@ -210,8 +217,9 @@ export default function TeacherQuizHome() {
           </div>
         </div>
       </Card>
-      <Card>
-        <Table dataSource={data} columns={columns}></Table>
+      <Card className="max-h-fit overflow-hidden px-4 py-4">
+        <Table className="" dataSource={data} columns={columns}></Table>
+        <TableFooter className="px-4 py-0" />
       </Card>
     </div>
   );

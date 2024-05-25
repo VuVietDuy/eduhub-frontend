@@ -14,12 +14,12 @@ export default function (props: IProps) {
   const {answer, setAnswerList, index, handleDeleteAnswer, type} = props;
   return (
     <>
-      <div className="flex items-center gap-2 md:w-[93%] w-[95%]  mb-8 md:ml-4">
+      <div className="flex items-center gap-2 md:w-[93%] w-[98%]  mb-8 md:ml-4">
         <input
           type={type === 1 ? 'radio' : 'checkbox'}
           checked={answer.isCorrect}
           name="list-radio"
-          className="md:w-6 md:h-6 w-8 h-8 md:mr-10 mr-3 text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500"
+          className="w-6 h-6 md:mr-10 mr-3 text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500"
           onChange={() => {
             console.log('check radio: ', index);
             setAnswerList((prevState: IAnswer[]) => {
