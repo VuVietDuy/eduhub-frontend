@@ -1,11 +1,13 @@
 'use client';
+import {fetcher} from '@/api/fetcher';
 import Button from '@/components/Button';
 import Chips from '@/components/Chips';
 import ComboBox from '@/components/ComboBox';
 import {MenuProps} from '@/components/MenuProps';
+import {IQuiz} from '@/types/quiz.type';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, {ChangeEvent, useRef, useState} from 'react';
+import React, {ChangeEvent, useEffect, useRef, useState} from 'react';
 import {FaUpload} from 'react-icons/fa6';
 import {MdCloudUpload, MdDelete} from 'react-icons/md';
 
@@ -22,33 +24,106 @@ const subject = [
   'Giáo dục quốc phòng & an ninh',
   'Giáo dục thể chất',
 ];
-const grade = ['Khối 10', 'Khối 11', 'Khối 12'];
+const grade = [10, 11, 12];
 
 const assignedClassed = ['10A2', '10A4', '10A7', '10A9', '10A3'];
 const status = ['Công khai', 'Chia sẻ', 'Riêng tư'];
+
+const initState: IQuiz = {
+  title: '',
+  description: '',
+  grade: 0,
+  subjectId: '',
+  assignedStatus: false,
+  topic: [],
+  shuffleAnswer: true,
+  shuffleQuestion: true,
+  quizParts: [{title: 'Phần 1'}],
+  // img: '/img/studentCard.jpg',
+  timeLimit: 0,
+};
 export default function page() {
   const listChips = useRef<any>(null);
   const [selectedSubject, setSelectedSubject] =
     useState<string>('Chọn môn học');
+  const [formData, setFormData] = useState<IQuiz>(initState);
   const [selectedGrade, setSelectedGrade] = useState<string>('Chọn khối học');
   const [selectedStatus, setSelectedStatus] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>('');
   const [keywords, setKeywords] = useState<any>([]);
-  const subjectMenu: MenuProps['items'] = subject.map((item: any, index) => {
-    return {
-      key: `${item}`,
-      label: (
-        <button
-          className={`px-4 py-2  w-full text-sm text-start hover:bg-slate-100 hover:dark:bg-slate-500 dark:text-gray-50  bg-white shadow-lg shadow-gray-200 dark:bg-gray-700 dark:shadow-gray-900 ${
-            index === subject.length - 1 ? 'rounded-b-sm' : ''
-          }`}
-          onClick={() => setSelectedSubject(`${item}`)}
-        >
-          {item}
-        </button>
-      ),
-    };
-  });
+  const [listSubject, setListSubject] = useState<any>([]);
+
+  useEffect(() => {
+    fetcher
+      .get(`api/subjects`)
+      .then((res) => {
+        console.log('check  ', res.data.data);
+        setListSubject(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }, []);
+
+  const subjectMenu: MenuProps['items'] = listSubject?.map(
+    (item: any, index: number) => {
+      return {
+        key: `${item._id}`,
+        label: (
+          <button
+            className={`px-4 py-2  w-full text-sm text-start hover:bg-slate-100 hover:dark:bg-slate-500 dark:text-gray-50  bg-white shadow-lg shadow-gray-200 dark:bg-gray-700 dark:shadow-gray-900 ${
+              index === subject.length - 1 ? 'rounded-b-sm' : ''
+            }`}
+            onClick={() => {
+              setFormData((prev) => ({
+                ...prev,
+                subjectId: item._id,
+              }));
+              setSelectedSubject(`${item.name}`);
+            }}
+          >
+            {item.name}
+          </button>
+        ),
+      };
+    },
+  );
+
+  const handleSubmit = () => {
+    const data = new FormData();
+
+    console.log('check', formData);
+    if (imgUploaded) {
+      const blob = new Blob([imgUploaded], {type: 'image/*'});
+      data.append('imgURL', blob);
+    }
+
+    fetcher
+      .post(
+        'api/quizzes',
+        {
+          quizzId: 'DT001',
+          title: formData.title,
+          description: formData.description,
+          grade: formData.grade,
+          status: formData.assignedStatus,
+          topic: formData.topic,
+          shuffleAnswer: formData.shuffleAnswer,
+          shuffleQuestion: formData.shuffleQuestion,
+          timeLimit: formData.timeLimit,
+          quizParts: formData.quizParts,
+          subjectId: '6652a46dc0051485b2a9ef83',
+          imgURL: '/logo.png',
+        },
+        {
+          headers: {'Content-Type': 'application/json;charset=utf-8'},
+        },
+      )
+
+      .then((res) => {
+        console.log(res);
+      });
+  };
 
   const gradeMenu: MenuProps['items'] = grade.map((item: any, index) => {
     return {
@@ -58,7 +133,13 @@ export default function page() {
           className={`px-4 py-2  w-full text-sm text-start hover:bg-slate-100 hover:dark:bg-slate-500 dark:text-gray-50  bg-white shadow-lg shadow-gray-200 dark:bg-gray-700 dark:shadow-gray-900 ${
             index === grade.length - 1 ? 'rounded-b-sm' : ''
           }`}
-          onClick={() => setSelectedGrade(`${item}`)}
+          onClick={() => {
+            setFormData((prev) => ({
+              ...prev,
+              grade: item,
+            }));
+            setSelectedGrade(`Khối ${item}`);
+          }}
         >
           {item}
         </button>
@@ -95,8 +176,9 @@ export default function page() {
     }
   };
   // console.log(`${listChips?.current?.offsetWidth}px`);
+  console.log('check : ', formData);
   return (
-    <div className="md:max-h-100%  overflow-y-scroll h-[calc(100vh-180px)] px-4">
+    <div className="md:max-h-100%  overflow-y-scroll h-[calc(100vh-205px)] px-4">
       {/* Info form  */}
       <fieldset className=" border-1 rounded-4 md:mt-2 px-3 md:pt-2 md:pb-4 md:px-8 mb-5  border border-gray-300 h-fit overflow-y-hidden">
         <legend className="text-lg text-gray-600 dark:text-gray-300">
@@ -156,10 +238,17 @@ export default function page() {
                 Tên
               </label>
               <input
+                value={formData.title}
                 type="text"
                 id="text-title"
                 className="bg-gray-50 border border-gray-300 text-textColor  text-sm rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Nhập tên đề thi"
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    title: e.target.value,
+                  }))
+                }
                 required
               />
             </div>
@@ -172,8 +261,15 @@ export default function page() {
               </label>
               <textarea
                 id="test-desc"
+                value={formData.description}
                 className="bg-gray-50 border border-gray-300  text-sm rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Nhập mô tả bài thi"
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    description: e.target.value,
+                  }))
+                }
               ></textarea>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-10 gap-3 md:mb-5 mb-3 ">
@@ -211,9 +307,10 @@ export default function page() {
                 htmlFor="test-title"
                 className="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-300"
               >
-                Từ khoá
+                Chủ đề
+                {/* <i>(*)Thông tin bắt buôcj</i> */}
               </label>
-              <div className="bg-gray-50 border border-gray-300  text-sm rounded-[4px] focus:ring-blue-500 focus:border-blue-500 flex items-center flex-wrap gap-2 w-full  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+              <div className="bg-gray-50 border border-gray-300  text-sm rounded-[4px] focus:ring-blue-500 focus:border-blue-500 flex items-center flex-wrap gap-1 w-full  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 {keywords.length > 0 && (
                   <div ref={listChips} className="ml-3  flex flex-wrap   w-fit">
                     {keywords?.map((item: any, index: number) => {
@@ -234,6 +331,10 @@ export default function page() {
                   onKeyUp={(e) => {
                     if (e.keyCode === 13) {
                       setKeywords([...keywords, inputValue]);
+                      setFormData((prev) => ({
+                        ...prev,
+                        topic: [...prev.topic, inputValue],
+                      }));
                       setInputValue('');
                     }
                   }}
@@ -276,6 +377,12 @@ export default function page() {
               className="col-span-1 md:col-span-3 bg-gray-50 border border-gray-300  text-sm rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 flex-3"
               placeholder="Nhập thời gian làm bài"
               required
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  timeLimit: parseInt(e.target.value),
+                }))
+              }
             />
           </div>
 
@@ -291,10 +398,15 @@ export default function page() {
                 <div className="flex  items-center gap-4">
                   <input
                     type="radio"
-                    // checked={answer.isCorrect}
+                    checked={formData.shuffleQuestion}
                     name="list-radio"
                     className="w-5 h-5  text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500"
-                    onChange={() => {}}
+                    onChange={(e) => {
+                      setFormData((prev) => ({
+                        ...prev,
+                        shuffleQuestion: true,
+                      }));
+                    }}
                   />
                   <label htmlFor="" className="text-sm">
                     Có
@@ -303,10 +415,15 @@ export default function page() {
                 <div className="flex  items-center gap-2">
                   <input
                     type="radio"
-                    // checked={answer.isCorrect}
+                    checked={formData.shuffleQuestion}
                     name="list-radio"
                     className="w-5 h-5  text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500 "
-                    onChange={() => {}}
+                    onChange={() => {
+                      setFormData((prev) => ({
+                        ...prev,
+                        shuffleQuestion: false,
+                      }));
+                    }}
                   />
                   <label htmlFor="" className="text-sm">
                     Không
@@ -327,10 +444,15 @@ export default function page() {
                 <div className="flex  items-center gap-4">
                   <input
                     type="radio"
-                    // checked={answer.isCorrect}
+                    checked={formData.shuffleAnswer}
                     name="list-radio"
                     className="w-5 h-5  text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500"
-                    onChange={() => {}}
+                    onChange={() => {
+                      setFormData((prev) => ({
+                        ...prev,
+                        shuffleAnswer: true,
+                      }));
+                    }}
                   />
                   <label htmlFor="" className="text-sm">
                     Có
@@ -339,10 +461,15 @@ export default function page() {
                 <div className="flex  items-center gap-2">
                   <input
                     type="radio"
-                    // checked={answer.isCorrect}
+                    checked={formData.shuffleAnswer}
                     name="list-radio"
                     className="w-5 h-5  text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500 "
-                    onChange={() => {}}
+                    onChange={() => {
+                      setFormData((prev) => ({
+                        ...prev,
+                        shuffleAnswer: false,
+                      }));
+                    }}
                   />
                   <label htmlFor="" className="text-sm">
                     Không
@@ -368,7 +495,11 @@ export default function page() {
                     name="list-radio"
                     className="w-5 h-5  text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500"
                     onChange={() => {
-                      setSelectedStatus(true);
+                      setFormData((prev) => ({
+                        ...prev,
+                        assignedStatus: false,
+                      }));
+                      setSelectedStatus(false);
                     }}
                   />
                   <label htmlFor="" className="text-sm">
@@ -380,8 +511,15 @@ export default function page() {
                     type="radio"
                     // checked={answer.isCorrect}
                     name="list-radio"
+                    checked={selectedStatus}
                     className="w-5 h-5  text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500 "
-                    onChange={() => {}}
+                    onChange={() => {
+                      setFormData((prev) => ({
+                        ...prev,
+                        assignedStatus: false,
+                      }));
+                      setSelectedStatus(true);
+                    }}
                   />
                   <label htmlFor="" className="text-sm">
                     Giao theo lớp
@@ -390,38 +528,43 @@ export default function page() {
               </div>
             </div>
           </div>
-          <div className="col-span-1 grid md:grid-cols-4 md:mt-3   gap-4">
-            <label
-              htmlFor="test-title"
-              className="block col-span-1 md:mb-2 md:mr-4 text-sm font-medium text-gray-600 dark:text-gray-300"
-            >
-              Chọn lớp giao
-            </label>
-            <div className="col-span-3 grid gap-3 lg:grid-cols-4 grid-cols-3">
-              {assignedClassed?.map((item, index) => (
-                <div
-                  key={index}
-                  className="col-span-1 items-center flex gap-2 item-center"
-                >
-                  <input
-                    type="checkbox"
-                    // checked={answer.isCorrect}
-                    name="list-checkbox"
-                    className="w-5 h-5  text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500"
-                    onChange={() => {}}
-                  />
-                  <label htmlFor="" className="text-sm">
-                    {item}
-                  </label>
-                </div>
-              ))}
+          {!selectedStatus && (
+            <div className="col-span-1 grid md:grid-cols-4 md:mt-3   gap-4">
+              <label
+                htmlFor="test-title"
+                className="block col-span-1 md:mb-2 md:mr-4 text-sm font-medium text-gray-600 dark:text-gray-300"
+              >
+                Chọn lớp giao
+              </label>
+              <div className="col-span-3 grid gap-3 lg:grid-cols-4 grid-cols-3">
+                {assignedClassed?.map((item, index) => (
+                  <div
+                    key={index}
+                    className="col-span-1 items-center flex gap-2 item-center"
+                  >
+                    <input
+                      type="checkbox"
+                      // checked={answer.isCorrect}
+                      name="list-checkbox"
+                      className="w-5 h-5  text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500"
+                      onChange={() => {}}
+                    />
+                    <label htmlFor="" className="text-sm">
+                      {item}
+                    </label>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </fieldset>
 
-      <Button className="float-end mr-3" type="green">
-        <Link href="/teacher/quiz/create/question">Xác nhận</Link>
+      <Button className="float-end mr-3" type="green" onClick={handleSubmit}>
+        Xác nhận
+        {/* <Link href="/teacher/quiz/create/question">
+          Xác nhận
+          </Link> */}
       </Button>
     </div>
   );

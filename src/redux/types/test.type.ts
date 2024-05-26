@@ -1,5 +1,3 @@
-import { IQuestion } from "./question.type";
-
 export interface ITest {
   name: string;
   desc?: string;
@@ -7,5 +5,28 @@ export interface ITest {
   subject: string;
   topic?: string;
   status: string;
-  questionList: IQuestion[];
+  questionPart: IQuestion[];
+}
+
+export interface IAnswer {
+  id: number;
+  content: string;
+  isCorrect: boolean;
+  explaination?: string;
+}
+
+export interface IQuestionPart {
+  title: string;
+  desc: string;
+}
+export interface IQuestion {
+  test?: ITest;
+  order: number;
+  point: number;
+  partName?: string;
+  type: string;
+  content: string;
+  image?: string;
+  audio?: string;
+  answerList?: IAnswer[];
 }

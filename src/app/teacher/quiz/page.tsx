@@ -1,4 +1,5 @@
 'use client';
+import {fetcher} from '@/api/fetcher';
 import Button from '@/components/Button';
 import Card from '@/components/Card';
 import ComboBox from '@/components/ComboBox';
@@ -7,23 +8,27 @@ import {MenuProps} from '@/components/MenuProps';
 import SearchInput from '@/components/SearchInput';
 import Table from '@/components/Table';
 import TableFooter from '@/components/TableFooter';
+import {RootState} from '@/redux/store';
 import {UploadOutlined} from '@ant-design/icons';
 import Image from 'next/image';
 import Link from 'next/link';
 import {useRouter} from 'next/navigation';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FaEdit, FaTrashAlt} from 'react-icons/fa';
 import {MdOutlineMoreVert, MdAdd} from 'react-icons/md';
+import {useSelector} from 'react-redux';
 
 export default function TeacherQuizHome() {
   const [dataInit, setDataInit] = useState<[]>([]);
-  const [selectedGrade, setSelectedGrade] = useState<string>('Chọn khối');
+  const [selectedGrade, setSelectedGrade] = useState<string | number>('Tất cả');
   const router = useRouter();
+  const userId = useSelector((state: RootState) => state.user);
+  console.log('check userId', userId._id);
   const itemsDropdown: MenuProps['items'] = [
     {
       key: 'edit',
       label: (
-        <button>
+        <button className="hover:brightness-75">
           <FaEdit className="mr-3 text-xl text-blue-500" />
         </button>
       ),
@@ -31,19 +36,60 @@ export default function TeacherQuizHome() {
     {
       key: 'delete',
       label: (
-        <button>
+        <button className="hover:brightness-75">
           <FaTrashAlt className="text-xl text-red-500" />
         </button>
       ),
     },
   ];
+
+  const handleSelectGrade = (grade: string) => {
+    if (grade === 'Khối 10') setSelectedGrade(10);
+    else if (grade === 'Khối 11') setSelectedGrade(11);
+    else if (grade === 'Khối 12') setSelectedGrade(12);
+    else setSelectedGrade('Tất cả');
+  };
+
+  useEffect(() => {
+    if (selectedGrade === 'Tất cả') {
+      fetcher
+        .get(`api/quizzes/${userId}`)
+        .then((res) => {
+          console.log('check  ', res.data.data);
+          setDataInit(res.data.data);
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    }
+    fetcher
+      .get(`api/quizzes/${userId}/${selectedGrade}`)
+      .then((res) => {
+        console.log('check  ', res.data.data);
+        setDataInit(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }, [selectedGrade]);
+  useEffect(() => {
+    fetcher
+      .get(`api/quizzes/${userId}`)
+      .then((res) => {
+        console.log('check  ', res.data.data);
+        setDataInit(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }, []);
   const comboBoxMenu: MenuProps['items'] = [
     {
       key: 'all',
       label: (
         <button
           className="px-4 py-2  w-full text-sm text-start hover:bg-slate-100 hover:dark:bg-slate-500 dark:text-gray-50  bg-white shadow-lg shadow-gray-200 dark:bg-gray-700 dark:shadow-gray-900 rounded-t-sm"
-          onClick={() => setSelectedGrade('Tất cả')}
+          onClick={() => handleSelectGrade('Tất cả')}
         >
           Tất cả
         </button>
@@ -54,7 +100,7 @@ export default function TeacherQuizHome() {
       label: (
         <button
           className="px-4 py-2  w-full text-sm text-start hover:bg-slate-100 hover:dark:bg-slate-500 dark:text-gray-50  bg-white shadow-lg shadow-gray-200 dark:bg-gray-700 dark:shadow-gray-900 "
-          onClick={() => setSelectedGrade('Khối 10')}
+          onClick={() => handleSelectGrade('Khối 10')}
         >
           Khối 10
         </button>
@@ -65,7 +111,7 @@ export default function TeacherQuizHome() {
       label: (
         <button
           className="px-4 py-2  w-full text-sm text-start hover:bg-slate-100 hover:dark:bg-slate-500 dark:text-gray-50  bg-white shadow-lg shadow-gray-200 dark:bg-gray-700 dark:shadow-gray-900 "
-          onClick={() => setSelectedGrade('Khối 11')}
+          onClick={() => handleSelectGrade('Khối 11')}
         >
           Khối 11
         </button>
@@ -76,7 +122,7 @@ export default function TeacherQuizHome() {
       label: (
         <button
           className="px-4 py-2  w-full text-sm text-start hover:bg-slate-100 hover:dark:bg-slate-500 dark:text-gray-50  bg-white shadow-lg shadow-gray-200 dark:bg-gray-700 dark:shadow-gray-900 rounded-b-[4px]"
-          onClick={() => setSelectedGrade('Khối 12')}
+          onClick={() => handleSelectGrade('Khối 12')}
         >
           Khối 12
         </button>
@@ -87,14 +133,14 @@ export default function TeacherQuizHome() {
   const columns = [
     {
       title: 'Mã đề thi',
-      dataIndex: 'testId',
-      key: 'testId',
+      dataIndex: 'quizzId',
+      key: 'quizzId',
       // width: '10px',
     },
     {
       title: 'Tên đề thi',
-      dataIndex: 'testName',
-      key: 'testName',
+      dataIndex: 'title',
+      key: 'title',
     },
     {
       title: 'Ảnh',
@@ -104,11 +150,7 @@ export default function TeacherQuizHome() {
         <Image src={'/logo.png'} width={50} height={50} alt=""></Image>
       ),
     },
-    {
-      title: 'Số bài đã nộp',
-      dataIndex: 'countSubmit',
-      key: 'countSubmit',
-    },
+
     {
       title: 'Trạng thái',
       dataIndex: 'status',
@@ -117,8 +159,8 @@ export default function TeacherQuizHome() {
     },
     {
       title: 'Sửa lần cuối',
-      dataIndex: 'timeUpdate',
-      key: 'timeUpdate',
+      dataIndex: 'updatedAt',
+      key: 'upadatedAt',
     },
     {
       title: 'Thao tác',
@@ -180,8 +222,8 @@ export default function TeacherQuizHome() {
       timeUpdate: '10/10/2003 14:03',
     },
   ];
+  // console.log()
 
-  const handleSelectGrade = () => {};
   return (
     <div className="my-4 mx-6">
       <Card className="mb-4 px-3 py-3">
@@ -192,7 +234,9 @@ export default function TeacherQuizHome() {
             </form>
             <ComboBox
               // onChange={handleSelectGrade}
-              selectedOption={selectedGrade}
+              selectedOption={
+                selectedGrade === 'Tất cả' ? 'Tất cả' : `Khối ${selectedGrade}`
+              }
               menu={comboBoxMenu}
             ></ComboBox>
           </div>
@@ -218,7 +262,7 @@ export default function TeacherQuizHome() {
         </div>
       </Card>
       <Card className="max-h-fit overflow-hidden px-4 py-4">
-        <Table className="" dataSource={data} columns={columns}></Table>
+        <Table className="" dataSource={dataInit} columns={columns}></Table>
         <TableFooter className="px-4 py-0" />
       </Card>
     </div>

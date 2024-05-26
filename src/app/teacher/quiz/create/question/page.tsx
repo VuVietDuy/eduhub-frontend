@@ -24,7 +24,7 @@ export default function page() {
     title: '',
   });
 
-  const [isOpenPartTest, setIsOpenPartTest] = useState<boolean>(true);
+  const [isOpenPartTest, setIsOpenPartTest] = useState<boolean>(false);
 
   const [questionPart, setQuestionPart] = useState<any>([
     {
@@ -43,15 +43,15 @@ export default function page() {
     questionPart[0],
   );
 
-  const questionList = useSelector(
-    (state: RootState) => state.question.questionList,
+  const questionPartList = useSelector(
+    (state: RootState) => state.test.questionPartList,
   );
-  console.log(questionList);
+  console.log('check questionPart: ', questionPartList);
   return (
     <div className={`max-h-[calc(100vh-46px)] `}>
       <div className={`grid grid-cols-3 gap-4 `}>
         {isOpenPartTest ? (
-          <div className="md:col-span-1 col-span-3 h-fit px-3 md:h-[calc(100vh-175px)] md:max-h-[80vh] md:border-r border-gray-300 md:pl-3 md:pr-6  ">
+          <div className="md:col-span-1 col-span-3 h-fit px-3 md:h-[calc(100vh-200px)] md:max-h-[80vh] md:border-r border-gray-300 md:pl-3 md:pr-6  ">
             <div className="flex justify-between items-center">
               <span className="text-gray-700 dark:text-gray-300 text-md flex gap-2 items-center font-bold ">
                 Phần thi
@@ -74,8 +74,8 @@ export default function page() {
             </div>
 
             <div className="mt-4 ">
-              {questionPart.length > 0 &&
-                questionPart.map((item: any, index: any) => {
+              {questionPartList?.length > 0 &&
+                questionPartList.map((item: any, index: any) => {
                   return (
                     <div
                       className={` flex items-center justify-between p-3 cursor-pointer ${
@@ -116,7 +116,7 @@ export default function page() {
         <div
           className={`${
             isOpenPartTest ? 'md:col-span-2' : ''
-          } col-span-3 max-h-[calc(100vh-175px)] px-3  overflow-y-auto`}
+          } col-span-3 max-h-[calc(100vh-200px)] px-3  overflow-y-auto`}
         >
           <div className="flex justify-between items-start">
             <div className=" flex gap-2 items-center font-bold  leading-10 text-gray-700 dark:text-gray-300 text-md">
@@ -143,15 +143,15 @@ export default function page() {
             </div>
           </div>
 
-          {questionList.length > 0 && (
+          {listQuestion.length > 0 && (
             <div className="mt-2 flex flex-wrap gap-2">
-              {questionList.map((item, index) => {
+              {listQuestion.map((item, index) => {
                 return (
                   <button
                     className=" px-6 py-1 rounded-lg text-white bg-blue-600"
                     key={index}
                   >
-                    {item.order}
+                    {item}
                   </button>
                 );
               })}
