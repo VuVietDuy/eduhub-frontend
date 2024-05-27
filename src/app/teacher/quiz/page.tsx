@@ -157,12 +157,12 @@ export default function TeacherQuizHome() {
   ];
 
   const columns = [
-    {
-      title: 'Mã đề thi',
-      dataIndex: 'quizzId',
-      key: 'quizzId',
-      // width: '10px',
-    },
+    // {
+    //   title: 'Mã đề thi',
+    //   dataIndex: 'quizzId',
+    //   key: 'quizzId',
+    //   // width: '10px',
+    // },
     {
       title: 'Tên đề thi',
       dataIndex: 'title',
