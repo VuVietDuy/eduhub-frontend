@@ -8,8 +8,7 @@ import {FaUpload} from 'react-icons/fa6';
 import {FiMinusCircle, FiPlusCircle} from 'react-icons/fi';
 import {MdDelete} from 'react-icons/md';
 import Answer from './Answer';
-import {IAnswer} from '@/redux/types/test.type';
-// import {IAnswer} from '../../../../../redux/types/question.type';
+import {IAnswer} from '@/types/quiz.type';
 
 const questionTypeMenu = [
   {

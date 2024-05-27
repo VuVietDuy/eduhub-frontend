@@ -4,9 +4,8 @@ import { persistReducer } from "redux-persist";
 import { combineReducers } from "@reduxjs/toolkit";
 import UserReducer from "./slice/user.slice";
 import TokenReducer from "./slice/token.slice";
-import TestReducer from "./slice/test.slice";
 import { QueryStatus } from "@reduxjs/toolkit/query";
-
+import QuizReducer from "./slice/quiz.slice";
 const persistConfig = {
   key: "root",
   version: 1,
@@ -16,7 +15,7 @@ const persistConfig = {
 const reducer = combineReducers({
   user: UserReducer,
   token: TokenReducer,
-  test: TestReducer,
+  quiz: QuizReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);

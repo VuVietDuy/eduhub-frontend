@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface DataItem {
-  [key: string]: string | number | string[];
+  [key: string]: string | number | string[] | any;
 }
 
 interface IProps {
@@ -40,7 +40,7 @@ export default function Table(props: IProps) {
           </tr>
         </thead>
         <tbody className={``}>
-          {dataSource.map((dataItem, index) => (
+          {dataSource?.map((dataItem, index) => (
             <tr
               key={index}
               className="bg-white border-b hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-600 dark:border-gray-700"

@@ -8,7 +8,15 @@ import {MenuProps} from '@/components/MenuProps';
 import SearchInput from '@/components/SearchInput';
 import Table from '@/components/Table';
 import TableFooter from '@/components/TableFooter';
+import {
+  cancelEditingQuiz,
+  deleteQuiz,
+  startEditingQuiz,
+} from '@/redux/slice/quiz.slice';
 import {RootState} from '@/redux/store';
+import {formatDate} from '@/utils/formatDate';
+import {notification} from '@/utils/notification';
+
 import {UploadOutlined} from '@ant-design/icons';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -16,32 +24,34 @@ import {useRouter} from 'next/navigation';
 import React, {useEffect, useState} from 'react';
 import {FaEdit, FaTrashAlt} from 'react-icons/fa';
 import {MdOutlineMoreVert, MdAdd} from 'react-icons/md';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 export default function TeacherQuizHome() {
-  const [dataInit, setDataInit] = useState<[]>([]);
   const [selectedGrade, setSelectedGrade] = useState<string | number>('Tất cả');
   const router = useRouter();
-  const userId = useSelector((state: RootState) => state.user);
-  console.log('check userId', userId._id);
-  const itemsDropdown: MenuProps['items'] = [
-    {
-      key: 'edit',
-      label: (
-        <button className="hover:brightness-75">
-          <FaEdit className="mr-3 text-xl text-blue-500" />
-        </button>
-      ),
-    },
-    {
-      key: 'delete',
-      label: (
-        <button className="hover:brightness-75">
-          <FaTrashAlt className="text-xl text-red-500" />
-        </button>
-      ),
-    },
-  ];
+  const dispatch = useDispatch();
+  const quizzes = useSelector((state: RootState) => state.quiz.quizList);
+
+  const handleDelete = (quizId: string) => {
+    fetcher
+      .delete(`api/quizzes/${quizId}`)
+      .then((res) => {
+        dispatch(deleteQuiz(quizId));
+        notification.success({
+          message: 'Thành công',
+          description: 'Xoá đề thi thành công',
+        });
+      })
+      .catch((err) => {
+        notification.error({
+          message: 'Thất bại',
+          description: 'Xoá đề thi thất bại',
+        });
+      });
+  };
+  const handleStartEditing = (quizId: string) => {
+    dispatch(startEditingQuiz(quizId));
+  };
 
   const handleSelectGrade = (grade: string) => {
     if (grade === 'Khối 10') setSelectedGrade(10);
@@ -51,38 +61,54 @@ export default function TeacherQuizHome() {
   };
 
   useEffect(() => {
+    const controller = new AbortController();
     if (selectedGrade === 'Tất cả') {
       fetcher
-        .get(`api/quizzes/${userId}`)
+        .get(`api/quizzes/`, {signal: controller.signal})
         .then((res) => {
-          console.log('check  ', res.data.data);
-          setDataInit(res.data.data);
+          const quizzes = res.data.data;
+          dispatch({
+            type: 'quizzes/getQuizzesSuccess',
+            payload: quizzes,
+          });
         })
         .catch((err) => {
-          console.log(err.message);
+          if (!(err.code === 'ERR_CANCELED')) {
+            dispatch({
+              type: 'quizzes/getQuizzesFailed',
+              payload: err,
+            });
+          }
         });
     }
     fetcher
-      .get(`api/quizzes/${userId}/${selectedGrade}`)
+      .get(`api/quizzes/${selectedGrade}`)
       .then((res) => {
-        console.log('check  ', res.data.data);
-        setDataInit(res.data.data);
+        const quizzes = res.data.data;
+        console.log('check getQuiz: ', quizzes);
+        dispatch({
+          type: 'quizzes/getQuizzesSuccess',
+          payload: quizzes,
+        });
       })
       .catch((err) => {
-        console.log(err.message);
+        if (!(err.code === 'ERR_CANCELED')) {
+          dispatch({
+            type: 'quizzes/getQuizzesFailed',
+            payload: err,
+          });
+        }
       });
+
+    return () => {
+      controller.abort();
+    };
   }, [selectedGrade]);
+
   useEffect(() => {
-    fetcher
-      .get(`api/quizzes/${userId}`)
-      .then((res) => {
-        console.log('check  ', res.data.data);
-        setDataInit(res.data.data);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
+    dispatch(cancelEditingQuiz());
   }, []);
+
   const comboBoxMenu: MenuProps['items'] = [
     {
       key: 'all',
@@ -153,14 +179,17 @@ export default function TeacherQuizHome() {
 
     {
       title: 'Trạng thái',
-      dataIndex: 'status',
-      key: 'status',
-      // render: (data: any) => <span>{data ? 'Nam' : 'Nữ'}</span>,
+      dataIndex: 'assignedStatus',
+      key: 'assignedStatus',
+      render: (data: any) => (
+        <span>{data.assignedStatus ? 'Đã giao' : 'Chưa giao'}</span>
+      ),
     },
     {
       title: 'Sửa lần cuối',
       dataIndex: 'updatedAt',
       key: 'upadatedAt',
+      render: (data: any) => <span>{formatDate(data.updatedAt)}</span>,
     },
     {
       title: 'Thao tác',
@@ -169,10 +198,20 @@ export default function TeacherQuizHome() {
       render: (data: any) => (
         <>
           <div className="flex items-center flex-nowrap">
-            <button>
+            <button
+              className="hover:brightness-90"
+              onClick={() => {
+                console.log('check data_id', data._id);
+                handleStartEditing(data._id);
+                router.push('/teacher/quiz/create/info');
+              }}
+            >
               <FaEdit className="mr-3 text-2xl text-blue-500" />
             </button>
-            <button>
+            <button
+              className="hover:brightness-90"
+              onClick={() => handleDelete(data._id)}
+            >
               <FaTrashAlt className="text-xl text-red-500" />
             </button>
           </div>
@@ -249,9 +288,9 @@ export default function TeacherQuizHome() {
             <Button
               className="ml-2"
               type="green"
-              // onClick={() => {
-              //   router.push('/teacher/quiz/create/info');
-              // }}
+              onClick={() => {
+                router.push('/teacher/quiz/create/info');
+              }}
             >
               <Link href={'quiz/create/info'}>
                 <MdAdd className="mr-1 inline-block" />
@@ -262,7 +301,7 @@ export default function TeacherQuizHome() {
         </div>
       </Card>
       <Card className="max-h-fit overflow-hidden px-4 py-4">
-        <Table className="" dataSource={dataInit} columns={columns}></Table>
+        <Table className="" dataSource={quizzes} columns={columns}></Table>
         <TableFooter className="px-4 py-0" />
       </Card>
     </div>

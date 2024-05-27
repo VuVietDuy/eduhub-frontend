@@ -1,10 +1,15 @@
 'use client';
 import React, {useEffect, useState} from 'react';
-import {CaretLeftOutlined, ClockCircleOutlined} from '@ant-design/icons';
+import {
+  CaretLeftOutlined,
+  ClockCircleOutlined,
+  FileDoneOutlined,
+} from '@ant-design/icons';
 import Button from '@/components/Button';
 import Circle from '@/components/Icons/Circle';
 import Comment from '@/components/Comment';
 import SimpleTextEditor from '@/components/SimpleTextEditor';
+import Modal from '@/components/Modal';
 
 interface IOption {
   _id: string;
@@ -90,6 +95,42 @@ const listQues: IQuestion[] = [
   },
   {
     _id: 'cau5',
+    questionType: IQuestionType.MULTIPLE,
+    content: 'Tập hợp Ν* là:',
+    options: [
+      {_id: 'cau5a', content: 'tập hợp số tự nhiên'},
+      {_id: 'cau5b', content: 'tập hợp các số tự nhiên chẵn.'},
+      {_id: 'cau5c', content: 'tập hợp các số tự nhiên lẻ'},
+      {_id: 'cau5d', content: 'tập hợp có số tự nhiên khác 0.'},
+    ],
+  },
+  {
+    _id: 'cau6',
+    questionType: IQuestionType.MULTIPLE,
+    content: 'Tập hợp Ν* là:',
+    options: [
+      {_id: 'cau6a', content: 'tập hợp số tự nhiên'},
+      {_id: 'cau6b', content: 'tập hợp các số tự nhiên chẵn.'},
+      {_id: 'cau6c', content: 'tập hợp các số tự nhiên lẻ'},
+      {_id: 'cau6d', content: 'tập hợp có số tự nhiên khác 0.'},
+    ],
+  },
+  {
+    _id: 'cau7',
+    questionType: IQuestionType.SHORT_ANSWER,
+    content:
+      'Trong cuộc khai thác thuộc địa lần thứ hai ở Đông Dương 1919.1929, thực dân Pháp tập trung đầu tư vào',
+    options: null,
+  },
+  {
+    _id: 'cau8',
+    questionType: IQuestionType.SHORT_ANSWER,
+    content:
+      'Trong cuộc khai thác thuộc địa lần thứ hai ở Đông Dương 1919.1929, thực dân Pháp tập trung đầu tư vào',
+    options: null,
+  },
+  {
+    _id: 'cau9',
     questionType: IQuestionType.SHORT_ANSWER,
     content:
       'Trong cuộc khai thác thuộc địa lần thứ hai ở Đông Dương 1919.1929, thực dân Pháp tập trung đầu tư vào',
@@ -133,7 +174,7 @@ export default function StartQuiz() {
           <span className="font-semibold">Thí sinh: Vũ Viết Duy</span>
         </div>
         <div className="flex items-center gap-6">
-          <div className="flex items-center gap-4 ">
+          <div className="hidden sm:flex items-center gap-4 ">
             <ClockCircleOutlined />
             <span>
               {minutes < 10 ? `0${minutes}` : minutes}:
@@ -228,7 +269,16 @@ export default function StartQuiz() {
         </div>
         <div className="col-span-12 md:col-span-3 md:fixed md:top-[88px] md:right-6 md:min-w-[22.5vw]">
           <div className="border shadow rounded p-3">
-            <h3 className="text-md font-medium"> Danh sách câu hỏi </h3>
+            <div className="flex justify-between">
+              <h3 className="text-md font-medium"> Danh sách câu hỏi </h3>
+              <div className="sm:hidden flex items-center gap-4 ">
+                <ClockCircleOutlined />
+                <span>
+                  {minutes < 10 ? `0${minutes}` : minutes}:
+                  {seconds < 10 ? `0${seconds}` : seconds}
+                </span>
+              </div>
+            </div>
             <div className="grid grid-cols-10 gap-2 mt-3 sheet-screen">
               {listQues.map((item, idx) => (
                 <div className="col-span-2 ng-star-inserted">
@@ -244,6 +294,28 @@ export default function StartQuiz() {
           </div>
         </div>
       </div>
+      <Modal open={true} onCancel={() => {}} onOk={() => {}}>
+        <div className="w-340">
+          <div className="flex items-center mb-3">
+            <FileDoneOutlined className="mr-2 text-green-700 font-medium text-xl" />
+            <h2 className="font-medium">
+              Bạn có chắc chắn muốn nộp bài không?
+            </h2>
+          </div>
+          <p className="mb-2">
+            Thời gian làm bài của bạn còn{' '}
+            <span className="font-semibold">
+              {minutes < 10 ? `0${minutes}` : minutes}:
+              {seconds < 10 ? `0${seconds}` : seconds}
+            </span>
+          </p>
+          <p className="text-sm text-gray-500">
+            Khi xác nhận nhấn nộp bài, bạn sẽ không thể sửa lại bài thi của
+            mình. Hãy chắc chắn bạn đã xem lại tất cả các đáp án. Chúc bạn may
+            mắn!
+          </p>
+        </div>
+      </Modal>
     </div>
   );
 }

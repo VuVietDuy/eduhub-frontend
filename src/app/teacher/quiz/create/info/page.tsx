@@ -4,30 +4,25 @@ import Button from '@/components/Button';
 import Chips from '@/components/Chips';
 import ComboBox from '@/components/ComboBox';
 import {MenuProps} from '@/components/MenuProps';
+import {
+  addQuiz,
+  cancelEditingQuiz,
+  finishEditingQuiz,
+} from '@/redux/slice/quiz.slice';
+import {RootState} from '@/redux/store';
 import {IQuiz} from '@/types/quiz.type';
+import {notification} from '@/utils/notification';
 import Image from 'next/image';
-import Link from 'next/link';
+import {useRouter} from 'next/navigation';
+import {Router} from 'next/router';
 import React, {ChangeEvent, useEffect, useRef, useState} from 'react';
 import {FaUpload} from 'react-icons/fa6';
 import {MdCloudUpload, MdDelete} from 'react-icons/md';
+import {useDispatch, useSelector} from 'react-redux';
 
-const subject = [
-  'Toán',
-  'Ngữ văn',
-  'Ngoại ngữ',
-  'Lịch sử',
-  'Địa lý',
-  'Hoá học',
-  'Vật lý',
-  'Sinh học',
-  'Giáo dục công dân',
-  'Giáo dục quốc phòng & an ninh',
-  'Giáo dục thể chất',
-];
 const grade = [10, 11, 12];
 
 const assignedClassed = ['10A2', '10A4', '10A7', '10A9', '10A3'];
-const status = ['Công khai', 'Chia sẻ', 'Riêng tư'];
 
 const initState: IQuiz = {
   title: '',
@@ -38,7 +33,6 @@ const initState: IQuiz = {
   topic: [],
   shuffleAnswer: true,
   shuffleQuestion: true,
-  quizParts: [{title: 'Phần 1'}],
   // img: '/img/studentCard.jpg',
   timeLimit: 0,
 };
@@ -48,10 +42,46 @@ export default function page() {
     useState<string>('Chọn môn học');
   const [formData, setFormData] = useState<IQuiz>(initState);
   const [selectedGrade, setSelectedGrade] = useState<string>('Chọn khối học');
-  const [selectedStatus, setSelectedStatus] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>('');
   const [keywords, setKeywords] = useState<any>([]);
   const [listSubject, setListSubject] = useState<any>([]);
+  const [swapAnswer, setSwapAnswer] = useState<any>('Có');
+  const [swapQuestion, setSwapQuestion] = useState<any>('Có');
+  const [assigned, setAssigned] = useState<any>('Chưa giao');
+
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const editingQuiz = useSelector((state: RootState) => state.quiz.editingQuiz);
+  const quizList = useSelector((state: RootState) => state.quiz.quizList);
+
+  useEffect(() => {
+    setFormData(editingQuiz || initState);
+    if (editingQuiz && editingQuiz.subjectId) {
+      const subject = listSubject.find(
+        (item: any) => item._id === editingQuiz.subjectId,
+      );
+      console.log('subject: ', subject);
+      setSelectedSubject(subject?.name);
+    }
+    if (editingQuiz && editingQuiz.assignedStatus) {
+      if (editingQuiz.assignedStatus) setAssigned('Giao theo lớp');
+      else setAssigned('Chưa giao');
+    }
+    if (editingQuiz && editingQuiz.shuffleAnswer) {
+      if (editingQuiz.shuffleAnswer) setSwapAnswer('Có');
+      else setSwapAnswer('Không');
+    }
+    if (editingQuiz && editingQuiz.shuffleQuestion) {
+      if (editingQuiz.shuffleQuestion) setSwapQuestion('Có');
+      else setSwapQuestion('Không');
+    }
+    if (editingQuiz && editingQuiz.grade) {
+      setSelectedGrade(`Khối ${editingQuiz.grade}`);
+    }
+    if (editingQuiz && editingQuiz.topic) {
+      setKeywords(editingQuiz.topic);
+    }
+  }, [editingQuiz, listSubject]);
 
   useEffect(() => {
     fetcher
@@ -72,7 +102,7 @@ export default function page() {
         label: (
           <button
             className={`px-4 py-2  w-full text-sm text-start hover:bg-slate-100 hover:dark:bg-slate-500 dark:text-gray-50  bg-white shadow-lg shadow-gray-200 dark:bg-gray-700 dark:shadow-gray-900 ${
-              index === subject.length - 1 ? 'rounded-b-sm' : ''
+              index === listSubject.length - 1 ? 'rounded-b-sm' : ''
             }`}
             onClick={() => {
               setFormData((prev) => ({
@@ -88,43 +118,6 @@ export default function page() {
       };
     },
   );
-
-  const handleSubmit = () => {
-    const data = new FormData();
-
-    console.log('check', formData);
-    if (imgUploaded) {
-      const blob = new Blob([imgUploaded], {type: 'image/*'});
-      data.append('imgURL', blob);
-    }
-
-    fetcher
-      .post(
-        'api/quizzes',
-        {
-          quizzId: 'DT001',
-          title: formData.title,
-          description: formData.description,
-          grade: formData.grade,
-          status: formData.assignedStatus,
-          topic: formData.topic,
-          shuffleAnswer: formData.shuffleAnswer,
-          shuffleQuestion: formData.shuffleQuestion,
-          timeLimit: formData.timeLimit,
-          quizParts: formData.quizParts,
-          subjectId: '6652a46dc0051485b2a9ef83',
-          imgURL: '/logo.png',
-        },
-        {
-          headers: {'Content-Type': 'application/json;charset=utf-8'},
-        },
-      )
-
-      .then((res) => {
-        console.log(res);
-      });
-  };
-
   const gradeMenu: MenuProps['items'] = grade.map((item: any, index) => {
     return {
       key: `${item}`,
@@ -146,6 +139,78 @@ export default function page() {
       ),
     };
   });
+  const handleSubmit = () => {
+    const data = new FormData();
+
+    console.log('check', formData);
+    if (imgUploaded) {
+      const blob = new Blob([imgUploaded], {type: 'image/*'});
+      data.append('imgURL', blob);
+    }
+
+    if (!editingQuiz) {
+      const quiz = {
+        title: formData.title,
+        description: formData.description,
+        grade: formData.grade,
+        assignedStatus: formData.assignedStatus,
+        topic: formData.topic,
+        shuffleAnswer: formData.shuffleAnswer,
+        shuffleQuestion: formData.shuffleQuestion,
+        timeLimit: formData.timeLimit,
+        subjectId: formData.subjectId,
+        imgURL: '/logo.png',
+      };
+      fetcher
+        .post('api/quizzes', quiz, {
+          headers: {'Content-Type': 'application/json;charset=utf-8'},
+        })
+
+        .then((res) => {
+          console.log(res);
+          notification.info({
+            message: 'Thành công',
+            description: 'Tạo mới đề thi thành công',
+          });
+
+          dispatch(addQuiz(quiz));
+        });
+    } else {
+      const quiz = {
+        _id: editingQuiz._id,
+        title: formData.title,
+        description: formData.description,
+        grade: formData.grade,
+        assignedStatus: formData.assignedStatus,
+        topic: formData.topic,
+        shuffleAnswer: formData.shuffleAnswer,
+        shuffleQuestion: formData.shuffleQuestion,
+        timeLimit: formData.timeLimit,
+        subjectId: formData.subjectId,
+        imgURL: '/logo.png',
+      };
+      console.log('checkquiz', quiz);
+      fetcher
+        .put(`api/quizzes`, quiz, {
+          headers: {'Content-Type': 'application/json;charset=utf-8'},
+        })
+
+        .then((res) => {
+          notification.info({
+            message: 'Thành công',
+            description: 'Chỉnh sửa thông tin đề thi thành công',
+          });
+
+          dispatch(finishEditingQuiz(quiz));
+        });
+    }
+    router.push('/teacher/quiz/create/question');
+  };
+
+  const handleCancel = () => {
+    dispatch(cancelEditingQuiz());
+    router.push('/teacher/quiz');
+  };
 
   const handleDeleteChips = (index: number) => {
     console.log('check:', index);
@@ -164,7 +229,6 @@ export default function page() {
   const [imgUploaded, setImgUploaded] = useState<ArrayBuffer | null | string>(
     null,
   );
-
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -176,7 +240,8 @@ export default function page() {
     }
   };
   // console.log(`${listChips?.current?.offsetWidth}px`);
-  console.log('check : ', formData);
+
+  console.log('check formData: ', formData);
   return (
     <div className="md:max-h-100%  overflow-y-scroll h-[calc(100vh-205px)] px-4">
       {/* Info form  */}
@@ -374,14 +439,26 @@ export default function page() {
             <input
               type="text"
               id="text-title"
+              value={
+                formData.timeLimit === 0 ? '' : formData.timeLimit.toString()
+              }
               className="col-span-1 md:col-span-3 bg-gray-50 border border-gray-300  text-sm rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 flex-3"
               placeholder="Nhập thời gian làm bài"
               required
               onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  timeLimit: parseInt(e.target.value),
-                }))
+                setFormData((prev) => {
+                  if (e.target.value === '') {
+                    return {
+                      ...prev,
+                      timeLimit: 0,
+                    };
+                  } else {
+                    return {
+                      ...prev,
+                      timeLimit: parseInt(e.target.value),
+                    };
+                  }
+                })
               }
             />
           </div>
@@ -398,31 +475,35 @@ export default function page() {
                 <div className="flex  items-center gap-4">
                   <input
                     type="radio"
-                    checked={formData.shuffleQuestion}
-                    name="list-radio"
+                    checked={swapQuestion === 'Có' ? true : false}
+                    name="question"
+                    id="yes"
                     className="w-5 h-5  text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500"
                     onChange={(e) => {
                       setFormData((prev) => ({
                         ...prev,
                         shuffleQuestion: true,
                       }));
+                      setSwapQuestion('Có');
                     }}
                   />
                   <label htmlFor="" className="text-sm">
                     Có
                   </label>
                 </div>
-                <div className="flex  items-center gap-2">
+                <div className="flex  items-center gap-4">
                   <input
                     type="radio"
-                    checked={formData.shuffleQuestion}
-                    name="list-radio"
-                    className="w-5 h-5  text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500 "
-                    onChange={() => {
+                    checked={swapQuestion === 'Không' ? true : false}
+                    name="question"
+                    id="yes"
+                    className="w-5 h-5  text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500"
+                    onChange={(e) => {
                       setFormData((prev) => ({
                         ...prev,
                         shuffleQuestion: false,
                       }));
+                      setSwapQuestion('Không');
                     }}
                   />
                   <label htmlFor="" className="text-sm">
@@ -444,31 +525,33 @@ export default function page() {
                 <div className="flex  items-center gap-4">
                   <input
                     type="radio"
-                    checked={formData.shuffleAnswer}
-                    name="list-radio"
+                    checked={swapAnswer === 'Có' ? true : false}
+                    name="answer"
                     className="w-5 h-5  text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500"
                     onChange={() => {
                       setFormData((prev) => ({
                         ...prev,
                         shuffleAnswer: true,
                       }));
+                      setSwapAnswer('Có');
                     }}
                   />
                   <label htmlFor="" className="text-sm">
                     Có
                   </label>
                 </div>
-                <div className="flex  items-center gap-2">
+                <div className="flex  items-center gap-4">
                   <input
                     type="radio"
-                    checked={formData.shuffleAnswer}
-                    name="list-radio"
-                    className="w-5 h-5  text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500 "
+                    // checked={swapAnswer === 'Không' ? true : false}
+                    name="answer"
+                    className="w-5 h-5  text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500"
                     onChange={() => {
                       setFormData((prev) => ({
                         ...prev,
                         shuffleAnswer: false,
                       }));
+                      setSwapAnswer('Không');
                     }}
                   />
                   <label htmlFor="" className="text-sm">
@@ -479,6 +562,7 @@ export default function page() {
             </div>
           </div>
 
+          {/* Assigned Status  */}
           <div className="col-span-1 grid md:grid-cols-4 md:mt-3   gap-4">
             <label
               htmlFor="test-title"
@@ -491,34 +575,34 @@ export default function page() {
                 <div className="flex  items-center gap-4">
                   <input
                     type="radio"
-                    checked={selectedStatus}
-                    name="list-radio"
+                    name="list"
+                    checked={assigned === 'Chưa giao' ? true : false}
                     className="w-5 h-5  text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500"
-                    onChange={() => {
+                    onChange={(e) => {
                       setFormData((prev) => ({
                         ...prev,
                         assignedStatus: false,
                       }));
-                      setSelectedStatus(false);
+                      setAssigned('Chưa giao');
                     }}
                   />
                   <label htmlFor="" className="text-sm">
                     Chưa giao
                   </label>
                 </div>
-                <div className="flex  items-center gap-2">
+
+                <div className="flex  items-center gap-4">
                   <input
                     type="radio"
-                    // checked={answer.isCorrect}
-                    name="list-radio"
-                    checked={selectedStatus}
-                    className="w-5 h-5  text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500 "
-                    onChange={() => {
+                    name="list"
+                    checked={assigned === 'Giao theo lớp' ? true : false}
+                    className="w-5 h-5  text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500"
+                    onChange={(e) => {
                       setFormData((prev) => ({
                         ...prev,
-                        assignedStatus: false,
+                        assignedStatus: true,
                       }));
-                      setSelectedStatus(true);
+                      setAssigned('Giao theo lớp');
                     }}
                   />
                   <label htmlFor="" className="text-sm">
@@ -528,7 +612,7 @@ export default function page() {
               </div>
             </div>
           </div>
-          {!selectedStatus && (
+          {assigned === 'Giao theo lớp' && (
             <div className="col-span-1 grid md:grid-cols-4 md:mt-3   gap-4">
               <label
                 htmlFor="test-title"
@@ -566,6 +650,14 @@ export default function page() {
           Xác nhận
           </Link> */}
       </Button>
+      {editingQuiz && (
+        <Button className="float-end mr-3" type="blue" onClick={handleCancel}>
+          Huỷ bỏ
+          {/* <Link href="/teacher/quiz/create/question">
+          Xác nhận
+          </Link> */}
+        </Button>
+      )}
     </div>
   );
 }
