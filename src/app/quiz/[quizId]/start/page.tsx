@@ -10,6 +10,7 @@ import Circle from '@/components/Icons/Circle';
 import Comment from '@/components/Comment';
 import SimpleTextEditor from '@/components/SimpleTextEditor';
 import Modal from '@/components/Modal';
+import {useRouter} from 'next/navigation';
 
 interface IOption {
   _id: string;
@@ -116,6 +117,39 @@ const listQues: IQuestion[] = [
     ],
   },
   {
+    _id: 'cau6',
+    questionType: IQuestionType.MULTIPLE,
+    content: 'Tập hợp Ν* là:',
+    options: [
+      {_id: 'cau6a', content: 'tập hợp số tự nhiên'},
+      {_id: 'cau6b', content: 'tập hợp các số tự nhiên chẵn.'},
+      {_id: 'cau6c', content: 'tập hợp các số tự nhiên lẻ'},
+      {_id: 'cau6d', content: 'tập hợp có số tự nhiên khác 0.'},
+    ],
+  },
+  {
+    _id: 'cau6',
+    questionType: IQuestionType.MULTIPLE,
+    content: 'Tập hợp Ν* là:',
+    options: [
+      {_id: 'cau6a', content: 'tập hợp số tự nhiên'},
+      {_id: 'cau6b', content: 'tập hợp các số tự nhiên chẵn.'},
+      {_id: 'cau6c', content: 'tập hợp các số tự nhiên lẻ'},
+      {_id: 'cau6d', content: 'tập hợp có số tự nhiên khác 0.'},
+    ],
+  },
+  {
+    _id: 'cau6',
+    questionType: IQuestionType.MULTIPLE,
+    content: 'Tập hợp Ν* là:',
+    options: [
+      {_id: 'cau6a', content: 'tập hợp số tự nhiên'},
+      {_id: 'cau6b', content: 'tập hợp các số tự nhiên chẵn.'},
+      {_id: 'cau6c', content: 'tập hợp các số tự nhiên lẻ'},
+      {_id: 'cau6d', content: 'tập hợp có số tự nhiên khác 0.'},
+    ],
+  },
+  {
     _id: 'cau7',
     questionType: IQuestionType.SHORT_ANSWER,
     content:
@@ -141,6 +175,8 @@ const listQues: IQuestion[] = [
 export default function StartQuiz() {
   const [seconds, setSeconds] = useState<number>(0);
   const [minutes, setMinutes] = useState<number>(9);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const router = useRouter();
 
   useEffect(() => {
     let timeInterval = setTimeout(() => {
@@ -181,7 +217,13 @@ export default function StartQuiz() {
               {seconds < 10 ? `0${seconds}` : seconds}
             </span>
           </div>
-          <Button>Nộp bài</Button>
+          <Button
+            onClick={() => {
+              setIsOpen(true);
+            }}
+          >
+            Nộp bài
+          </Button>
         </div>
       </header>
       <div className="mt-16 p-6 grid grid-cols-12 gap-6">
@@ -294,7 +336,15 @@ export default function StartQuiz() {
           </div>
         </div>
       </div>
-      <Modal open={true} onCancel={() => {}} onOk={() => {}}>
+      <Modal
+        open={isOpen}
+        onCancel={() => {
+          setIsOpen(false);
+        }}
+        onOk={() => {
+          router.push('/class/math/assignment/1/result');
+        }}
+      >
         <div className="w-340">
           <div className="flex items-center mb-3">
             <FileDoneOutlined className="mr-2 text-green-700 font-medium text-xl" />

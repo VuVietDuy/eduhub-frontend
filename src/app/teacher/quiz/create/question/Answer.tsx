@@ -1,5 +1,5 @@
 import TextEditor2 from '@/components/TextEditor2';
-import {IAnswer} from '@/redux/types/question.type';
+import {IAnswer} from '@/types/quiz.type';
 import React from 'react';
 import {FiMinusCircle} from 'react-icons/fi';
 
@@ -21,7 +21,7 @@ export default function (props: IProps) {
           name="list-radio"
           className="w-6 h-6 md:mr-10 mr-3 text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-600 dark:border-gray-500"
           onChange={() => {
-            console.log('check radio: ', index);
+            console.log(' radio: ', index);
             setAnswerList((prevState: IAnswer[]) => {
               let newState = prevState;
 

@@ -11,15 +11,17 @@ export default function ClassCard({
   teacher,
   img,
   notification,
+  link,
 }: {
   subject: string;
+  link?: string;
   teacher: string;
   img?: string;
   notification?: number;
 }) {
   return (
     <Link
-      href={'class/math'}
+      href={link || 'class/math/info'}
       className="block max-w-sm w-[240px] overflow-hidden bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hover:shadow-lg"
     >
       <div className="h-[140px] w-[240px] lg:w-[280px] overflow-hidden flex items-center justify-center">

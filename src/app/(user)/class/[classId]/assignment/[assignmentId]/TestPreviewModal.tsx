@@ -1,5 +1,6 @@
 import Modal from '@/components/Modal';
 import Image from 'next/image';
+import {useRouter} from 'next/navigation';
 import React from 'react';
 
 export default function TestPreviewModal({
@@ -9,6 +10,7 @@ export default function TestPreviewModal({
   isOpenTestModal: boolean;
   handleCancelTestModal: () => void;
 }) {
+  const router = useRouter();
   return (
     <>
       <Modal
@@ -16,9 +18,10 @@ export default function TestPreviewModal({
         className="max-h-[90vh] "
         title={'Thông tin phần thi'}
         open={isOpenTestModal}
-        okButton="Bắt đầu thi"
-        cancelButton="Huỷ"
         onCancel={() => handleCancelTestModal()}
+        onOk={() => {
+          router.push('/quiz/1/start');
+        }}
       >
         <div className="max-h-[calc(90vh-200px)]   md:grid-cols-1  overflow-y-auto">
           <div className="border rounded-lg border-gray-300 w-full h-36 flex items-center overflow-hidden">

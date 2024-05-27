@@ -97,7 +97,7 @@ export default function MainLayout({
               <h1 className="text-xl font-semibold ml-2">
                 {listRoutes.find((route) => check(route.rootRoute))?.titlePage}
               </h1>
-              {breadcrumd?.segments && (
+              {/* {breadcrumd?.segments && (
                 <div className="">
                   {breadcrumd.segments?.map((seg, idxSeg) => (
                     <div className="flex items-center">
@@ -106,7 +106,7 @@ export default function MainLayout({
                     </div>
                   ))}
                 </div>
-              )}
+              )} */}
             </div>
           </div>
           <div className={'flex items-center pr-3 lg:pr-5'}>

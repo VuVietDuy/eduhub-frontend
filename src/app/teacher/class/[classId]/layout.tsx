@@ -40,7 +40,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
           ))}
         </ul>
       </div>
-      <div className="mt-[54px] content min-h-[80vh]">{children}</div>
+      <div className="mt-[78px] content min-h-[80vh]">{children}</div>
     </div>
   );
 }

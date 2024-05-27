@@ -30,7 +30,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
         previousPage="Đề thi"
         currentPage="Tạo mới đề thi"
       /> */}
-      <Card className="mx-0 md:my-0  md:mx-5 pb-4  pt-0  md:w-[calc(100%-40px)] h-[calc(100vh-100px)] md:max-h-[calc(100vh-106px)] overflow-hidden px-0 shadow-sm">
+      <Card className="mx-0 md:my-0  md:mx-5 pb-4  pt-0  md:w-[calc(100%-40px)] h-[calc(100vh-118px)] md:max-h-[calc(100vh-106px)] overflow-hidden px-0 shadow-sm">
         <div className="border-b border-gray-200 dark:border-gray-700 fixed  top-[82px] lg:top-[84px]">
           <ul className=" flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
             {listRoute.map((item, index) => (
