@@ -47,7 +47,7 @@ export default function Table(props: IProps) {
             >
               {columns.map((column) => (
                 <td
-                  onClick={(e) => console.log(e.target)}
+                  // onClick={(e) => console.log(e.target)}
                   key={column.key}
                   className="px-6 py-4"
                 >

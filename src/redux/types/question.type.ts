@@ -5,6 +5,7 @@ export interface IAnswer {
   content: string;
   isCorrect: boolean;
 }
+
 export interface IQuestion {
   test?: ITest;
   order: number;

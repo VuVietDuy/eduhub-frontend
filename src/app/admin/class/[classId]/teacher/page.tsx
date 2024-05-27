@@ -150,7 +150,7 @@ export default function page() {
   return (
     <div className="m-6">
       <Card className="overflow-y-scroll">
-        <div className="h-[420px]">
+        <div className="max-h-[70vh]">
           <Table
             // className="h-[800px]"
             dataSource={data}

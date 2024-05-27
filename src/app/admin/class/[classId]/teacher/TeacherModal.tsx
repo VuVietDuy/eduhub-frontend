@@ -1,9 +1,7 @@
 import Badge from '@/components/Badge';
-import Button from '@/components/Button';
 import Card from '@/components/Card';
 import Modal from '@/components/Modal';
 import Table from '@/components/Table';
-import Image from 'next/image';
 import React, {useState} from 'react';
 
 interface IProps {

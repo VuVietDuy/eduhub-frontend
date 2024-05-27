@@ -49,12 +49,13 @@ export default function Dropdown({
           } absolute right-0 p-1 z-10 mt-2 min-w-44 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
         >
           {menu?.map((item) => (
-            <div
-              className=" px-4 py-2 rounded hover:bg-gray-200 cursor-pointer"
+            <button
+              className=" px-4 py-2 block w-full text-left rounded hover:bg-gray-200 cursor-pointer"
               key={item.key}
+              onClick={item.onClick}
             >
               {item.label}
-            </div>
+            </button>
           ))}
         </div>
       </div>

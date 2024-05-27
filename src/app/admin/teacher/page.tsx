@@ -1,52 +1,73 @@
 'use client';
+
+import React, {useEffect, useState} from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import {MdOutlineMoreVert, MdAdd} from 'react-icons/md';
+
+import {UploadOutlined} from '@ant-design/icons';
+import {fetcher} from '@/api/fetcher';
 import Button from '@/components/Button';
 import Card from '@/components/Card';
 import Dropdown from '@/components/Dropdown';
-import {MenuProps} from '@/components/MenuProps';
 import SearchInput from '@/components/SearchInput';
 import Table from '@/components/Table';
 import TableFooter from '@/components/TableFooter';
-import {UploadOutlined} from '@ant-design/icons';
-import Image from 'next/image';
-import Link from 'next/link';
-import React, {useState} from 'react';
-import {MdOutlineMoreVert, MdAdd} from 'react-icons/md';
+import {formatDate} from '@/utils/formatDate';
+import ModalConfirm from '@/components/ModalConfirm';
+import {notification} from '@/utils/notification';
+import {useQuery} from 'react-query';
+import Avatar from '@/components/Avatar';
+
+async function getAllTeachers() {
+  return fetcher.get('/api/teachers?limit=5');
+}
 
 export default function Teacher() {
   const [dataInit, setDataInit] = useState<[]>([]);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [selectedTeacher, setSelectedTeacher] = useState<string>('');
+  const {refetch, isLoading, isFetching} = useQuery(
+    'GET_ALL_TEACHERS',
+    getAllTeachers,
+    {
+      onSuccess: (res) => {
+        console.log(res.data);
+        setDataInit(res.data.data);
+      },
+    },
+  );
 
-  const itemsDropdown: MenuProps['items'] = [
-    {
-      key: 'viewMore',
-      label: (
-        <>
-          <button>Xem thêm</button>
-        </>
-      ),
-    },
-    {
-      key: 'edit',
-      label: (
-        <>
-          <button>Chỉnh sửa</button>
-        </>
-      ),
-    },
-    {
-      key: 'delete',
-      label: (
-        <>
-          <button>Xoá</button>
-        </>
-      ),
-    },
-  ];
+  useEffect(() => {
+    refetch();
+  }, []);
+
+  const handleDeleteTeacher = () => {
+    console.log(selectedTeacher);
+    setIsOpen(false);
+    fetcher
+      .delete(`/api/teachers/${selectedTeacher}`)
+      .then((res) => {
+        console.log(res);
+        notification.success({
+          message: 'Thành công',
+          description: 'Xoá người dùng thành công',
+        });
+        refetch();
+      })
+      .catch((error) => {
+        notification.error({
+          message: 'Lỗi',
+          description: 'Xoá người dùng thất bại, vui lòng thử lại',
+        });
+      });
+  };
 
   const columns = [
     {
       title: 'Mã giáo viên',
-      dataIndex: 'teacherID',
-      key: 'teacherID',
+      dataIndex: 'teacherId',
+      key: 'teacherId',
       // width: '10px',
     },
     {
@@ -54,7 +75,13 @@ export default function Teacher() {
       dataIndex: 'teacherCard',
       key: 'teacherCard',
       render: (data: any) => (
-        <Image src={data.teacherCard} width={50} height={50} alt=""></Image>
+        <>
+          {data.src ? (
+            <Image src={data.teacherCard} width={50} height={50} alt=""></Image>
+          ) : (
+            <Avatar>{data.firstName[0]}</Avatar>
+          )}
+        </>
       ),
     },
     {
@@ -70,13 +97,19 @@ export default function Teacher() {
     {
       title: 'Ngày sinh',
       dataIndex: 'dateOfBirth',
-      key: 'firstName',
+      key: 'dateOfBirth',
+      render: (data: any) => <span>{formatDate(data.dateOfBirth)}</span>,
     },
     {
       title: 'Giới tính',
       dataIndex: 'gender',
       key: 'gender',
-      render: (data: any) => <span>{data ? 'Nam' : 'Nữ'}</span>,
+      render: (data: any) => <span>{data.gender ? 'Nam' : 'Nữ'}</span>,
+    },
+    {
+      title: 'Vị trí',
+      dataIndex: 'position',
+      key: 'position',
     },
     {
       title: 'Thao tác',
@@ -84,55 +117,29 @@ export default function Teacher() {
       key: 'action',
       render: (data: any) => (
         <>
-          <Dropdown menu={itemsDropdown}>
+          <Dropdown
+            menu={[
+              {
+                key: 'edit',
+                label: <span>Chỉnh sửa</span>,
+              },
+              {
+                key: 'delete',
+                label: <span>Xoá</span>,
+                onClick: () => {
+                  setSelectedTeacher(data.id);
+                  setIsOpen(true);
+                },
+              },
+            ]}
+          >
             <MdOutlineMoreVert />
           </Dropdown>
         </>
       ),
     },
   ];
-  const data = [
-    {
-      teacherID: 'GV001',
-      teacherCard: '/img/teacherCard.jpg',
-      firstName: 'Duy',
-      lastName: 'Vũ Viết Duy',
-      dateOfBirth: '10/10/1999',
-      gender: 1,
-    },
-    {
-      teacherID: 'GV002',
-      teacherCard: '/img/teacherCard.jpg',
-      firstName: 'Dũng',
-      lastName: 'Nguyễn Tuấn',
-      dateOfBirth: '10/10/1991',
-      gender: 1,
-    },
-    {
-      teacherID: 'GV003',
-      teacherCard: '/img/teacherCard.jpg',
-      firstName: 'Linh',
-      lastName: 'Trần Tuấn',
-      dateOfBirth: '10/10/1997',
-      gender: 1,
-    },
-    {
-      teacherID: 'GV004',
-      teacherCard: '/img/teacherCard.jpg',
-      firstName: 'Lâm',
-      lastName: 'Trần Xuân',
-      dateOfBirth: '10/10/1993',
-      gender: 1,
-    },
-    {
-      teacherID: 'GV005',
-      teacherCard: '/img/teacherCard.jpg',
-      firstName: 'Duy',
-      lastName: 'Nguyễn Văn',
-      dateOfBirth: '10/10/2000',
-      gender: 1,
-    },
-  ];
+
   return (
     <div className="m-6">
       <Card className="mb-6">
@@ -160,9 +167,17 @@ export default function Teacher() {
         </div>
       </Card>
       <Card>
-        <Table dataSource={data} columns={columns}></Table>
+        <Table dataSource={dataInit} columns={columns}></Table>
         <TableFooter></TableFooter>
       </Card>
+      <ModalConfirm
+        open={isOpen}
+        onCancel={() => {
+          setIsOpen(false);
+        }}
+        onOk={handleDeleteTeacher}
+        message="Bạn có chắc chắn muốn xoá người dùng này?"
+      ></ModalConfirm>
     </div>
   );
 }

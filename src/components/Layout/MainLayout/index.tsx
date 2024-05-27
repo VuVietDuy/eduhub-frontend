@@ -6,7 +6,6 @@ import {
   BellFilled,
   CloseOutlined,
   MenuOutlined,
-  SearchOutlined,
   SettingFilled,
   TranslationOutlined,
 } from '@ant-design/icons';
@@ -30,6 +29,7 @@ export default function MainLayout({
   const pathName = usePathname();
   const routesSegs = pathName.split('/');
   const user = useSelector((state: RootState) => state.user);
+  const breadcrumd = useSelector((state: RootState) => state.breadcrumd);
 
   function check(rootRoute: string[]): boolean {
     for (var i = 0; i < rootRoute.length; i++) {
@@ -97,6 +97,16 @@ export default function MainLayout({
               <h1 className="text-xl font-semibold ml-2">
                 {listRoutes.find((route) => check(route.rootRoute))?.titlePage}
               </h1>
+              {breadcrumd?.segments && (
+                <div className="">
+                  {breadcrumd.segments?.map((seg, idxSeg) => (
+                    <div className="flex items-center">
+                      <MdArrowForwardIos className="ml-2"></MdArrowForwardIos>
+                      <span className="font-medium text-lg">{seg}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
           <div className={'flex items-center pr-3 lg:pr-5'}>

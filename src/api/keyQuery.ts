@@ -1,0 +1,7 @@
+const SUBJECT_MANAGER = {
+  GET_ALL_SUBJECT: "GET_ALL_SUBJECT",
+};
+
+exports = {
+  SUBJECT_MANAGER,
+};

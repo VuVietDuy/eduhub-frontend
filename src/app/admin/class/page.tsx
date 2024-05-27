@@ -1,52 +1,69 @@
 'use client';
+import {getAllClasses} from '@/api/class';
+import {fetcher} from '@/api/fetcher';
+import {getAllTeacher} from '@/api/teacher';
 import Button from '@/components/Button';
 import Card from '@/components/Card';
 import Dropdown from '@/components/Dropdown';
-import {MenuProps} from '@/components/MenuProps';
+import InputAuto from '@/components/InputAuto';
+import Modal from '@/components/Modal';
+import ModalConfirm from '@/components/ModalConfirm';
 import SearchInput from '@/components/SearchInput';
 import Table from '@/components/Table';
 import TableFooter from '@/components/TableFooter';
-import {UploadOutlined} from '@ant-design/icons';
+import {notification} from '@/utils/notification';
+import {
+  BarsOutlined,
+  CodeOutlined,
+  SettingOutlined,
+  UploadOutlined,
+} from '@ant-design/icons';
+import {Formik} from 'formik';
 import {useRouter} from 'next/navigation';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import {IoAttachOutline} from 'react-icons/io5';
 import {MdOutlineMoreVert, MdAdd} from 'react-icons/md';
+import {useQuery} from 'react-query';
 
 export default function Class() {
   const [dataInit, setDataInit] = useState<[]>([]);
   const router = useRouter();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [listTeachers, setListTeachers] = useState<any[]>([]);
 
-  const itemsDropdown: MenuProps['items'] = [
+  const [selectedClass, setSelectedClass] = useState<string>('');
+  const [isOpenModalDeleteClass, setIsOpenModalDeleteClass] =
+    useState<boolean>(false);
+  const {refetch, isLoading, isFetching} = useQuery(
+    'GET_ALL_CLASSES',
+    getAllClasses,
     {
-      key: 'viewMore',
-      label: (
-        <>
-          <button
-            onClick={() => {
-              router.push('/admin/class/1/info');
-            }}
-          >
-            Xem thêm
-          </button>
-        </>
-      ),
+      onSuccess: (res) => {
+        console.log(res.data);
+        setDataInit(res.data.data);
+      },
     },
-    {
-      key: 'edit',
-      label: (
-        <>
-          <button>Chỉnh sửa</button>
-        </>
-      ),
-    },
-    {
-      key: 'delete',
-      label: (
-        <>
-          <button>Xoá</button>
-        </>
-      ),
-    },
-  ];
+  );
+
+  const deleteClass = () => {
+    setIsOpenModalDeleteClass(false);
+    notification.success({
+      message: 'Xóa lớp thành công',
+    });
+    refetch();
+  };
+
+  useEffect(() => {
+    refetch();
+    getAllTeacher().then((res) => {
+      var a: any[] = [];
+      res.data.data.forEach((item: any) => {
+        const teacherName = `${item.firstName} ${item.lastName}`;
+        a = [...a, teacherName];
+      });
+      setListTeachers(a);
+    });
+  }, []);
 
   const columns = [
     {
@@ -54,13 +71,16 @@ export default function Class() {
       dataIndex: 'classID',
       key: 'classID',
       render: (data: any) => (
-        <span className="font-semibold">{data.classID}</span>
+        <span className="font-semibold">
+          {data.course}
+          {data.className}
+        </span>
       ),
     },
     {
       title: 'Lớp',
-      dataIndex: 'class',
-      key: 'class',
+      dataIndex: 'className',
+      key: 'className',
     },
     {
       title: 'Khoá',
@@ -78,75 +98,60 @@ export default function Class() {
       key: 'action',
       render: (data: any) => (
         <>
-          <Dropdown menu={itemsDropdown}>
+          <Dropdown
+            menu={[
+              {
+                key: 'viewMore',
+                label: <span>Xem thêm</span>,
+                onClick: () => {
+                  router.push(`/admin/class/${data._id}/info`);
+                },
+              },
+              {
+                key: 'delete',
+                label: <span>Xoá</span>,
+                onClick: () => {
+                  setSelectedClass(data._id);
+                  setIsOpenModalDeleteClass(true);
+                },
+              },
+            ]}
+          >
             <MdOutlineMoreVert />
           </Dropdown>
         </>
       ),
     },
   ];
-  const data = [
-    {
-      classID: 'A01K55',
-      class: 'A01',
-      course: 'K55',
-      formTeacher: 'Vũ Viết Duy',
-    },
-    {
-      classID: 'A02K55',
-      class: 'A02',
-      course: 'K55',
-      formTeacher: 'Nguyễn Văn Duy',
-    },
-    {
-      classID: 'A03K55',
-      class: 'A03',
-      course: 'K55',
-      formTeacher: 'Trần Xuân Lâm',
-    },
-    {
-      classID: 'A04K55',
-      class: 'A04',
-      course: 'K55',
-      formTeacher: 'Hoàng Hữu Tiến Dũng',
-    },
-    {
-      classID: 'A05K55',
-      class: 'A05',
-      course: 'K55',
-      formTeacher: 'Trần Văn Lâm',
-    },
-    {
-      classID: 'A06K55',
-      class: 'A06',
-      course: 'K55',
-      formTeacher: 'Vũ Thị Minh Ngọc',
-    },
-    {
-      classID: 'A07K55',
-      class: 'A07',
-      course: 'K55',
-      formTeacher: 'Trần Thanh Tâm',
-    },
-    {
-      classID: 'A08K55',
-      class: 'A08',
-      course: 'K55',
-      formTeacher: 'Vũ Văn Toản',
-    },
-    {
-      classID: 'A09K55',
-      class: 'A09',
-      course: 'K55',
-      formTeacher: 'Võ Yên Nhi',
-    },
-    {
-      classID: 'A10K55',
-      class: 'A10',
-      course: 'K55',
-      formTeacher: 'Trần Quang Thắng',
-    },
-  ];
+
+  const getSelectedVal = (value: any) => {
+    console.log(value);
+  };
+
+  const getChanges = (value: any) => {
+    console.log(value);
+  };
+
+  const handleOnSubmit = (value: any) => {
+    console.log(value);
+    fetcher
+      .post('/api/classes/', value)
+      .then((response: any) => {
+        console.log(response.data);
+        notification.success({
+          message: 'Thành công',
+          description: 'Thêm lớp thành công',
+        });
+        setIsOpen(false);
+        refetch();
+      })
+      .catch((error) => {
+        notification.success({
+          message: 'Lỗi',
+          description: 'Lỗi thêm tài khoản',
+        });
+      });
+  };
   return (
     <div className="m-6">
       <Card className="mb-6">
@@ -161,7 +166,11 @@ export default function Class() {
               <UploadOutlined className="mr-1" />
               Import
             </Button>
-            <Button className="ml-2" type="green">
+            <Button
+              className="ml-2"
+              type="green"
+              onClick={() => setIsOpen(true)}
+            >
               <MdAdd className="mr-1" />
               Thêm mới
             </Button>
@@ -169,9 +178,152 @@ export default function Class() {
         </div>
       </Card>
       <Card>
-        <Table dataSource={data} columns={columns}></Table>
+        <Table dataSource={dataInit} columns={columns}></Table>
         <TableFooter total={16}></TableFooter>
       </Card>
+      <Modal
+        open={isOpen}
+        title="Thêm mới lớp học"
+        onCancel={() => {
+          setIsOpen(false);
+        }}
+        className="min-w-620"
+        footer={[]}
+      >
+        <Formik
+          initialValues={{
+            className: '',
+            course: '',
+            teacher: '',
+            description: '',
+            formTeacher: '',
+          }}
+          onSubmit={handleOnSubmit}
+        >
+          {({values, handleChange, handleSubmit}) => (
+            <form onSubmit={handleSubmit}>
+              <div className="input-controller">
+                <label className="block mb-2 font-medium text-gray-900 dark:text-white">
+                  Lớp
+                </label>
+                <input
+                  value={values.className}
+                  onChange={handleChange}
+                  name="className"
+                  type="text"
+                  className="input"
+                  placeholder="Lớp"
+                  required
+                />
+              </div>
+              <div className="input-controller">
+                <label className="block mb-2 font-medium text-gray-900 dark:text-white">
+                  Khoá
+                </label>
+                <input
+                  value={values.course}
+                  onChange={handleChange}
+                  name="course"
+                  type="text"
+                  className="input"
+                  placeholder="Khoá"
+                  required
+                />
+              </div>
+              <div className="input-controller">
+                <label className="block mb-2 font-medium text-gray-900 dark:text-white">
+                  Giáo viên chủ nhiệm
+                </label>
+                <InputAuto
+                  label="languages"
+                  pholder="Keyword..."
+                  data={listTeachers}
+                  onSelected={getSelectedVal}
+                  onChange={getChanges}
+                />
+              </div>
+              <label className="block mb-2 font-medium text-gray-900 dark:text-white">
+                Mô tả
+              </label>
+              <div className="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+                <div className="flex items-center justify-between px-3 py-2 border-b dark:border-gray-600">
+                  <div className="flex flex-wrap items-center divide-gray-200 sm:divide-x sm:rtl:divide-x-reverse dark:divide-gray-600">
+                    <div className="flex items-center space-x-1 rtl:space-x-reverse sm:pe-4">
+                      <button
+                        type="button"
+                        className="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
+                      >
+                        <IoAttachOutline></IoAttachOutline>
+                      </button>
+
+                      <button
+                        type="button"
+                        className="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
+                      >
+                        <UploadOutlined></UploadOutlined>
+                      </button>
+                      <button
+                        type="button"
+                        className="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
+                      >
+                        <CodeOutlined></CodeOutlined>
+                      </button>
+                    </div>
+                    <div className="flex flex-wrap items-center space-x-1 rtl:space-x-reverse sm:ps-4">
+                      <button
+                        type="button"
+                        className="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
+                      >
+                        <BarsOutlined></BarsOutlined>
+                      </button>
+                      <button
+                        type="button"
+                        className="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
+                      >
+                        <SettingOutlined></SettingOutlined>
+                      </button>
+                    </div>
+                  </div>
+                  <div
+                    id="tooltip-fullscreen"
+                    role="tooltip"
+                    className="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
+                  >
+                    Show full screen
+                    <div className="tooltip-arrow" data-popper-arrow></div>
+                  </div>
+                </div>
+                <div className="px-4 py-2 bg-white rounded-b-lg dark:bg-gray-800">
+                  <label className="sr-only">Publish post</label>
+                  <textarea
+                    id="editor"
+                    rows={8}
+                    className="block w-full px-0 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400 ring-0"
+                    placeholder="Write an article..."
+                    value={values.description}
+                    onChange={handleChange}
+                    name="description"
+                  ></textarea>
+                </div>
+              </div>
+              <button
+                type="submit"
+                className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800"
+              >
+                Lưu
+              </button>{' '}
+            </form>
+          )}
+        </Formik>
+      </Modal>
+      <ModalConfirm
+        open={isOpenModalDeleteClass}
+        onCancel={() => {
+          setIsOpenModalDeleteClass(false);
+        }}
+        onOk={deleteClass}
+        message="Bạn có chắc chắn muốn xoá môn học này?"
+      ></ModalConfirm>
     </div>
   );
 }

@@ -62,6 +62,9 @@
     .input-label {
         @apply block mb-2 font-medium text-gray-900 dark:text-white;
     }
+    .input-controller {
+        @apply mb-2;
+    }
 }
 
 ::-webkit-scrollbar {

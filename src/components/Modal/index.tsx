@@ -10,8 +10,7 @@ interface IProps {
   width?: string | '';
   height?: string | '';
   className?: string;
-  okButton?: string;
-  cancelButton?: string;
+  footer?: React.ReactNode[];
 }
 
 export default function Modal(props: IProps) {
@@ -23,9 +22,8 @@ export default function Modal(props: IProps) {
     onCancel,
     width,
     height,
-    cancelButton,
-    okButton,
     className,
+    footer,
   } = props;
   const modalRef = useRef<HTMLDivElement>(null);
   const modalBoxRef = useRef<HTMLDivElement>(null);
@@ -77,23 +75,27 @@ export default function Modal(props: IProps) {
                 {children}
               </div>
               <div>
-                <div className="flex items-center justify-end p-2 md:p-3 border-t border-gray-200 rounded-b dark:border-gray-600">
-                  <button
-                    onClick={onCancel}
-                    type="button"
-                    className="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={onCancel}
-                    data-modal-hide="default-modal"
-                    type="button"
-                    className="text-white  ms-3 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                  >
-                    Ok
-                  </button>
-                </div>
+                {footer?.length === 0 ? (
+                  footer.map((item) => <div>{item}</div>)
+                ) : (
+                  <div className="flex items-center justify-end p-2 md:p-3 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <button
+                      onClick={onCancel}
+                      type="button"
+                      className="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={onOk}
+                      data-modal-hide="default-modal"
+                      type="button"
+                      className="text-white  ms-3 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    >
+                      Ok
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>

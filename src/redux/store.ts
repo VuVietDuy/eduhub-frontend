@@ -5,7 +5,7 @@ import { combineReducers } from "@reduxjs/toolkit";
 import UserReducer from "./slice/user.slice";
 import TokenReducer from "./slice/token.slice";
 import QuestionReducer from "./slice/question.slice";
-import { QueryStatus } from "@reduxjs/toolkit/query";
+import BreadcrumdsReducer from "./slice/breadcrumd.slice";
 
 const persistConfig = {
   key: "root",
@@ -17,6 +17,7 @@ const reducer = combineReducers({
   user: UserReducer,
   token: TokenReducer,
   question: QuestionReducer,
+  breadcrumd: BreadcrumdsReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);
